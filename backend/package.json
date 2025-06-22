@@ -1,5 +1,5 @@
 {
-  "name": "temp_name",
+  "name": "rhythle",
   "version": "1.0.0",
   "description": "API para trabajo final de Introducción al desarrollo de software",
   "main": "src/api.js",
