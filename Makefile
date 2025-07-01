@@ -1,6 +1,6 @@
 # To RUN: "make 'function'" from main folder
 
-.PHONY: start-db start-backend stop-db
+.PHONY: start-db start-npm stop-db
 
 start-db:
 	cd ./backend && docker compose up -d
@@ -8,7 +8,7 @@ start-db:
 stop-db:
 	cd ./backend && docker compose down
 
-start-backend:
+start-npm:
 	cd ./backend && npm run dev
 
-run-backend: start-db start-backend
+run-backend: start-db start-npm
