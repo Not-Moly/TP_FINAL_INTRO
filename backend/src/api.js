@@ -43,5 +43,5 @@ app.put('api/games',(req,res) => {
 //#endregion
 
 app.listen(PORT, () => {
-    console.log("Server LIstening on PORT:",PORT);
+    console.log("Server Listening on PORT:",PORT);
 });
