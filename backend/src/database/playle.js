@@ -16,7 +16,7 @@ async function getAllGames() {
 async function getOneGame(id){
     const result = await dbClient.query('SELECT * FROM games WHERE id = $1 LIMIT 1', [id]);
     return result.rows[0];
-}
+};
 
 async function createGame(
     title,
@@ -29,10 +29,13 @@ async function createGame(
     id_developer
 ){
     const result = await dbClient.query(
-        'INSERT INTO games(title, release_year, gamemode, genre, perspective, image, franchise, id_developer) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)',
+        'INSERT INTO games(title, release_year, gamemode, genre, perspective, image, franchise, id_developer) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *',
         [title, release_year, gamemode, genre, perspective, image, franchise, id_developer])
-    return result
-}
+    if (result.rowCount === 0) {
+        return undefined
+    }
+    return result.rows[0]
+};
 
 module.exports = {
     getAllGames,
