@@ -8,7 +8,8 @@ const PORT = process.env.PORT || 3000;
 const {
     getAllGames,
     getOneGame,
-    createGame
+    createGame,
+    deleteGame
 } = require('./database/playle');
 
 // 5 Endpoints per entity!!
@@ -20,7 +21,7 @@ const {
 app.get('/api/games', async (req, res) => {
     let games = await getAllGames();
     if (!games) {
-        return res.sendStatus(404).json({error: 'Games not found'});
+        return res.sendStatus(404).json({ error: 'Games not found' });
     }
     res.json(games);
 
@@ -29,19 +30,26 @@ app.get('/api/games', async (req, res) => {
 app.get('/api/games/:id', async (req, res) => {
     // let game = games[req.params.num];
     let game = await getOneGame(req.params.id);
-    if(!game){
-        return res.sendStatus(404).json({error: 'Game not found'});
+    if (!game) {
+        return res.sendStatus(404).json({ error: 'Game not found' });
     }
     res.json((game));
 });
 
 //POST________________________________________________________
 /*
-curl -X POST http://localhost:3000/api/games \
-  --header "Content-Type: application/json" \
-  --data '{"title":"Test1", "release_year":"2500", "gamemode":"Test1", "genre":"Test1", "perspective":"Test1", "image":"Test1", "franchise":"Test1", "id_developer":"2"}'
+curl http://localhost:3000/api/games \
+    --request POST \
+    --header "Content-Type: application/json" \
+    --data '{"title":"Test1", "release_year":"2500", "gamemode":"Test1", "genre":"Test1", "perspective":"Test1", "image":"Test1", "franchise":"Test1", "id_developer":"2"}'
 */
 app.post('/api/games', async (req, res) => {
+
+    if (!req.body.title) {
+        return res.status(400).json({ error: "Missing required field" });
+    }
+
+
     const game = await createGame(
         req.body.title,
         req.body.release_year,
@@ -51,13 +59,32 @@ app.post('/api/games', async (req, res) => {
         req.body.image,
         req.body.franchise,
         req.body.id_developer
-    )
-    res.status(201).json({message: "Game Created"});
+    );
+
+    if(!game){
+        return res.status(500).json({error: "Error while creating Game"});
+    }
+
+    res.json(game);
 });
 
 //DELETE________________________________________________________
-app.delete('api/games/:id', (req, res) => {
+/*
+curl http://localhost:3000/api/games/6 \
+    --request DELETE
+*/
+app.delete('/api/games/:id', async (req, res) => {
+    if(!req.params.id){
+        return res.status(400).json({error:"Missing required parameter"});
+    }
 
+    let game = await deleteGame(req.params.id)
+
+    if(!game){
+        return res.status(404).json({error:"Game id: " + req.params.id + " non-existent"});
+    }
+
+    res.json(game);
 });
 
 //PUT________________________________________________________
