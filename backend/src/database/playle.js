@@ -13,6 +13,12 @@ async function getAllGames() {
     return result.rows;
 };
 
+async function getOneGame(id){
+    const result = await dbClient.query('SELECT * FROM games WHERE id = $1 LIMIT 1', [id]);
+    return result.rows[0];
+}
+
+
 module.exports = {
     getAllGames
 };

@@ -1,34 +1,37 @@
-create table developers (
-	id serial primary key,
-	name varchar(300),
-	foundation_year int,
-	cant_games int,
-	origin_country varchar(50),
-	entity_type varchar(50)
-)
-
-create table games (
-	id serial primary key,
-	title varchar(100),
-	release_year int,
-	gamemode varchar(100),
-	gender varchar(300),
-	perspective varchar(300),
-	image varchar(255),
-	frachise varchar(100),
-	id_developer int references developers (id)
+--Tabla de desarrolladores
+CREATE TABLE developers (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(300) NOT NULL,
+    foundation_year INT,
+    game_count INT,
+    origin_country VARCHAR(50),
+    entity_type VARCHAR(50)
 );
 
-create table characters (
-	id serial primary key,
-	char_name varchar(100),
-	franchise varchar(100),
-	image varchar(255),
-	sex varchar(50),
-	species varchar(50),
-	description varchar(500),
-	main_skill varchar(100),
-	id_game int references games (id)
+-- Tabla de juegos
+CREATE TABLE games (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    release_year INT,
+    gamemode VARCHAR(100),
+    genre VARCHAR(300),
+    perspective VARCHAR(300),
+    image VARCHAR(255),
+    franchise VARCHAR(100),
+    id_developer INT REFERENCES developers(id) ON DELETE SET NULL
+);
+
+-- Tabla de personajes
+CREATE TABLE characters (
+    id SERIAL PRIMARY KEY,
+    char_name VARCHAR(100) NOT NULL,
+    franchise VARCHAR(100),
+    image VARCHAR(255),
+    sex VARCHAR(50),
+    species VARCHAR(50),
+    description VARCHAR(500),
+    main_skill VARCHAR(100),
+    id_game INT REFERENCES games(id) ON DELETE SET NULL
 );
 
 
