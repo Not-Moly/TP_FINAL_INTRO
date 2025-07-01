@@ -45,7 +45,10 @@ async function deleteGame(id){
     const result = await dbClient.query(
         'DELETE FROM games WHERE id = $1',[id]
     )
-    return result.rows[0]
+    if(result.rows.rowCount === 0){
+        return undefined
+    }
+    return id
 };
 
 module.exports = {
