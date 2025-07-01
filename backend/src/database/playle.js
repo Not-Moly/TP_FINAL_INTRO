@@ -29,9 +29,8 @@ async function createGame(
     id_developer
 ){
     const result = await dbClient.query(
-        'INSERT INTO games(title, release_year, gamemode, genre, perspective, image, franchise, id_developer) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)'
-    )
-    [title, release_year, gamemode, genre, perspective, image, franchise, id_developer]
+        'INSERT INTO games(title, release_year, gamemode, genre, perspective, image, franchise, id_developer) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)',
+        [title, release_year, gamemode, genre, perspective, image, franchise, id_developer])
     return result
 }
 
