@@ -9,12 +9,16 @@ const dbClient = new Pool ({
 });
 
 async function getAllGames() {
-    const result = await dbClient.query('SELECT * FROM games');
+    const result = await dbClient.query(
+        'SELECT * FROM games'
+    );
     return result.rows;
 };
 
 async function getOneGame(id){
-    const result = await dbClient.query('SELECT * FROM games WHERE id = $1 LIMIT 1', [id]);
+    const result = await dbClient.query(
+        'SELECT * FROM games WHERE id = $1 LIMIT 1',[id]
+    );
     return result.rows[0];
 };
 
@@ -37,8 +41,16 @@ async function createGame(
     return result.rows[0]
 };
 
+async function deleteGame(id){
+    const result = await dbClient.query(
+        'DELETE FROM games WHERE id = $1',[id]
+    )
+    return result.rows[0]
+};
+
 module.exports = {
     getAllGames,
     getOneGame,
-    createGame
+    createGame,
+    deleteGame
 };
