@@ -8,8 +8,8 @@ const dbClient = new Pool ({
     password: 'postgres'
 });
 
-function getAllGames() {
-    const result = dbClient.query('SELECT * FROM games');
+async function getAllGames() {
+    const result = await dbClient.query('SELECT * FROM games');
     return result.rows;
 };
 
