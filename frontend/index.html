@@ -1,6 +1,23 @@
 <!DOCTYPE html>
-<html lang="es-AR">
+<!-- <html lang="es-AR"> -->
+<html>
     <head>
         <title>Playle</title>
     </head>
+    <script>
+        const playleBackendURL = "http:/localhost:3000/api/games";
+        const test_function = async() => {
+            console.log("test");
+            try{
+                fetch(playleBackendURL).then((response) => {
+                    return response.json();
+                }).then((data) => {
+                    console.log(data);
+                })
+            } catch (e) {
+                console.log("Error: ",e);
+            }
+        }
+        test_function();
+    </script>
 </html>
