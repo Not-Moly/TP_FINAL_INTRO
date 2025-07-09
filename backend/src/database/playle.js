@@ -10,16 +10,56 @@ const dbClient = new Pool ({
 
 async function getAllGames() {
     const result = await dbClient.query(
-        'SELECT * FROM games'
+        'SELECT games.id as games_id, games.title as title, games.release_year as release, games.gamemode as gamemode,'+
+        'games.genre as genre, games.perspective as perspective, games.image as img, games.franchise as franchise,'+
+        'games.id_developer as id_developer, developers.id as developer_id ,developers.name as developer '+
+        'FROM games JOIN developers ON games.id_developer = developers.id'
     );
-    return result.rows;
+
+    const games = {};
+
+    result.rows.forEach(row => {
+        if ([!games[row.games_id]]) {
+            games[row.games_id] = {
+             nombre: row.title,
+             salida: row.release,
+             modo: row.gamemode,
+             genero: row.genre,
+             perspectiva: row.perspective,
+             imagen: row.img,
+             franquicia: row.franchise,
+             desarrollador: row.developer
+            }
+        }
+    });
+    return games;
 };
 
 async function getOneGame(id){
     const result = await dbClient.query(
-        'SELECT * FROM games WHERE id = $1 LIMIT 1',[id]
+        'SELECT games.id as games_id, games.title as title, games.release_year as release, games.gamemode as gamemode,'+
+        'games.genre as genre, games.perspective as perspective, games.image as img, games.franchise as franchise,'+
+        'games.id_developer as id_developer, developers.id as developer_id ,developers.name as developer '+
+        'FROM games JOIN developers ON games.id_developer = developers.id WHERE games.id = $1 LIMIT 1', [id] 
     );
-    return result.rows[0];
+
+    const games = {};
+
+    result.rows.forEach(row => {
+        if ([!games[row.games_id]]) {
+            games[row.games_id] = {
+             nombre: row.title,
+             salida: row.release,
+             modo: row.gamemode,
+             genero: row.genre,
+             perspectiva: row.perspective,
+             imagen: row.img,
+             franquicia: row.franchise,
+             desarrollador: row.developer
+            }
+        }
+    });
+    return games;
 };
 
 async function createGame(
