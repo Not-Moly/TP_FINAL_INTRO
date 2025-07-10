@@ -11,4 +11,8 @@ stop-db:
 start-npm:
 	cd ./backend && npm run dev
 
-run-backend: start-db start-npm
+run-backend:start-db start-npm
+start-frontend:
+	cd ./frontend && http-server --cors
+
+	
