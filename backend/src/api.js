@@ -11,7 +11,8 @@ const {
     getAllGames,
     getOneGame,
     createGame,
-    deleteGame
+    deleteGame,
+    updateGame
 } = require('./database/playle');
 
 // 5 Endpoints per entity!!
@@ -46,11 +47,9 @@ curl http://localhost:3000/api/games \
     --data '{"title":"Test1", "release_year":"2500", "gamemode":"Test1", "genre":"Test1", "perspective":"Test1", "image":"Test1", "franchise":"Test1", "id_developer":"2"}'
 */
 app.post('/api/games', async (req, res) => {
-
     if (!req.body.title) {
         return res.status(400).json({ error: "Missing required field" });
     }
-
 
     const game = await createGame(
         req.body.title,
@@ -63,8 +62,8 @@ app.post('/api/games', async (req, res) => {
         req.body.id_developer
     );
 
-    if(!game){
-        return res.status(500).json({error: "Error while creating Game"});
+    if (!game) {
+        return res.status(500).json({ error: "Error while creating Game" });
     }
 
     res.json(game);
@@ -76,22 +75,42 @@ curl http://localhost:3000/api/games/6 \
     --request DELETE
 */
 app.delete('/api/games/:id', async (req, res) => {
-    if(!req.params.id){
-        return res.status(400).json({error:"Missing required parameter"});
+    if (!req.params.id) {
+        return res.status(400).json({ error: "Missing required parameter" });
     }
 
     let game = await deleteGame(req.params.id)
 
-    if(!game){
-        return res.status(404).json({error:"Game id: " + req.params.id + " non-existent"});
+    if (!game) {
+        return res.status(404).json({ error: "Game id: " + req.params.id + " non-existent" });
     }
 
     res.json(game);
 });
 
-//PUT________________________________________________________
-app.put('api/games', (req, res) => {
 
+/*
+curl http://localhost:3000/api/games/5 \
+    --request PUT \
+    --header "Content-Type: application/json" \
+    --data '{"title":"Test1", "release_year":"2500", "gamemode":"Test1", "genre":"Test1", "perspective":"Test1", "image":"Test1", "franchise":"Test1", "id_developer":"2"}'
+*/
+//PUT________________________________________________________
+app.put('/api/games/:id', async (req, res) => {
+    let old_game_info = await getOneGame(req.params.id);
+    if (!old_game_info) {
+        return res.sendStatus(404).json({ error: 'Game not found' });
+    }
+
+    const updated_game_info = req.body;
+    for (let element in updated_game_info) {
+        if (!updated_game_info[element])
+            return res.status(400).json({ error: "Missing required field" });
+    }
+    
+    await updateGame(req.params.id,updated_game_info);
+
+    res.json(req.body);
 });
 
 //#endregion
