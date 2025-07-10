@@ -14,7 +14,7 @@ INSERT INTO games (title, release_year, gamemode, genre, perspective, image, fra
 ('Half-Life 2', 2004, 'Single-player', 'First-person shooter', 'First-person', 'halflife2.jpg', 'Half-Life', 5),
 ('God of War', 2018, 'Single-player', 'Action-adventure', 'Third-person', 'gow.jpg', 'God of War', 6);
 
-INSERT INTO characters (char_name, franchise, image, sex, species, description, main_skill, id_game) VALUES
+INSERT INTO characters (char_name, franchise, image, gender, species, description, main_skill, id_game) VALUES
 ('Steve', 'Minecraft', 'steve.jpg', 'Male', 'Human', 'The default Minecraft character', 'Building and mining', 1),
 ('Link', 'The Legend of Zelda', 'link.jpg', 'Male', 'Hylian', 'Courageous hero of Hyrule', 'Swordsmanship', 2),
 ('Trevor Philips', 'Grand Theft Auto', 'trevor.jpg', 'Male', 'Human', 'Unpredictable and violent criminal', 'Combat and chaos', 3),
