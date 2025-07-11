@@ -13,7 +13,7 @@ const {
     createGame,
     deleteGame,
     updateGame
-} = require('./database/playle');
+} = require('./database/games_db');
 
 // 5 Endpoints per entity!!
 

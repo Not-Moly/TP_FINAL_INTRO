@@ -21,14 +21,14 @@ async function getAllGames() {
     result.rows.forEach(row => {
         if ([!games[row.games_id]]) {
             games[row.games_id] = {
-                nombre: row.title,
-                salida: row.release,
-                modo: row.gamemode,
-                genero: row.genre,
-                perspectiva: row.perspective,
-                imagen: row.img,
-                franquicia: row.franchise,
-                desarrollador: row.developer
+                title: row.title,
+                release: row.release,
+                gamemode: row.gamemode,
+                genre: row.genre,
+                perspective: row.perspective,
+                image: row.img,
+                franchise: row.franchise,
+                developer: row.developer
             }
         }
     });
@@ -48,14 +48,14 @@ async function getOneGame(id) {
     result.rows.forEach(row => {
         if ([!games[row.games_id]]) {
             games[row.game_id] = {
-                title: row.game_title,
-                release_year: row.game_release_year,
-                gamemode: row.game_gamemode,
-                genre: row.game_genre,
-                perspective: row.game_perspective,
-                image: row.game_image,
-                franchise: row.game_franchise,
-                id_developer: row.game_id_developer
+                title: row.title,
+                release: row.release,
+                gamemode: row.gamemode,
+                genre: row.genre,
+                perspective: row.perspective,
+                image: row.img,
+                franchise: row.franchise,
+                developer: row.developer
             }
         }
     });
@@ -63,18 +63,12 @@ async function getOneGame(id) {
 };
 
 async function createGame(
-    title,
-    release_year,
-    gamemode,
-    genre,
-    perspective,
-    image,
-    franchise,
-    id_developer
+    new_game_info
 ) {
     const result = await dbClient.query(
         'INSERT INTO games(title, release_year, gamemode, genre, perspective, image, franchise, id_developer) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *',
-        [title, release_year, gamemode, genre, perspective, image, franchise, id_developer])
+        [new_game_info.title, new_game_info.release_year, new_game_info.gamemode, new_game_info.genre, new_game_info.perspective,
+         new_game_info.img, new_game_info.franchise, new_game_info.id_developer])
     if (result.rowCount === 0) {
         return undefined
     }
@@ -104,7 +98,7 @@ async function updateGame(
         [updated_game_info.title, updated_game_info.release_year, updated_game_info.gamemode, updated_game_info.genre, updated_game_info.perspective, updated_game_info.image, updated_game_info.franchise, updated_game_info.id_developer, id]
     );
     return result.rows[0];
-}
+};
 
 module.exports = {
     getAllGames,
