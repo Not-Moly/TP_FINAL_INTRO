@@ -24,7 +24,7 @@ CREATE TABLE games (
 -- Tabla de personajes
 CREATE TABLE characters (
     id SERIAL PRIMARY KEY,
-    char_name VARCHAR(100) NOT NULL,
+    character_name VARCHAR(100) NOT NULL,
     franchise VARCHAR(100) NOT NULL,
     image VARCHAR(255) NOT NULL,
     gender VARCHAR(50) NOT NULL,
