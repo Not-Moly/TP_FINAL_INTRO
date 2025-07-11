@@ -1,0 +1,19 @@
+{
+  "name": "playle",
+  "version": "1.0.0",
+  "description": "API para trabajo final de Introducción al desarrollo de software",
+  "main": "src/api.js",
+  "scripts": {
+    "dev": "nodemon src/api.js"
+  },
+  "author": "Federico German Molina y Manuel Martinez Almada",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "pg": "^8.16.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
