@@ -34,5 +34,22 @@ CREATE TABLE characters (
     id_game INT REFERENCES games(id) ON DELETE SET NULL
 );
 
+--Tabla de generos de Juegos
+CREATE TABLE genres (
+    id SERIAL PRIMARY KEY,
+    genre VARCHAR(50)
+);
+
+--Tabla de Modos de Juegos
+CREATE TABLE gamemodes (
+    id SERIAL PRIMARY KEY,
+    gamemode VARCHAR(50)
+);
+
+--Tabla de Franquisias
+CREATE TABLE franchise (
+    id SERIAL PRIMARY KEY,
+    franchises VARCHAR(50)
+);
 
 
