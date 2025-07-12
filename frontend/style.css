@@ -3,7 +3,7 @@ body {
 }
 
 #titulo {
-    text-align: center; 
+    text-align: center;
     font-size: 100px;
 }
 
@@ -13,8 +13,206 @@ body {
 }
 
 #boton {
-    width: 125px; 
-    height: 75px; 
-    font-size: 30px; 
+    width: 125px;
+    height: 75px;
+    font-size: 30px;
     background-color: rgb(19, 19, 19);
+}
+
+#caja {
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+#añadir {
+    width: 300px;
+    height: 200px;
+    font-size: 100px;
+    background-color: rgb(19, 19, 19);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+/* Developers Page Styles */
+.developers-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.developer-card {
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    height: 100%;
+}
+
+.developer-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.developer-card .card-content {
+    padding: 1.5rem;
+}
+
+.developer-card .title {
+    color: #fff;
+    font-family: 'Pixelify Sans', sans-serif;
+}
+
+.developer-card .subtitle {
+    color: #bbb;
+}
+
+#añadir {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 80px;
+    height: 80px;
+    font-size: 2rem;
+    background-color: #333;
+    color: white;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#añadir:hover {
+    background-color: #444;
+    transform: scale(1.1);
+}
+
+#añadir:active {
+    transform: scale(0.9);
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+.modal.is-active {
+    display: block;
+}
+
+.modal-background {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 100%;
+    height: 100%;
+}
+
+.modal-card {
+    background-color: #2a2a2a;
+    margin: 2% auto;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.modal-card-head, .modal-card-foot {
+    background-color: #333;
+    border: none;
+}
+
+.modal-card-title {
+    color: white;
+    font-family: 'Pixelify Sans', sans-serif;
+}
+
+.modal-card-body {
+    padding: 20px;
+}
+
+.modal-card-body .label {
+    color: #bbb;
+}
+
+.modal-card-body .input, .modal-card-body .select select {
+    background-color: #333;
+    border-color: #444;
+    color: white;
+}
+
+.modal-card-body .input:focus, .modal-card-body .select select:focus {
+    border-color: #666;
+    box-shadow: 0 0 0 0.125em rgba(100, 100, 100, 0.25);
+}
+
+.modal-card-foot .button {
+    font-family: 'Pixelify Sans', sans-serif;
+}
+
+/* Adjust the add button position */
+#añadir {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 80px;
+    height: 80px;
+    font-size: 2rem;
+    background-color: #333;
+    color: white;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+#añadir:hover {
+    background-color: #444;
+    transform: scale(1.1);
+}
+
+#añadir:active {
+    transform: scale(0.9);
+}
+
+.delete-dev {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.developer-card:hover .delete-dev {
+    opacity: 1;
+}
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+/* Modal de confirmación */
+.confirmation-modal {
+    max-width: 600px;
+    white-space: pre-line;
+    text-align: left;
+}
+
+.game-list-item {
+    margin: 5px 0;
+    padding: 8px;
+    background: #333;
+    border-radius: 4px;
 }

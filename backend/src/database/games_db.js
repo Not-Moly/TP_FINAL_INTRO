@@ -84,6 +84,15 @@ async function getOneGame(id) {
     return games;
 };
 
+async function getGamesByDeveloper(developerId) {
+    const result = await dbClient.query(
+        'SELECT id, title FROM games WHERE id_developer = $1', 
+        [developerId]
+    );
+    return result.rows;
+}
+
+
 
 // ╔═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╗
 //                PUT (UPDATE)
@@ -119,6 +128,7 @@ async function deleteGame(id) {
 module.exports = {
     getAllGames,
     getOneGame,
+    getGamesByDeveloper,
     createGame,
     deleteGame,
     updateGame

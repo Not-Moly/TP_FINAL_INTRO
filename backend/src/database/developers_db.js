@@ -44,7 +44,7 @@ async function getAllDevelopers() {
                 foundation_year: row.foundation_year,
                 game_count: row.game_count,
                 country: row.country,
-                entity_types: row.entity_type
+                entity_type: row.entity_type
             }
         }
     });
@@ -98,13 +98,10 @@ async function updateDeveloper(
 // ╚═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╝
 async function deleteDeveloper(id) {
     const result = await dbClient.query(
-        'DELETE FROM developers WHERE id = $1', [id]
-    )
-    if (result.rows.rowCount === 0) {
-        return undefined
-    }
-    return id
-};
+        'DELETE FROM developers WHERE id = $1 RETURNING id', [id]
+    );
+    return result.rows[0]?.id; // Devuelve el ID eliminado o undefined
+}
 
 
 module.exports = {
