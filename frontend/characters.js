@@ -159,8 +159,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     `;
     document.body.appendChild(modal);
 
+    // En la parte donde se configura el modal (reemplazar la sección 5):
     // 5. Manejadores de eventos para el modal
-    const addButton = document.getElementById('añadir-personaje');
+    const addButton = document.getElementById('añadir');
     if (addButton) {
         addButton.addEventListener('click', () => {
             modal.classList.add('is-active');
