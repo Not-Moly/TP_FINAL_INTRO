@@ -16,7 +16,9 @@
 
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="icon.ico">
-    <script src="src.js"></script>
+    <script src="src.js" defer></script>
+    <script src="assets/js/home-background.js" defer></script>
+    <script src="assets/js/home-play-button.js" defer></script>
 </head>
 
 <body>
@@ -43,136 +45,12 @@
     </div>
     <div class="main-content">
         <div class="has-text-centered">
-            <audio id="home-play-sound" src="assets/audio/smb_powerup.wav"></audio>
             <a class="button" id="home-play-button">Jugar</a>
-            <script>
-                document.getElementById("home-play-button").addEventListener("click", async () => {
-                    const sound = document.getElementById("home-play-sound");
-                    sound.currentTime = 0;
-                    sound.volume = 0.4;
-                    try {
-                        await sound.play();
-                        sound.onended = () => {
-                            window.location.href = "gamemodes.html";
-                        };
-                    } catch (error) {
-                        console.error("Error al reproducir:", error);
-                        window.location.href = "gamemodes.html";
-                    }
-                });
-            </script>
+            <audio id="home-play-sound" src="assets/audio/smb_powerup.wav"></audio>
         </div>
 
         <div id="background-grid">
             <ul id="ul-background-grid">
-                <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        // List your image filenames here (relative to /images/)
-                        const imageNames = [
-                            "AgeOfEmpires2.jpg",
-                            "AlanWake2.jpg",
-                            "AnimalCrossing.jpg",
-                            "Balatro.jpg",
-                            "BaldursGate3.jpg",
-                            "BioshockTheCollection.jpg",
-                            "CallOfDutyBlackOps3.jpg",
-                            "CallOfDutyModernWarfare3.jpg",
-                            "CounterStrike2.jpg",
-                            "CrashBandicoot.jpg",
-                            "Cuphead.jpg",
-                            "Cyberpunk2077.jpg",
-                            "DeadByDaylight.jpg",
-                            "DeadSpaceRemake.jpg",
-                            "Deltarun.jpg",
-                            "Destiny2.jpg",
-                            "DetroitBecomeHuman.jpg",
-                            "Dishonored.jpg",
-                            "DyingLight.jpg",
-                            "EldenRing.jpg",
-                            "Fallout4.jpg",
-                            "Firewatch.jpg",
-                            "FiveNightsAtFreddys.jpg",
-                            "ForzaHorizon5.jpg",
-                            "GeometryDash.jpg",
-                            "GodOfWar.jpg",
-                            "GrandTheftAutoSanAndreas.jpg",
-                            "GrandTheftAutoV.jpg",
-                            "Half-Life.jpg",
-                            "HaloInfinite.jpg",
-                            "HorizonZeroDawn.jpg",
-                            "LeagueOfLegends.jpg",
-                            "Left4Dead2.jpg",
-                            "Metro2033.jpg",
-                            "Minecraft.jpg",
-                            "NierAutomata.jpg",
-                            "Outlast.jpg",
-                            "Overwatch.jpg",
-                            "Payday2.jpg",
-                            "Portal2.jpg",
-                            "ProjectZomboid.jpg",
-                            "Rachet&Clank.jpg",
-                            "RainbowSixSiege.jpg",
-                            "RedDeadRedemption2.jpg",
-                            "ResidenEvil2Remake.jpg",
-                            "Rust.jpg",
-                            "Satisfactory.jpg",
-                            "SilentHill.jpg",
-                            "SilentHill2Remake.jpg",
-                            "Skyrim.jpg",
-                            "STALKER2.jpg",
-                            "StarWarsBattlefront2.jpg",
-                            "Subnautica.jpg",
-                            "Terraria.jpg",
-                            "TheLastOfUs.jpg",
-                            "TheLegendOfZeldaBreathOfTheWild.jpg",
-                            "TheWitcher3.jpg",
-                            "Titanfall2.jpg",
-                            "Uncharted4.jpg",
-                            "Undertale.jpg"
-                        ];
-
-                        // Reference to the grid container
-                        const grid = document.getElementById("ul-background-grid");
-                        function shuffle(array) {
-                            for (let i = array.length - 1; i > 0; i--) {
-                                const j = Math.floor(Math.random() * (i + 1));
-                                [array[i], array[j]] = [array[j], array[i]];
-                            }
-                        }
-
-                        // Refill wih repetitions
-                        // const repetitions = 3;
-                        // const repeatedImages = Array.from({ length: repetitions * imageNames.length }, (_, i) =>
-                        //     imageNames[i % imageNames.length]
-                        // );
-
-                        shuffle(imageNames);
-                        // Dynamically create the grid items
-                        imageNames.forEach((name) => {
-                            const li = document.createElement("li");
-                            const img = document.createElement("img");
-                            img.src = `assets/images/background/${name}`;
-                            img.loading = "lazy";
-                            li.appendChild(img);
-                            grid.appendChild(li);
-                        });
-                        // Mouse move effect for 3D rotation
-                        document.addEventListener('mousemove', (e) => {
-                            const rotationForce = 45;
-                            const x = (window.innerWidth / 2 - e.pageX) / rotationForce;
-                            const y = (window.innerHeight / 2 - e.pageY) / rotationForce;
-
-                            grid.style.transform = `rotateX(${10 + y}deg) rotateY(${5 + x}deg) rotateZ(${3 - x / 5}deg)`;
-                        });
-                        // Add parallax effect to header on scroll
-                        // window.addEventListener('scroll', () => {
-                        //     const scrollY = window.scrollY;
-                        //     document.querySelector('.header').style.transform = `translateY(${scrollY * 0.4}px)`;
-                        //     document.querySelector('.header').style.opacity = `${1 - scrollY / 400}`;
-                        // });
-                    });
-
-                </script>
             </ul>
         </div>
 
@@ -182,7 +60,7 @@
             <p>
                 <strong>Playle</strong> realizado por
             <p class="jersey-20-regular">Manuel Martinez Almada y Federico German Molina </p>
-            <a href="https://github.com/Not-Moly/TP_FINAL_INTRO" target="_blank" class="icon has-text-white">
+            <a href="https://github.com/Not-Moly/TP_FINAL_INTRO" target="_blank" class="has-text-white">
                 <i class="fab fa-github fa-lg"></i>
                 </p>
         </div>
