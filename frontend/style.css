@@ -1,20 +1,150 @@
 body {
     font-family: 'Pixelify Sans', sans-serif;
+    height: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    flex: 1;
+}
+
+footer {
+    position: relative;
+    z-index: 100;
+    margin-top: auto;
+    text-align: center;
+    color: white;
+    margin-bottom: -2rem;
+}
+
+.footer {
+    --bulma-footer-padding: 3rem 1.5rem 0rem;
 }
 
 #titulo {
-    text-align: center; 
+    text-align: center;
     font-size: 100px;
+    text-shadow:
+        -3px -3px 0 #000,
+        3px -3px 0 #000,
+        -3px 3px 0 #000,
+        3px 3px 0 #000;
 }
 
-#subtitulo {
-    text-align: center;
+@keyframes float {
+    0% {
+        transform: translateY(5px);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+
+    100% {
+        transform: translateY(5px);
+    }
+
+}
+
+.floating {
+    animation: float 8s ease-in-out infinite;
+}
+
+.home-card {
+    --bulma-card-content-padding: 0.1rem;
     font-size: 20px;
 }
 
-#boton {
-    width: 125px; 
-    height: 75px; 
-    font-size: 30px; 
+.text-color-red {
+    color: red;
+}
+
+/* Background Grid */
+/* https://jsfiddle.net/qfshper9/ */
+
+/* #region GALLERY BACKGROUND */
+/* Gallery Container */
+#background-grid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    perspective: 1000px;
+    z-index: -1;
+}
+
+/* Gallery Grid */
+#ul-background-grid {
+    position: absolute;
+    top: -90%;
+    left: -90%;
+    width: 275%;
+    height: 200%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    list-style: none;
+    transform: rotateX(10deg) rotateY(5deg) rotateZ(3deg);
+    transform-origin: center;
+    padding: 1rem;
+}
+
+/* Galleri frames */
+#background-grid li {
+    height: 20%;
+}
+
+/* Gallery images */
+#background-grid img {
+    display: block;
+    height: 100%;
+    width: auto;
+}
+
+/* #endregion */
+
+#home-play-button {
+    width: 125px;
+    height: 75px;
+    font-size: 30px;
     background-color: rgb(19, 19, 19);
 }
+
+#home-play-button:hover {
+    filter: brightness(1) grayscale(0);
+    transform: scale(1.05);
+}
+
+
+/*      ______ ____  _   _ _______ _____ 
+ *     |  ____/ __ \| \ | |__   __/ ____|
+ *     | |__ | |  | |  \| |  | | | (___  
+ *     |  __|| |  | | . ` |  | |  \___ \ 
+ *     | |   | |__| | |\  |  | |  ____) |
+ *     |_|    \____/|_| \_|  |_| |_____/                                 
+ */
+/* #region FONTS */
+
+.jersey-20-regular {
+    font-family: "Jersey 20", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: large;
+}
+
+@font-face {
+    font-family: 'SuperMario256';
+    src: url('assets/fonts/SuperMario256.ttf') format('truetype');
+}
+
+.supermario256 {
+    font-family: "SuperMario256", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* #endregion */
