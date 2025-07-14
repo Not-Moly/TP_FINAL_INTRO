@@ -10,6 +10,37 @@ body {
     flex: 1;
 }
 
+
+/* #region LOADING SCREEN*/
+
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0a081c, #1a173d);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+#progress-bar-container {
+    width: 80%;
+    max-width: 500px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    box-shadow: 0 0 10px rgba(255, 126, 95, 0.3);
+}
+
+/* #endregion */
+
 footer {
     position: relative;
     z-index: 100;
@@ -75,6 +106,7 @@ footer {
     overflow: hidden;
     perspective: 1000px;
     z-index: -1;
+    background: linear-gradient(135deg, #0a081c, #1a173d);
 }
 
 /* Gallery Grid */

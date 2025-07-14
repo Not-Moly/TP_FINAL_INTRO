@@ -19,6 +19,8 @@
     <script src="src.js" defer></script>
     <script src="assets/js/home-background.js" defer></script>
     <script src="assets/js/home-play-button.js" defer></script>
+
+    <script src="assets/js/loading-screen.js" defer></script>
 </head>
 
 <body>
@@ -41,6 +43,12 @@
                     ¡Agrega contenido y empieza a jugar!
                 </p>
             </div>
+        </div>
+    </div>
+    <div id="loading-screen">
+        <p>Loading....</p>
+        <div id="progress-bar-container">
+            <progress id="progress-bar" class="progress is-link" max="100"></progress>
         </div>
     </div>
     <div class="main-content">

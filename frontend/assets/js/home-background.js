@@ -5,6 +5,7 @@ function shuffle(array) {
     }
 }
 
+const MAX_WAIT_TIME = 15000; // In ms
 
 document.addEventListener('DOMContentLoaded', function () {
     // List of images filenames
@@ -83,15 +84,22 @@ document.addEventListener('DOMContentLoaded', function () {
     shuffle(imageNames);
 
     // Start creating each elemment of the grid
+    const loadedImagesPromises = [];
     imageNames.forEach((name) => {
         const li = document.createElement("li");
         const img = document.createElement("img");
         img.src = `assets/images/background/${name}`;
+
         img.loading = "lazy";
+        const loadImagePromise = new Promise((resolve) => {
+            img.onload = () => resolve();
+            img.onerror = () => reject();
+        })
+        loadedImagesPromises.push(loadImagePromise);
+
         li.appendChild(img);
         backgroundGrid.appendChild(li);
     });
-
     // Add mouse move effect for 3D rotation
     document.addEventListener('mousemove', (e) => {
         const rotationForce = 50;
@@ -100,11 +108,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
         backgroundGrid.style.transform = `rotateX(${10 + y}deg) rotateY(${5 + x}deg) rotateZ(${3 - x / 5}deg)`;
     });
-    
+
     // Add parallax effect to header on scroll
     // window.addEventListener('scroll', () => {
     //     const scrollY = window.scrollY;
     //     document.querySelector('.header').style.transform = `translateY(${scrollY * 0.4}px)`;
     //     document.querySelector('.header').style.opacity = `${1 - scrollY / 400}`;
     // });
+    // Set timeout to handle images that take too long to load
+    loadTimeout = setTimeout(() => {
+        console.warn("Image loading timeout reached. Proceeding with loaded images.");
+        finishLoading();
+    }, MAX_WAIT_TIME);
+
+    // Promise to dispatch 'background-loaded' event
+    Promise.all(loadedImagesPromises).then(() => {
+        window.dispatchEvent(new Event('background-loaded'));
+    }).catch(() => {
+        window.dispatchEvent(new Event('background-loaded'));
+    });
 });
