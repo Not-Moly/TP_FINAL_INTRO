@@ -4,14 +4,14 @@ document.getElementById("home-play-button").addEventListener("click", async () =
 
     // Button volume modifier
     sound.volume = 0.4;
-
+    const gamemodes_url = "/gamemodes";
     try {
         await sound.play();
         sound.onended = () => {
-            window.location.href = "gamemodes.html";
+            window.location.href = gamemodes_url;
         };
     } catch (error) {
         console.error("Error al reproducir:", error);
-        window.location.href = "gamemodes.html";
+        window.location.href = gamemodes_url;
     }
 });
