@@ -5,7 +5,7 @@ function shuffle(array) {
     }
 }
 
-const MAX_WAIT_TIME = 5000; // In ms
+const MAX_WAIT_TIME = 10000; // In ms
 
 document.addEventListener('DOMContentLoaded', function () {
     // List of images filenames
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     // Add mouse move effect for 3D rotation
     document.addEventListener('mousemove', (e) => {
-        const rotationForce = 50;
+        const rotationForce = 60;
         const x = (window.innerWidth / 2 - e.pageX) / rotationForce;
         const y = (window.innerHeight / 2 - e.pageY) / rotationForce;
 
