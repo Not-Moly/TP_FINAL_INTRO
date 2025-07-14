@@ -5,7 +5,7 @@ function shuffle(array) {
     }
 }
 
-const MAX_WAIT_TIME = 15000; // In ms
+const MAX_WAIT_TIME = 5000; // In ms
 
 document.addEventListener('DOMContentLoaded', function () {
     // List of images filenames
@@ -90,13 +90,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const img = document.createElement("img");
         img.src = `assets/images/background/${name}`;
 
-        img.loading = "lazy";
+        // img.loading = "lazy";
         const loadImagePromise = new Promise((resolve) => {
             img.onload = () => resolve();
             img.onerror = () => reject();
         })
         loadedImagesPromises.push(loadImagePromise);
 
+        // Append the elements
         li.appendChild(img);
         backgroundGrid.appendChild(li);
     });
@@ -115,16 +116,21 @@ document.addEventListener('DOMContentLoaded', function () {
     //     document.querySelector('.header').style.transform = `translateY(${scrollY * 0.4}px)`;
     //     document.querySelector('.header').style.opacity = `${1 - scrollY / 400}`;
     // });
-    // Set timeout to handle images that take too long to load
-    loadTimeout = setTimeout(() => {
-        console.warn("Image loading timeout reached. Proceeding with loaded images.");
-        finishLoading();
-    }, MAX_WAIT_TIME);
 
-    // Promise to dispatch 'background-loaded' event
-    Promise.all(loadedImagesPromises).then(() => {
-        window.dispatchEvent(new Event('background-loaded'));
-    }).catch(() => {
-        window.dispatchEvent(new Event('background-loaded'));
+    // Set timeout to handle images that take too long to load
+    const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => {
+            reject(new Error('Timeout loading images'));
+        }, MAX_WAIT_TIME);
     });
+    // Promise to dispatch 'background-loaded' event
+    const imageLoadPromise = Promise.all(loadedImagesPromises);
+    // Race for timeout
+    Promise.race([imageLoadPromise, timeoutPromise])
+        .then(() => {
+            window.dispatchEvent(new Event('background-loaded'));
+        })
+        .catch(() => {
+            window.dispatchEvent(new Event('background-loaded'));
+        });
 });
