@@ -123,14 +123,14 @@ document.addEventListener('DOMContentLoaded', function () {
             reject(new Error('Timeout loading images'));
         }, MAX_WAIT_TIME);
     });
-    // Promise to dispatch 'background-loaded' event
+    // Promise to dispatch 'backgroundLoaded' event
     const imageLoadPromise = Promise.all(loadedImagesPromises);
     // Race for timeout
     Promise.race([imageLoadPromise, timeoutPromise])
         .then(() => {
-            window.dispatchEvent(new Event('background-loaded'));
+            window.dispatchEvent(new Event('backgroundLoaded'));
         })
         .catch(() => {
-            window.dispatchEvent(new Event('background-loaded'));
+            window.dispatchEvent(new Event('backgroundLoaded'));
         });
 });
