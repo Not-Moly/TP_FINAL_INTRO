@@ -1,3 +1,12 @@
+:root {
+    --neon-home-card-box-shadow: 0 0 .2rem #fff,
+        0 0 .2rem #fff,
+        0 0 2rem #0290dd,
+        0 0 0.8rem #0290dd,
+        0 0 2.8rem #0290dd,
+        inset 0 0 1.3rem #005dff;
+}
+
 body {
     font-family: 'Pixelify Sans', sans-serif;
     height: 100%;
@@ -60,19 +69,39 @@ footer {
     text-shadow: 4px 4px 10px black;
 }
 
+
 .neon-border {
     border: 0.2rem solid #fff;
     border-radius: 2rem;
     padding: var(--bulma-column-gap);
-    box-shadow: 0 0 .2rem #fff,
-        0 0 .2rem #fff,
-        0 0 2rem #bc13fe,
-        0 0 0.8rem #bc13fe,
-        0 0 2.8rem #bc13fe,
-        inset 0 0 1.3rem #bc13fe;
+    box-shadow: var(--neon-home-card-box-shadow);
 }
 
-@keyframes float {
+.flicker-box-start{
+    animation: flicker-box 1.5s ease-in-out forwards;
+}
+
+@keyframes flicker-box {
+
+    0%,
+    19%,
+    21%,
+    23%,
+    25%,
+    54%,
+    56%,
+    100% {
+        box-shadow: var(--neon-home-card-box-shadow);
+    }
+
+    20%,
+    24%,
+    55% {
+        box-shadow: none;
+    }
+}
+
+@keyframes float-content {
     0% {
         transform: translateY(5px);
     }
@@ -88,7 +117,7 @@ footer {
 }
 
 .floating {
-    animation: float 8s ease-in-out infinite;
+    animation: float-content 8s ease-in-out infinite;
 }
 
 .home-card {
