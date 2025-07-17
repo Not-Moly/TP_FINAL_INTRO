@@ -28,7 +28,90 @@
         </div>
         <div class="modal">
             <div class="modal-background"></div>
-            <div class="modal-content"></div>
+            <div class="modal-content">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">PLACEHOLDER-TEXT</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-scrollable modal-card-body">
+                    <form id="char-form">
+                        <input id="char-id" type="hidden" value="">
+                        <div class="field">
+                            <label class="label" for="char-name">Nombre</label>
+                            <div class="control">
+                                <input id="char-name" class="input" type="text" placeholder="Nombre del personaje">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="char-franchise">Franquicia</label>
+                            <div class="control">
+                                <input id="char-franchise" class="input" type="text"
+                                    placeholder="Franquicia a la que pertenece">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="char-image">URL de la imagen</label>
+                            <div class="control">
+                                <input id="char-image" class="input" type="text" placeholder="URL de la imagen">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="char-gender">Género</label>
+                            <div class="control">
+                                <div class="select">
+                                    <select id="char-gender">
+                                        <option value="Masculino">Masculino</option>
+                                        <option value="Femenino">Femenino</option>
+                                        <option value="Otro">Otro</option>
+                                        <option value="Desconocido">Desconocido</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="char-species">Especie</label>
+                            <div class="control">
+                                <input id="char-species" class="input" type="text" placeholder="Especie del personaje">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="char-description">Descripción</label>
+                            <div class="control">
+                                <textarea id="char-description" class="textarea"
+                                    placeholder="Descripción del personaje"></textarea>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="char-skill">Habilidad principal</label>
+                            <div class="control">
+                                <input id="char-skill" class="input" type="text" placeholder="Habilidad principal">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="char-game">Juego</label>
+                            <div class="control">
+                                <div class="select">
+                                    <select id="char-game">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+                <footer class="modal-card-foot is-flex is-justify-content-space-between is-align-items-center">
+                    <button id="delete-char" class="button is-danger">
+                        <span class="icon is-small">
+                            <i class="fas fa-trash"></i>
+                        </span>
+                    </button>
+                    <div class="buttons">
+                        <button id="cancel-btn" class="button">Cancelar</button>
+                        <button id="submit-char" class="button is-success">PLACEHOLDER-TEXT</button>
+                    </div>
+                </footer>
+
+            </div>
         </div>
     </div>
 </body>
