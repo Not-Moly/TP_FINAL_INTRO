@@ -33,14 +33,18 @@ body {
 
 .developer-card {
     background-color: #2a2a2a;
+}
+
+.entity-card {
     border-radius: 8px;
     transition: transform 0.3s ease;
     height: 100%;
 }
 
-.developer-card:hover {
+.entity-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
 }
 
 .developer-card .card-content {
@@ -49,7 +53,6 @@ body {
 
 .developer-card .title {
     color: #fff;
-    font-family: 'Pixelify Sans', sans-serif;
 }
 
 .developer-card .subtitle {
@@ -125,6 +128,27 @@ body {
 
 .modal-card-foot .button {
     font-family: 'Pixelify Sans', sans-serif;
+}
+
+/* SCROLLBAR */
+.modal-scrollable {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 15px;
+}
+.modal-scrollable::-webkit-scrollbar {
+    width: 8px;
+}
+.modal-scrollable::-webkit-scrollbar-track {
+    background: --bulma-scheme-main;
+    border-radius: 10px;
+}
+.modal-scrollable::-webkit-scrollbar-thumb {
+    background: #b5b5b5;
+    border-radius: 10px;
+}
+.modal-scrollable::-webkit-scrollbar-thumb:hover {
+    background: #8a8a8a;
 }
 
 /* Add Button */
