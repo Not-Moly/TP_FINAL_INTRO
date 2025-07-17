@@ -181,7 +181,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // Manejadores de eventos para el modal
+    // Manejadores de cierre del modal
     (document.querySelectorAll('.modal-background, .delete, #cancel-btn') || []).forEach(($close) => {
         $close.addEventListener('click', () => {
             closeModal(modal);
@@ -205,8 +205,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             main_skill: document.getElementById('char-skill').value,
             id_game: document.getElementById('char-game').value
         };
-
-        console.log(document.getElementById("char-id").value);
 
         // Validación de campos requeridos
         if (!newCharacter.character_name || !newCharacter.franchise || !newCharacter.gender ||
@@ -247,7 +245,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             // Cerrar modal
             closeModal(modal);
-
             // Actualizar lista
             await loadCharacters();
         } catch (error) {
@@ -255,4 +252,31 @@ document.addEventListener("DOMContentLoaded", async () => {
             alert(`Error: ${error.message}`);
         }
     });
+
+    document.getElementById('delete-char').addEventListener('click', async () => {
+        try {
+            const character_id = document.getElementById('char-id').value;
+
+            const response = await fetch(`http://localhost:3000/api/characters/${character_id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Error al eliminar personaje');
+            }
+
+            // Cerrar modal
+            closeModal(modal);
+            // Actualizar lista
+            await loadCharacters();
+        } catch (error) {
+            console.error('Error:', error);
+            alert(`Error: ${error.message}`);
+        }
+    });
+
+
 });
