@@ -1,5 +1,7 @@
 // characters.js
 
+let loadedGames = [];
+
 async function createCharacterModal() {
 
     const modal = document.querySelector('.modal');
@@ -30,6 +32,8 @@ async function createCharacterModal() {
                 newOption.value = id;
                 newOption.innerHTML = `${game.title}`;
                 charGameOptions.append(newOption);
+                // Agrego juego a lista global de juegos
+                loadedGames[id] = game;
             }
 
         } catch (error) {
@@ -45,8 +49,19 @@ async function createCharacterModal() {
     return modal;
 }
 
-function openModal($el) {
+function openModal($el, mode) {
     $el.classList.add('is-active');
+    // Editar texto identificador de modal y visibilidad de botón borrar
+    if (mode === 'edit') {
+        document.querySelector('.modal-card-title').innerHTML = `Editar Personaje`;
+        document.getElementById('submit-char').innerHTML = `Guardar cambios`;
+        document.getElementById('delete-char').style.display = 'inline-flex';
+    } else if (mode === 'add') {
+        document.querySelector('.modal-card-title').innerHTML = `Añadir Personaje`;
+        document.getElementById('submit-char').innerHTML = `Añadir`;
+        document.getElementById('delete-char').style.display = 'none';
+    }
+
 }
 
 function closeModal($el) {
@@ -61,7 +76,6 @@ function closeModal($el) {
             input.value = '';
         }
     });
-    document.getElementById('delete-char').style.display = 'none';
 }
 
 
@@ -119,7 +133,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                             <div class="media">
                                 <div class="media-content">
                                     <p class="title is-4">${character.name}</p>
-                                    <p class="subtitle is-6">${character.franchise}</p>
+                                    <p class="subtitle is-6">${loadedGames[character.id_game].title}</p>
                                 </div>
                             </div>
                             <div class="content">
@@ -133,15 +147,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 `;
                 // Añadir funcionalidad click
                 card.addEventListener('click', () => {
-                    // Editar texto identificador de modal
-                    document.querySelector('.modal-card-title').innerHTML = `Editar Personaje`;
-                    document.getElementById('submit-char').innerHTML = `Guardar cambios`;
-                    document.getElementById('delete-char').style.display = 'inline-flex';
-
                     // Colocar valores de personaje seleccionado en inputs
                     document.getElementById('char-id').value = id;
                     document.getElementById('char-name').value = character.name;
-                    document.getElementById('char-franchise').value = character.franchise;
                     document.getElementById('char-image').value = character.image;
                     document.getElementById('char-gender').value = character.gender;
                     document.getElementById('char-species').value = character.species;
@@ -149,8 +157,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     document.getElementById('char-skill').value = character.skill
                     document.getElementById('char-game').value = character.id_game;
 
-
-                    openModal(modal);
+                    openModal(modal,'edit');
                 })
                 grid.appendChild(card);
             }
@@ -175,9 +182,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const addButton = document.getElementById('add-button');
     if (addButton) {
         addButton.addEventListener('click', () => {
-            document.querySelector('.modal-card-title').innerHTML = `Añadir Personaje`;
-            document.getElementById('submit-char').innerHTML = `Añadir`;
-            openModal(modal);
+            openModal(modal, 'add');
         });
     }
 
@@ -197,7 +202,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById('submit-char').addEventListener('click', async () => {
         const newCharacter = {
             character_name: document.getElementById('char-name').value,
-            franchise: document.getElementById('char-franchise').value,
             image: document.getElementById('char-image').value,
             gender: document.getElementById('char-gender').value,
             species: document.getElementById('char-species').value,
@@ -207,8 +211,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         };
 
         // Validación de campos requeridos
-        if (!newCharacter.character_name || !newCharacter.franchise || !newCharacter.gender ||
-            !newCharacter.species || !newCharacter.description || !newCharacter.main_skill || !newCharacter.id_game) {
+        if (!Object.values(newCharacter).every(value => value !== null && value !== undefined && value !== '')) {
             alert('Por favor complete todos los campos requeridos');
             return;
         }
