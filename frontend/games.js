@@ -1,42 +1,44 @@
 let loadGames;
 let loadedDevelopers = [];
+let loadedFranchises = [];
+let loadedSagas = [];
 
 const allGameGamemodes = [
-    "Un jugador",
-    "Multijugador",
     "Cooperativo",
+    "Multijugador",
     "Pantalla dividida",
+    "Un jugador"
 ]
 const allGameGenres = [
-    "Adventure",
-    "Action",
-    "Sports",
-    "Simulation",
-    "Platformer",
-    "RPG",
-    "First-person shooter",
-    "Action-adventure",
-    "Fighting",
-    "Real-time strategy",
-    "Racing",
-    "Shooter",
-    "Puzzle",
+    "Acción",
+    "Acción RPG",
+    "Acción-aventura",
+    "Aventura",
+    "Battle Royale",
     "Casual",
-    "Strategy game",
-    "Massively multiplayer online role-playing",
-    "Stealth",
-    "Party",
-    "Action RPG",
-    "Tactical role-playing",
-    "Survival",
-    "Battle Royale"
+    "Carreras",
+    "Deportes",
+    "Disparos en primera persona",
+    "Estrategia en tiempo real",
+    "Fiesta",
+    "Juego de estrategia",
+    "MMORPG",
+    "Peleas",
+    "Plataformas",
+    "Puzzle",
+    "RPG",
+    "RPG táctico",
+    "Shooter",
+    "Sigilo",
+    "Simulación",
+    "Supervivencia"
 ]
 const allGamePerspectives = [
-    'Bird View / Isometric',
-    'First Person',
-    'Side View',
-    'Third Person',
-    'Virtual reality'
+    "Primera persona",
+    "Realidad virtual",
+    "Tercera persona",
+    "Vista de pájaro / Isométrica",
+    "Vista lateral"
 ]
 
 let updateValueSelects;
@@ -46,10 +48,13 @@ async function createGameModal() {
 
     const modal = document.querySelector('.modal');
     // Agrego opción de desarrolladores al que pertenece
-    const gameDeveloperOptions = document.getElementById('game-developer');
     let loadDeveloperOptions;
-
+    let loadFranchiseOptions;
+    let loadSagaOptions;
+    
+    //#region Database Load
     loadDeveloperOptions = async () => {
+        const gameDeveloperOptions = document.getElementById('game-developer');
         try {
             // Conseguir conexión con la base de datos de los desarrolladores
             const response = await fetch('http://localhost:3000/api/developers');
@@ -66,13 +71,13 @@ async function createGameModal() {
                 return;
             }
 
-            // Crear opciones de juegos
+            // Crear opciones de desarrolladores
             for (const [id, developer] of Object.entries(developers)) {
                 const newOption = document.createElement('option');
                 newOption.value = id;
                 newOption.innerHTML = `${developer.name}`;
                 gameDeveloperOptions.append(newOption);
-                
+
                 // Agregar a lista de developers global
                 loadedDevelopers[id] = developer;
             }
@@ -87,6 +92,84 @@ async function createGameModal() {
     };
     await loadDeveloperOptions();
 
+    loadFranchiseOptions = async () => {
+        const gameFranchiseOptions = document.getElementById('game-franchise');
+        try {
+            // Conseguir conexión con la base de datos de los franquicias
+            const response = await fetch('http://localhost:3000/api/franchises');
+            if (!response.ok) throw new Error('Error al cargar franquicias');
+
+            const franchises = await response.json();
+
+            // Verificar cantidad de franquicias nula
+            if (Object.keys(franchises).length === 0) {
+                const emptyMessage = document.createElement('p');
+                emptyMessage.textContent = 'No hay franquicias registrados';
+                emptyMessage.className = 'has-text-centered';
+                gameFranchiseOptions.appendChild(emptyMessage);
+                return;
+            }
+
+            // Crear opciones de franquicias
+            for (const [id, franchise] of Object.entries(franchises)) {
+                const newOption = document.createElement('option');
+                newOption.value = id;
+                newOption.innerHTML = `${franchise.title}`;
+                gameFranchiseOptions.append(newOption);
+
+                // Agregar a lista de franchises global
+                loadedFranchises[id] = franchise;
+            }
+
+        } catch (error) {
+            console.error('Error:', error);
+            const errorMessage = document.createElement('p');
+            errorMessage.textContent = 'Error al cargar los franquicias';
+            errorMessage.className = 'has-text-centered has-text-danger';
+            gameFranchiseOptions.appendChild(errorMessage);
+        }
+    };
+    await loadFranchiseOptions();
+
+    loadSagaOptions = async () => {
+        const gameSagaOptions = document.getElementById('game-saga');
+        try {
+            // Conseguir conexión con la base de datos de los sagas
+            const response = await fetch('http://localhost:3000/api/sagas');
+            if (!response.ok) throw new Error('Error al cargar sagas');
+
+            const sagas = await response.json();
+
+            // Verificar cantidad de sagas nula
+            if (Object.keys(sagas).length === 0) {
+                const emptyMessage = document.createElement('p');
+                emptyMessage.textContent = 'No hay sagas registrados';
+                emptyMessage.className = 'has-text-centered';
+                gameSagaOptions.appendChild(emptyMessage);
+                return;
+            }
+
+            // Crear opciones de sagas
+            for (const [id, saga] of Object.entries(sagas)) {
+                const newOption = document.createElement('option');
+                newOption.value = id;
+                newOption.innerHTML = `${saga.title}`;
+                gameSagaOptions.append(newOption);
+
+                // Agregar a lista de sagas global
+                loadedSagas[id] = saga;
+            }
+
+        } catch (error) {
+            console.error('Error:', error);
+            const errorMessage = document.createElement('p');
+            errorMessage.textContent = 'Error al cargar los sagas';
+            errorMessage.className = 'has-text-centered has-text-danger';
+            gameSagaOptions.appendChild(errorMessage);
+        }
+    };
+    await loadSagaOptions();
+    //#endregion
     // ------------------------------------------------------------
 
     //#region Option Values Methods
@@ -197,8 +280,18 @@ async function createGameModal() {
     return modal;
 }
 
-function openModal($el) {
+function openModal($el, mode) {
     $el.classList.add('is-active');
+    // Editar texto identificador de modal y visibilidad de botón borrar
+    if (mode === 'edit') {
+        document.querySelector('.modal-card-title').innerHTML = `Editar Personaje`;
+        document.getElementById('submit-btn').innerHTML = `Guardar cambios`;
+        document.getElementById('delete-btn').style.display = 'inline-flex';
+    } else if (mode === 'add') {
+        document.querySelector('.modal-card-title').innerHTML = `Añadir Personaje`;
+        document.getElementById('submit-btn').innerHTML = `Añadir`;
+        document.getElementById('delete-btn').style.display = 'none';
+    }
     updateAllValueSelects();
 }
 
@@ -214,8 +307,6 @@ function closeModal($el) {
             input.value = '';
         }
     });
-    document.getElementById('delete-game').style.display = 'none';
-    updateAllValueSelects();
 }
 
 
@@ -276,18 +367,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                                 <p><strong>Género:</strong> ${game.genre}</p>
                                 <p><strong>Modo:</strong> ${game.gamemode}</p>
                                 <p><strong>Perspectiva:</strong> ${game.perspective}</p>
-                                <p><strong>Franquicia:</strong> ${game.franchise}</p>
                             </div>
                         </div>
                     </div>
                 `;
                 // Añadir funcionalidad click
                 card.addEventListener('click', () => {
-                    // Editar texto identificador de modal
-                    document.querySelector('.modal-card-title').innerHTML = `Editar Juego`;
-                    document.getElementById('submit-game').innerHTML = `Guardar cambios`;
-                    document.getElementById('delete-game').style.display = 'inline-flex';
-
                     // Colocar valores de personaje seleccionado en inputs
                     document.getElementById('game-id').value = id;
                     document.getElementById('game-title').value = game.title;
@@ -296,13 +381,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                     updateValueSelects(allGameGenres, 'genre', game.genre);
                     updateValueSelects(allGamePerspectives, 'perspective', game.perspective);
                     document.getElementById('game-image').value = game.image;
-                    document.getElementById('game-franchise').value = game.franchise;
+                    document.getElementById('game-franchise').value = game.id_franchise;
+                    document.getElementById('game-saga').value = game.id_saga;
                     document.getElementById('game-developer').value = game.id_developer;
-                    console.log(loadedDevelopers);
-                    
 
-
-                    openModal(modal);
+                    openModal(modal, 'edit');
                 })
                 grid.appendChild(card);
             }
@@ -324,9 +407,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const addButton = document.getElementById('add-button');
     if (addButton) {
         addButton.addEventListener('click', () => {
-            document.querySelector('.modal-card-title').innerHTML = `Añadir Juego`;
-            document.getElementById('submit-game').innerHTML = `Añadir`;
-            openModal(modal);
+            openModal(modal, 'add');
         });
     }
 
@@ -343,7 +424,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // Envío del formulario
-    document.getElementById('submit-game').addEventListener('click', async () => {
+    document.getElementById('submit-btn').addEventListener('click', async () => {
         const newGame = {
             title: document.getElementById('game-title').value,
             release_year: document.getElementById('game-year').value,
@@ -351,13 +432,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             genre: document.getElementById('game-genre-string').value,
             perspective: document.getElementById('game-perspective-string').value,
             image: document.getElementById('game-image').value,
-            franchise: document.getElementById('game-franchise').value,
+            id_franchise: document.getElementById('game-franchise').value,
+            id_saga: document.getElementById('game-saga').value,
             id_developer: document.getElementById('game-developer').value
         };
 
         // Validación de campos requeridos
-        if (!newGame.title || !newGame.release_year || !newGame.gamemode ||
-            !newGame.genre || !newGame.perspective || !newGame.id_developer) {
+        if (!Object.values(newGame).every(value => value !== null && value !== undefined && value !== '')) {
             alert('Por favor complete todos los campos requeridos');
             return;
         }
@@ -404,7 +485,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // Eliminar juego
-    document.getElementById('delete-game').addEventListener('click', async () => {
+    document.getElementById('delete-btn').addEventListener('click', async () => {
         try {
             const game_id = document.getElementById('game-id').value;
 
