@@ -54,14 +54,13 @@ function openModal($el, mode) {
     // Editar texto identificador de modal y visibilidad de botón borrar
     if (mode === 'edit') {
         document.querySelector('.modal-card-title').innerHTML = `Editar Personaje`;
-        document.getElementById('submit-char').innerHTML = `Guardar cambios`;
-        document.getElementById('delete-char').style.display = 'inline-flex';
+        document.getElementById('submit-btn').innerHTML = `Guardar cambios`;
+        document.getElementById('delete-btn').style.display = 'inline-flex';
     } else if (mode === 'add') {
         document.querySelector('.modal-card-title').innerHTML = `Añadir Personaje`;
-        document.getElementById('submit-char').innerHTML = `Añadir`;
-        document.getElementById('delete-char').style.display = 'none';
+        document.getElementById('submit-btn').innerHTML = `Añadir`;
+        document.getElementById('delete-btn').style.display = 'none';
     }
-
 }
 
 function closeModal($el) {
@@ -199,7 +198,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // Envío formulario
-    document.getElementById('submit-char').addEventListener('click', async () => {
+    document.getElementById('submit-btn').addEventListener('click', async () => {
         const newCharacter = {
             character_name: document.getElementById('char-name').value,
             image: document.getElementById('char-image').value,
@@ -256,7 +255,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-    document.getElementById('delete-char').addEventListener('click', async () => {
+    document.getElementById('delete-btn').addEventListener('click', async () => {
         try {
             const character_id = document.getElementById('char-id').value;
 
