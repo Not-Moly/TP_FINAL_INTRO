@@ -50,7 +50,7 @@ async function getAllGames() {
                 perspective: row.perspective,
                 image: row.image,
                 franchise: row.franchise,
-                developer: row.developer
+                id_developer: row.id_developer
             }
         }
     });
