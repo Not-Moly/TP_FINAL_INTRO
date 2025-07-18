@@ -29,7 +29,7 @@ async function createCharacter(
 // ╚═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╝
 async function getAllCharacters() {
     const result = await dbClient.query(
-        'SELECT characters.id as character_id, characters.character_name as character_name, characters.franchise as character_franchise,'
+        'SELECT characters.id as character_id, characters.character_name as character_name,'
         + ' ' +
         'characters.image as image, characters.gender as gender, characters.species as species, characters.description as description, characters.main_skill as skill, characters.id_game as id_game'
         + ' ' +
@@ -42,7 +42,6 @@ async function getAllCharacters() {
         if ([!characters[row.character_id]]) {
             characters[row.character_id] = {
                 name: row.character_name,
-                franchise: row.character_franchise,
                 image: row.image,
                 gender: row.gender,
                 species: row.species,
@@ -56,7 +55,7 @@ async function getAllCharacters() {
 };
 async function getOneCharacter(id) {
     const result = await dbClient.query(
-        'SELECT characters.id as character_id, characters.character_name as character_name, characters.franchise as character_franchise,'
+        'SELECT characters.id as character_id, characters.character_name as character_name,'
         + ' ' +
         'characters.image as image, characters.gender as gender, characters.species as species, characters.description as description, characters.main_skill as skill, characters.id_game'
         + ' ' +
@@ -69,12 +68,12 @@ async function getOneCharacter(id) {
         if ([!characters[row.character_id]]) {
             characters[row.character_id] = {
                 name: row.character_name,
-                franchise: row.character_franchise,
                 image: row.image,
                 gender: row.gender,
                 species: row.species,
                 description: row.description,
-                skill: row.skill
+                skill: row.skill,
+                id_game: row.id_game
             }
         }
     });
