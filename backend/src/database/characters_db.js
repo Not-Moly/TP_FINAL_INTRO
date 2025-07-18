@@ -15,8 +15,8 @@ async function createCharacter(
     new_character_info
 ) {
     const result = await dbClient.query(
-        'INSERT INTO characters(character_name, franchise, image, gender, species, description, main_skill, id_game) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *',
-        [new_character_info.character_name, new_character_info.franchise, new_character_info.image, new_character_info.gender,
+        'INSERT INTO characters(character_name, image, gender, species, description, main_skill, id_game) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *',
+        [new_character_info.character_name, new_character_info.image, new_character_info.gender,
         new_character_info.species, new_character_info.description, new_character_info.main_skill, new_character_info.id_game])
     if (result.rowCount === 0) {
         return undefined
@@ -90,10 +90,10 @@ async function updateCharacter(
     const result = await dbClient.query(
         'UPDATE characters'
         + ' ' +
-        'SET character_name = $1,franchise = $2, image = $3, gender = $4, species = $5, description = $6, main_skill = $7, id_game = $8'
+        'SET character_name = $1, image = $2, gender = $3, species = $4, description = $5, main_skill = $6, id_game = $7'
         + ' ' +
-        'WHERE id = $9 RETURNING *',
-        [updated_character_info.character_name, updated_character_info.franchise, updated_character_info.image, updated_character_info.gender,
+        'WHERE id = $8 RETURNING *',
+        [updated_character_info.character_name, updated_character_info.image, updated_character_info.gender,
         updated_character_info.species, updated_character_info.description, updated_character_info.main_skill, updated_character_info.id_game, id]
     );
     return result.rows[0];

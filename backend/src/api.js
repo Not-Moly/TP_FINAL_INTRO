@@ -41,7 +41,6 @@ app.post('/api/games', async (req, res) => {
         genre: req.body.genre,
         perspective: req.body.perspective,
         image: req.body.image,
-        franchise: req.body.franchise,
         id_franchise: req.body.id_franchise,
         id_saga: req.body.id_saga,
         id_developer: req.body.id_developer
@@ -101,7 +100,6 @@ app.put('/api/games/:id', async (req, res) => {
         genre: req.body.genre,
         perspective: req.body.perspective,
         image: req.body.image,
-        franchise: req.body.franchise,
         id_franchise: req.body.id_franchise,
         id_saga: req.body.id_saga,
         id_developer: req.body.id_developer
