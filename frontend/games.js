@@ -1,4 +1,6 @@
 let loadGames;
+let loadedDevelopers = [];
+
 const allGameGamemodes = [
     "Un jugador",
     "Multijugador",
@@ -70,6 +72,9 @@ async function createGameModal() {
                 newOption.value = id;
                 newOption.innerHTML = `${developer.name}`;
                 gameDeveloperOptions.append(newOption);
+                
+                // Agregar a lista de developers global
+                loadedDevelopers[id] = developer;
             }
 
         } catch (error) {
@@ -263,7 +268,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                             <div class="media">
                                 <div class="media-content">
                                     <p class="title is-4">${game.title}</p>
-                                    <p class="subtitle is-6">${game.developer || 'Desarrollador no especificado'}</p>
+                                    <p class="subtitle is-6">${loadedDevelopers[game.id_developer].name || 'Desarrollador no especificado'}</p>
                                 </div>
                             </div>
                             <div class="content">
@@ -292,7 +297,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                     updateValueSelects(allGamePerspectives, 'perspective', game.perspective);
                     document.getElementById('game-image').value = game.image;
                     document.getElementById('game-franchise').value = game.franchise;
-                    document.getElementById('game-developer').value = game.developer;
+                    document.getElementById('game-developer').value = game.id_developer;
+                    console.log(loadedDevelopers);
+                    
 
 
                     openModal(modal);
