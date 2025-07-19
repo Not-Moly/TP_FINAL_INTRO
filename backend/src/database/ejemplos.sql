@@ -1,49 +1,53 @@
--- Desarrolladores
+-- Developers
 INSERT INTO developers (name, foundation_year, game_count, origin_country, entity_type) VALUES
-('Naughty Dog', 1984, 12, 'Estados Unidos', 'Estudio'),
-('FromSoftware', 1986, 15, 'Japón', 'Compañía'),
-('CD Projekt Red', 2002, 8, 'Polonia', 'Estudio'),
-('Rockstar Games', 1998, 20, 'Estados Unidos', 'Compañía'),
-('Santa Monica Studio', 2001, 10, 'Estados Unidos', 'Estudio');
+('FromSoftware', 1986, 15, 'Japón', 'Privada'),
+('Naughty Dog', 1984, 20, 'Estados Unidos', 'Subsidiaria'),
+('CD Projekt RED', 2002, 10, 'Polonia', 'Pública'),
+('Nintendo EPD', 2015, 30, 'Japón', 'División interna'),
+('Valve', 1996, 12, 'Estados Unidos', 'Privada'),
+('Infinity Ward', 2002, 18, 'Estados Unidos', 'Subsidiaria'),
+('Treyarch', 1996, 22, 'Estados Unidos', 'Subsidiaria');
 
--- Franquicias
+-- Franchises
 INSERT INTO franchises (title) VALUES
-('Uncharted'),
 ('Dark Souls'),
-('The Witcher'),
-('Grand Theft Auto'),
-('God of War');
+('The Last of Us'),
+('Cyberpunk'),
+('Half-Life'),
+('Call of Duty'),
+('The Legend of Zelda');
 
 -- Sagas
 INSERT INTO sagas (title, id_franchise) VALUES
-('Trilogía Uncharted', 1),
-('Trilogía Dark Souls', 2),
-('Saga The Witcher', 3),
-('Universo 3D de GTA', 4),
-('Saga Nórdica de God of War', 5);
+('Dark Souls Trilogy', 1),
+('The Last of Us Main', 2),
+('Modern Warfare', 5),
+('Black Ops', 5),
+('Half-Life Series', 4),
+('Cyberpunk Universe', 3),
+('Zelda Breath of the Wild Era', 6);
 
--- Juegos 
-INSERT INTO games (title, release_year, gamemode, genre, perspective, image, id_saga, id_franchise, id_developer) VALUES
-('Uncharted: El Tesoro de Drake', 2007, 'Un jugador', 'Acción-aventura', 'Tercera persona', 'uncharted1.jpg', 1, 1, 1),
-('Uncharted 2: El Reino de los Ladrones', 2009, 'Multijugador, Un jugador', 'Acción-aventura', 'Tercera persona', 'uncharted2.jpg', 1, 1, 1),
-('Dark Souls', 2011, 'Un jugador', 'Acción, Aventura, RPG', 'Tercera persona', 'darksouls1.jpg', 2, 2, 2),
-('Dark Souls III', 2016, 'Multijugador, Un jugador', 'Acción, Aventura, RPG', 'Tercera persona', 'darksouls3.jpg', 2, 2, 2),
-('The Witcher 3: Wild Hunt', 2015, 'Un jugador', 'Acción, Aventura, RPG', 'Tercera persona', 'witcher3.jpg', 3, 3, 3),
-('Grand Theft Auto V', 2013, 'Multijugador, Pantalla dividida, Un jugador', 'Acción-aventura', 'Tercera persona', 'gtav.jpg', 4, 4, 4),
-('God of War (2018)', 2018, 'Un jugador', 'Acción-aventura', 'Tercera persona', 'gow2018.jpg', 5, 5, 5),
-('God of War: Ragnarok', 2022, 'Un jugador', 'Acción-aventura', 'Tercera persona', 'ragnarok.jpg', 5, 5, 5),
-('The Witcher 2: Assassins of Kings', 2011, 'Un jugador', 'Acción, Aventura, RPG', 'Tercera persona', 'witcher2.jpg', 3, 3, 3),
-('Grand Theft Auto: San Andreas', 2004, 'Multijugador, Un jugador', 'Acción-aventura', 'Tercera persona', 'gtasa.jpg', 4, 4, 4);
+-- Games
+INSERT INTO games (title, release_year, gamemode, genre, perspective, image, id_franchise, id_saga, id_developer) VALUES
+('Dark Souls', 2011, 'Un jugador', 'Acción RPG', 'Tercera persona', 'darksouls1.jpg', 1, 1, 1),
+('Dark Souls II', 2014, 'Un jugador', 'Acción RPG', 'Tercera persona', 'darksouls2.jpg', 1, 1, 1),
+('The Legend of Zelda: Breath of the Wild', 2017, 'Un jugador', 'Acción-aventura', 'Tercera persona', 'botw.jpg', 6, 7, 4),
+('The Last of Us', 2013, 'Un jugador', 'Acción-aventura', 'Tercera persona', 'tlou1.jpg', 2, 2, 2),
+('Cyberpunk 2077', 2020, 'Un jugador', 'RPG', 'Primera persona', 'cyberpunk.jpg', 3, 6, 3),
+('Half-Life 2', 2004, 'Un jugador', 'Shooter', 'Primera persona', 'hl2.jpg', 4, 5, 5),
+('Call of Duty: Modern Warfare', 2019, 'Multijugador', 'Shooter', 'Primera persona', 'mw2019.jpg', 5, 3, 6),
+('Call of Duty: Black Ops II', 2012, 'Multijugador', 'Shooter', 'Primera persona', 'bo2.jpg', 5, 4, 7);
 
--- Personajes
+-- Characters
 INSERT INTO characters (character_name, image, gender, species, description, main_skill, id_game) VALUES
-('Nathan Drake', 'nathan.jpg', 'Masculino', 'Humano', 'Cazador de tesoros y aventurero', 'Escalar y disparar', 1),
-('Chloe Frazer', 'chloe.jpg', 'Femenino', 'Humano', 'Ladrona y exploradora experta', 'Sigilo y combate', 2),
-('Artorias', 'artorias.jpg', 'Masculino', 'No-muerto', 'Caballero legendario del Abismo', 'Espada pesada', 3),
-('Vigilante del Abismo', 'abyss.jpg', 'Desconocido', 'No-muerto', 'Líder de la Legión de Farron', 'Ataques rápidos con espada', 4),
-('Geralt de Rivia', 'geralt.jpg', 'Masculino', 'Brujo', 'Cazador de monstruos mutado', 'Espadas y señales mágicas', 5),
-('Ciri', 'ciri.jpg', 'Femenino', 'Humano', 'Sangre antigua entrenada como brujo', 'Teletransporte y espada', 5),
-('Michael De Santa', 'michael.jpg', 'Masculino', 'Humano', 'Criminal retirado viviendo en lujo', 'Conducción y armas', 6),
-('Kratos', 'kratos.jpg', 'Masculino', 'Dios', 'Dios de la guerra con ira infinita', 'Fuerza y combate', 7),
-('Atreus', 'atreus.jpg', 'Masculino', 'Semidiós', 'Hijo de Kratos con poderes mágicos', 'Arquería y magia', 8),
-('Carl "CJ" Johnson', 'cj.jpg', 'Masculino', 'Humano', 'Gánster que regresa a San Andreas', 'Conducción y disparos', 10);
+('Joel', 'joel.jpg', 'Masculino', 'Humano', 'Un hombre endurecido por la pérdida que guía a Ellie.', 'Combate cuerpo a cuerpo', 4),
+('Ellie', 'ellie.jpg', 'Femenino', 'Humano', 'Una chica inmune al virus que asola el mundo.', 'Sigilo y cuchillo', 4),
+('V', 'v.jpg', 'Otro', 'Humano con ciberimplantes', 'Protagonista personalizado en Night City.', 'Hackeo y combate', 5),
+('Gordon Freeman', 'gordon.jpg', 'Masculino', 'Humano', 'Científico que lucha contra invasores alienígenas.', 'Armas de energía', 6),
+('Chosen Undead', 'chosen.jpg', 'Masculino', 'No muerto', 'Protagonista silencioso de Dark Souls.', 'Versatilidad en combate', 1),
+('Bearer of the Curse', 'bearer.jpg', 'Femenino', 'No muerto', 'Protagonista de Dark Souls II.', 'Espadas y magia', 2),
+('Captain Price', 'price.jpg', 'Masculino', 'Humano', 'Soldado veterano del SAS.', 'Tácticas militares', 7),
+('Alex Mason', 'mason.jpg', 'Masculino', 'Humano', 'Agente de la CIA marcado por la guerra fría.', 'Disparos y espionaje', 8),
+('Link', 'link.jpg', 'Masculino', 'Hyliano', 'Un joven valiente que lucha contra el mal en Hyrule.', 'Espadachín', 3),
+('Zelda', 'zelda.jpg', 'Femenino', 'Hyliano', 'Princesa sabia con poderes mágicos.', 'Magia', 3);
+    
