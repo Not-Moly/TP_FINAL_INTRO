@@ -36,7 +36,7 @@ async function getAllSagas() {
     const sagas = {};
 
     result.rows.forEach(row => {
-        if ([!sagas[row.saga_id]]) {
+        if (!sagas[row.saga_id]) {
             sagas[row.saga_id] = {
                 title: row.title,
                 id_franchise: row.id_franchise
@@ -55,7 +55,7 @@ async function getOneSaga(id) {
     const sagas = {};
 
     result.rows.forEach(row => {
-        if ([!sagas[row.saga_id]]) {
+        if (!sagas[row.saga_id]) {
             sagas[row.saga_id] = {
                 title: row.title,
                 id_franchise: row.id_franchise

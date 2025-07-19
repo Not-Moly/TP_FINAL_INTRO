@@ -36,7 +36,7 @@ async function getAllFranchises() {
     const franchises = {};
 
     result.rows.forEach(row => {
-        if ([!franchises[row.franchise_id]]) {
+        if (!franchises[row.franchise_id]) {
             franchises[row.franchise_id] = {
                 title: row.title,
             }
@@ -54,7 +54,7 @@ async function getOneFranchise(id) {
     const franchises = {};
 
     result.rows.forEach(row => {
-        if ([!franchises[row.franchise_id]]) {
+        if (!franchises[row.franchise_id]) {
             franchises[row.franchise_id] = {
                 title: row.title,
             }
