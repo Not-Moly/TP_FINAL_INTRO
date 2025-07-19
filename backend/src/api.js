@@ -391,6 +391,7 @@ app.delete('/api/characters/:id', async (req, res) => {
 
 const {
     getAllFranchises,
+    getAllFranchisesWithSagas,
     getOneFranchise,
     createFranchise,
     deleteFranchise,
@@ -443,6 +444,13 @@ app.get('/api/franchises', async (req, res) => {
         return res.sendStatus(404).json({ error: 'Franchises not found' });
     }
     res.json(franchises);
+});
+app.get('/api/franchisesWithSagas', async (req, res) => {
+    let franchisesWithSagas = await getAllFranchisesWithSagas();
+    if (!franchisesWithSagas) {
+        return res.sendStatus(404).json({ error: 'Franchises not found' });
+    }
+    res.json(franchisesWithSagas);
 });
 app.get('/api/franchises/:id', async (req, res) => {
     let franchise = await getOneFranchise(req.params.id);

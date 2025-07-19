@@ -63,6 +63,31 @@ async function getOneFranchise(id) {
     return franchises;
 };
 
+// Extras
+async function getAllFranchisesWithSagas() {
+    const result = await dbClient.query(
+        'SELECT franchises.id as franchise_id, franchises.title as franchise_title, sagas.id as saga_id, sagas.title as saga_title, sagas.id_franchise as saga_id_franchise'
+        + ' ' +
+        'FROM franchises RIGHT JOIN sagas ON franchises.id = sagas.id_franchise'
+    );
+    
+    const franchisesWithSagas = {};
+
+    result.rows.forEach(row => {
+        
+        if (!franchisesWithSagas[row.franchise_id]) {
+            franchisesWithSagas[row.franchise_id] = {
+                franchise_title: row.franchise_title,
+                sagas: []
+            }
+            console.log(franchisesWithSagas);
+        }
+        let saga = {id: row.saga_id, title: row.saga_title};
+        
+        franchisesWithSagas[row.franchise_id].sagas.push(saga);
+    });
+    return franchisesWithSagas;
+};
 
 // ╔═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╗
 //                PUT (UPDATE)
@@ -97,6 +122,7 @@ async function deleteFranchise(id) {
 
 module.exports = {
     getAllFranchises,
+    getAllFranchisesWithSagas,
     getOneFranchise,
     createFranchise,
     deleteFranchise,
