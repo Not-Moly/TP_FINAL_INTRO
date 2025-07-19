@@ -46,7 +46,7 @@ let updateAllValueSelects;
 
 async function createGameModal() {
 
-    const modal = document.querySelector('.modal');
+    const gameModal = document.getElementById('game-modal');
     // Agrego opción de desarrolladores al que pertenece
     let loadDeveloperOptions;
     let loadFranchiseOptions;
@@ -277,29 +277,30 @@ async function createGameModal() {
     updateValueSelects(allGamePerspectives, 'perspective');
 
 
-    return modal;
+    return gameModal;
 }
 
-function openModal($el, mode) {
+function openGameModal($el, mode) {
     $el.classList.add('is-active');
     // Editar texto identificador de modal y visibilidad de botón borrar
     if (mode === 'edit') {
-        document.querySelector('.modal-card-title').innerHTML = `Editar Personaje`;
-        document.getElementById('submit-btn').innerHTML = `Guardar cambios`;
-        document.getElementById('delete-btn').style.display = 'inline-flex';
+        $el.querySelector('.modal-card-title').innerHTML = `Editar Juego`;
+        $el.querySelector('#submit-btn').innerHTML = `Guardar cambios`;
+        $el.querySelector('#delete-btn').style.display = 'inline-flex';
     } else if (mode === 'add') {
-        document.querySelector('.modal-card-title').innerHTML = `Añadir Personaje`;
-        document.getElementById('submit-btn').innerHTML = `Añadir`;
-        document.getElementById('delete-btn').style.display = 'none';
+        $el.querySelector('.modal-card-title').innerHTML = `Añadir Juego`;
+        $el.querySelector('#submit-btn').innerHTML = `Añadir`;
+        $el.querySelector('#delete-btn').style.display = 'none';
     }
     updateAllValueSelects();
 }
 
-function closeModal($el) {
+function closeGameModal($el) {
     $el.classList.remove('is-active');
 
     // Resetear formulario
     const inputs = document.getElementById('game-form').querySelectorAll('input, textarea, select');
+
     inputs.forEach(input => {
         if (input.type === 'checkbox' || input.type === 'radio') {
             input.checked = false;
@@ -312,8 +313,8 @@ function closeModal($el) {
 
 document.addEventListener("DOMContentLoaded", async () => {
     // Creo modal para la edición de datos de juegos
-    // Lo llamo al principio para tener la referencia al elemento y poder agregarlo a la función de abrir modal al clickear en un personaje
-    const modal = await createGameModal();
+    // Lo llamo al principio para tener la referencia al elemento y poder agregarlo a la función de abrir modal al clickear en un juego
+    const gameModal = await createGameModal();
 
     // Conseguir contenedor de las entidades
     const container = document.querySelector('.entities-container');
@@ -385,7 +386,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     document.getElementById('game-saga').value = game.id_saga;
                     document.getElementById('game-developer').value = game.id_developer;
 
-                    openModal(modal, 'edit');
+                    openGameModal(gameModal, 'edit');
                 })
                 grid.appendChild(card);
             }
@@ -407,24 +408,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     const addButton = document.getElementById('add-button');
     if (addButton) {
         addButton.addEventListener('click', () => {
-            openModal(modal, 'add');
+            openGameModal(gameModal, 'add');
         });
     }
 
     // Manejadores de cierre del modal
-    (document.querySelectorAll('.modal-background, .delete, #cancel-btn') || []).forEach(($close) => {
+    (gameModal.querySelectorAll('.modal-background, .delete, #cancel-btn') || []).forEach(($close) => {
         $close.addEventListener('click', () => {
-            closeModal(modal);
+            closeGameModal(gameModal);
         });
     });
     document.addEventListener('keydown', (event) => {
         if (event.key === "Escape") {
-            closeModal(modal);
+            closeGameModal(gameModal);
         }
     });
 
     // Envío del formulario
-    document.getElementById('submit-btn').addEventListener('click', async () => {
+    gameModal.querySelector('#submit-btn').addEventListener('click', async () => {
         const newGame = {
             title: document.getElementById('game-title').value,
             release_year: document.getElementById('game-year').value,
@@ -474,7 +475,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             // Cerrar modal
-            closeModal(modal);
+            closeGameModal(gameModal);
             // Actualizar lista
             await loadGames();
 
@@ -501,7 +502,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             // Cerrar modal
-            closeModal(modal);
+            closeGameModal(gameModal);
             // Actualizar lista
             await loadGames();
         } catch (error) {
