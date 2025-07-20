@@ -1,6 +1,6 @@
 // characters.js
 
-let loadedGames = [];
+let loadedGames = {};
 
 async function createCharacterModal() {
 

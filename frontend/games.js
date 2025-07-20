@@ -1,5 +1,5 @@
 let loadGames;
-let loadedDevelopers = [];
+let loadedDevelopers = {};
 
 const allGameGamemodes = [
     "Cooperativo",
@@ -89,6 +89,7 @@ async function createGameModal() {
         }
     };
     await loadDeveloperOptions();
+    
 
     loadFranchiseOptions = async () => {
         const gameFranchiseOptions = document.getElementById('game-franchise');
