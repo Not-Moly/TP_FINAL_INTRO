@@ -1,7 +1,5 @@
 let loadGames;
 let loadedDevelopers = [];
-let loadedFranchises = [];
-let loadedSagas = [];
 
 const allGameGamemodes = [
     "Cooperativo",

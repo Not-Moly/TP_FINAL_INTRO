@@ -132,21 +132,26 @@ body {
     overflow-y: auto;
     padding-right: 15px;
 }
+
 .modal-scrollable::-webkit-scrollbar {
     width: 8px;
 }
+
 .modal-scrollable::-webkit-scrollbar-track {
     background: --bulma-scheme-main;
     border-radius: 10px;
 }
+
 .modal-scrollable::-webkit-scrollbar-thumb {
     background: #4a4a4a;
     border-radius: 10px;
 }
+
 .modal-scrollable::-webkit-scrollbar-thumb:hover {
     background: #6a6a6a;
 }
-select.modal-scrollable::-webkit-scrollbar-thumb:hover{
+
+select.modal-scrollable::-webkit-scrollbar-thumb:hover {
     background: #4a4a4a;
 }
 
@@ -177,6 +182,25 @@ select.modal-scrollable::-webkit-scrollbar-thumb:hover{
 }
 
 #add-button:active {
+    transform: scale(0.9);
+}
+
+/* Manage Button */
+.manage-entities-button {
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+    z-index: 1000;
+    background-color: #189df7;
+    transition: all 0.3s ease;
+}
+
+.manage-entities-button:hover {
+    background-color: #35a9f7;
+    transform: scale(1.05);
+}
+
+.manage-entities-button:active {
     transform: scale(0.9);
 }
 
