@@ -38,7 +38,7 @@ async function getAllDevelopers() {
     const developers = {};
 
     result.rows.forEach(row => {
-        if ([!developers[row.developer_id]]) {
+        if (!developers[row.developer_id]) {
             developers[row.developer_id] = {
                 name: row.devs_name,
                 foundation_year: row.foundation_year,
@@ -62,7 +62,7 @@ async function getOneDeveloper(id) {
     const developers = {};
 
     result.rows.forEach(row => {
-        if ([!developers[row.developer_id]]) {
+        if (!developers[row.developer_id]) {
             developers[row.developer_id] = {
                 name: row.devs_name,
                 foundation_year: row.foundation_year,

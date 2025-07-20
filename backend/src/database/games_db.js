@@ -41,7 +41,7 @@ async function getAllGames() {
     const games = {};
 
     result.rows.forEach(row => {
-        if ([!games[row.game_id]]) {
+        if (!games[row.game_id]) {
             games[row.game_id] = {
                 title: row.title,
                 release_year: row.release_year,
@@ -71,7 +71,7 @@ async function getOneGame(id) {
     const games = {};
 
     result.rows.forEach(row => {
-        if ([!games[row.game_id]]) {
+        if (!games[row.game_id]) {
             games[row.game_id] = {
                 title: row.title,
                 release_year: row.release_year,

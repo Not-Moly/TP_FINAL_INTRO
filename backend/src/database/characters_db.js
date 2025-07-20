@@ -39,7 +39,7 @@ async function getAllCharacters() {
     const characters = {};
 
     result.rows.forEach(row => {
-        if ([!characters[row.character_id]]) {
+        if (!characters[row.character_id]) {
             characters[row.character_id] = {
                 name: row.character_name,
                 image: row.image,
@@ -65,7 +65,7 @@ async function getOneCharacter(id) {
     const characters = {};
 
     result.rows.forEach(row => {
-        if ([!characters[row.character_id]]) {
+        if (!characters[row.character_id]) {
             characters[row.character_id] = {
                 name: row.character_name,
                 image: row.image,
