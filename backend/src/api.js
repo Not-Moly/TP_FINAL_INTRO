@@ -336,8 +336,11 @@ app.get('/api/characters/:id', async (req, res) => {
     res.json((character));
 });
 app.get('/api/charactersbygame/:id', async (req, res) => {
-    let character = await getCharactersByGame(req.params.id);
-    res.json((character));
+    let characters = await getCharactersByGame(req.params.id);
+    if (!characters) {
+        return res.sendStatus(404).json({ error: 'Characters not found' });
+    }
+    res.json((characters));
 });
 
 
