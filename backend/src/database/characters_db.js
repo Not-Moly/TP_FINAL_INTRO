@@ -80,6 +80,26 @@ async function getOneCharacter(id) {
     return characters;
 };
 
+async function getCharactersByGame(gameId) {
+    const result = await dbClient.query(
+        'SELECT characters.id as char_id, characters.name as name FROM characters WHERE characters.id_game = $1', 
+        [gameId]
+    );
+    
+    const characters = {};
+
+    result.rows.forEach(row => {
+        if (!games[row.char_id]) {
+            games[row.char_ii] = {
+                id: row.char_id,
+                name: row.name
+            }
+        }
+    });
+
+    return characters;
+}
+
 // ╔═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╗
 //                PUT (UPDATE)
 // ╚═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╝
@@ -116,6 +136,7 @@ async function deleteCharacter(id) {
 module.exports = {
     getAllCharacters,
     getOneCharacter,
+    getCharactersByGame,
     createCharacter,
     deleteCharacter,
     updateCharacter
