@@ -77,6 +77,27 @@ function closeModal($el) {
     });
 }
 
+function openDeleteModal(onConfirm) {
+    const modal = document.getElementById('confirm-delete-modal');
+    const modalClose = modal.querySelector('#modal-close');
+    const modalCancel = modal.querySelector('#modal-cancel');
+    const modalConfirm = modal.querySelector('#modal-confirm');
+
+    modal.classList.add('is-active');
+
+    const closeModal = () => {
+        modal.classList.remove('is-active');
+        modalConfirm.onclick = null;
+    };
+
+    modalClose.onclick = closeModal;
+    modalCancel.onclick = closeModal;
+
+    modalConfirm.onclick = () => {
+        closeModal();
+        onConfirm();
+    };
+}
 
 let loadCharacters;
 
@@ -156,7 +177,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     document.getElementById('char-skill').value = character.skill
                     document.getElementById('char-game').value = character.id_game;
 
-                    openModal(modal,'edit');
+                    openModal(modal, 'edit');
                 })
                 grid.appendChild(card);
             }
@@ -171,7 +192,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             container.appendChild(errorMessage);
         }
     };
-
 
 
     // Carga inicial
@@ -256,26 +276,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     document.getElementById('delete-btn').addEventListener('click', async () => {
-        try {
-            const character_id = document.getElementById('char-id').value;
+        openDeleteModal(async () => {
+            try {
+                const character_id = document.getElementById('char-id').value;
 
-            const response = await fetch(`http://localhost:3000/api/characters/${character_id}`, {
-                method: 'DELETE'
-            });
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Error al eliminar personaje');
+                const response = await fetch(`http://localhost:3000/api/characters/${character_id}`, {
+                    method: 'DELETE'
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Error al eliminar personaje');
+                }
+
+                // Cerrar modal
+                closeModal(modal);
+                // Actualizar lista
+                await loadCharacters();
+            } catch (error) {
+                console.error('Error:', error);
+                alert(`Error: ${error.message}`);
             }
-
-            // Cerrar modal
-            closeModal(modal);
-            // Actualizar lista
-            await loadCharacters();
-        } catch (error) {
-            console.error('Error:', error);
-            alert(`Error: ${error.message}`);
-        }
+        });
     });
-
-
 });
