@@ -83,6 +83,45 @@ function closeFSModal($el) {
     document.getElementById('franchises_and_sagas-container').innerHTML = '';
 }
 
+async function removeFranchise(id) {
+    if (id) {
+        try {
+            const response = await fetch(`http://localhost:3000/api/franchises/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Error al eliminar franquicia');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert(`Error: ${error.message}`);
+        }
+    }
+}
+async function removeSaga(id) {
+    if (id) {
+        try {
+            const response = await fetch(`http://localhost:3000/api/sagas/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Error al eliminar saga');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert(`Error: ${error.message}`);
+        }
+    }
+}
+
 function addFranchise(id = '') {
     const wrapperFS = document.createElement('div');
     wrapperFS.className = 'franchise_and_saga-container';
@@ -114,7 +153,10 @@ function addFranchise(id = '') {
     deleteBtn.appendChild(spanElement);
 
     // Eliminar la franquicia
-    deleteBtn.onclick = () => wrapperFS.remove();
+    deleteBtn.onclick = (async () => {
+        await removeFranchise(id);
+        wrapperFS.remove();
+    });
 
     franchiseWrapper.appendChild(inputFranchiseId);
     franchiseWrapper.appendChild(inputFranchiseTitle);
@@ -169,7 +211,10 @@ function addSaga(container, id = '') {
     deleteBtn.appendChild(spanElement);
 
     // Eliminar la saga
-    deleteBtn.onclick = () => sagaWrapper.remove();
+    deleteBtn.onclick = (async () => {
+        await removeSaga(id);
+        sagaWrapper.remove()
+    });
 
     // Agrego a wrappers y contenedores
     sagaWrapper.appendChild(inputSagaId);
@@ -263,7 +308,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 console.error('Error:', error);
                 alert(`Error: ${error.message}`);
             }
-            
+
             inputsSagas.forEach(async ($elSaga) => {
 
                 const sagaId = $elSaga.querySelector('.input.saga-id').value;
@@ -282,7 +327,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                             headers: {
                                 'Content-Type': 'application/json',
                             },
-                            body: JSON.stringify(newGame)
+                            body: JSON.stringify(newSaga)
                         });
                         if (!response.ok) {
                             const errorData = await response.json();
