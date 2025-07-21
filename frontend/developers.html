@@ -38,7 +38,7 @@
                 </header>
                 <section class="modal-scrollable modal-card-body">
                     <form id="dev-form">
-                        <input id="dev-id" type="hidden" value="">
+                        <input id="developer-id" type="hidden" value="">
                         <div class="field">
                             <label class="label" for="dev-name">Nombre</label>
                             <div class="control">
@@ -48,19 +48,22 @@
                         <div class="field">
                             <label class="label" for="dev-foundation">Año de Fundacion</label>
                             <div class="control">
-                                <input id="dev-foundation" class="input no-spinners" type="number" placeholder="Año de Fundacion">
+                                <input id="dev-foundation" class="input no-spinners" type="number"
+                                    placeholder="Año de Fundacion">
                             </div>
                         </div>
                         <div class="field">
                             <label class="label" for="dev-count">Cantidad de Juegos</label>
                             <div class="control">
-                                <input id="dev-count" class="input no-spinners" type="number" placeholder="Cantidad de Juegos">
+                                <input id="dev-count" class="input no-spinners" type="number"
+                                    placeholder="Cantidad de Juegos">
                             </div>
                         </div>
                         <div class="field">
                             <label class="label" for="dev-country">Pais de Origen</label>
                             <div class="control">
-                                <input id="dev-country" class="input no-spinners" type="text" placeholder="Pais de Origen">
+                                <input id="dev-country" class="input no-spinners" type="text"
+                                    placeholder="Pais de Origen">
                             </div>
                         </div>
                         <div class="field">
@@ -98,14 +101,12 @@
             <div class="modal-background"></div>
             <div class="modal-card">
                 <header class="modal-card-head has-background-danger">
-                    <p class="modal-card-title has-text-warning-dark">Estas seguro?</p>
-                    <button class="delete" aria-label="close" id="modal-close"></button>
+                    <p class="modal-card-title has-text-warning-dark">¿Estás seguro?</p>
                 </header>
                 <section class="modal-card-body">
-                    <p>Estas seguro que quieres eliminar esta entidad?</p>
-                    <p>Cualquier otra entidad relacionada a esta sera eliminada!</p>
+                    <p id="confirm-delete-text">¿Estás seguro que quieres eliminar ésta entidad?</p>
                     <div class="buttons mt-5">
-                        <button class="button is-danger" id="modal-confirm">Si, borrar</button>
+                        <button class="button is-danger" id="modal-confirm">Si, eliminar</button>
                         <button class="button" id="modal-cancel">Cancelar</button>
                     </div>
                 </section>

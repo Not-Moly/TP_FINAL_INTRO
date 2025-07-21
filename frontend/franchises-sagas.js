@@ -60,6 +60,7 @@ async function loadFranchisesSagas() {
     //#endregion
 }
 
+
 function updateFranchisesSagasModalValues() {
     // Los agrego al modal de Franquicias y Sagas
     Object.entries(loadedFranchises).forEach(([franchise_id, franchise]) => {
@@ -83,44 +84,140 @@ function closeFSModal($el) {
 
     // Resetear formulario (Franquicias y Sagas) para que después puedan ser agregadas en orden
     document.getElementById('franchises_and_sagas-container').innerHTML = '';
+
+    // Actualizar juegos
+    loadGames();
+    loadFranchisesSagas();
 }
 
-async function removeFranchise(id) {
-    if (id) {
-        try {
-            const response = await fetch(`http://localhost:3000/api/franchises/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Error al eliminar franquicia');
+function openDeleteModal(onConfirm) {
+    const modal = document.getElementById('confirm-delete-modal');
+    const modalCancel = modal.querySelector('#modal-cancel');
+    const modalConfirm = modal.querySelector('#modal-confirm');
+
+    modal.classList.add('is-active');
+
+    const closeModal = () => {
+        modal.classList.remove('is-active');
+        modalConfirm.onclick = null;
+    };
+
+    modalCancel.onclick = closeModal;
+
+    modalConfirm.onclick = () => {
+        closeModal();
+        onConfirm();
+    };
+}
+
+async function fetchDeleteFranchise(id) {
+    try {
+        const response = await fetch(`http://localhost:3000/api/franchises/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
             }
-        } catch (error) {
-            console.error('Error:', error);
-            alert(`Error: ${error.message}`);
+        });
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Error al eliminar franquicia');
         }
+        return true;
+    } catch (error) {
+        console.error('Error:', error);
+        alert(`Error: ${error.message}`);
     }
 }
-async function removeSaga(id) {
+function removeFranchise(id, wrapperFS) {
     if (id) {
-        try {
-            const response = await fetch(`http://localhost:3000/api/sagas/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
+        document.getElementById('confirm-delete-text').innerHTML = '¿Estás seguro que quieres eliminar ésta entidad?'
+        openDeleteModal(async () => {
+            try {
+                const response = await fetch(`http://localhost:3000/api/sagasbyfranchise/${id}`);
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(errorData.error || 'Error al conseguir personajes por juego');
                 }
-            });
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Error al eliminar saga');
+
+                const sagas = data;
+                let deleted = false;
+                // Verificar cantidad de sagas nula
+                if (Object.keys(sagas).length !== 0) {
+                    document.getElementById('confirm-delete-text').innerHTML = 'Ésta franquicia tiene sagas asignadas, si la eliminas las sagas, sus juegos y sus personajes resultarán eliminados!'
+                    openDeleteModal(async () => {
+                        if (await fetchDeleteFranchise(id)) {
+                            // Eliminar el input que contiene a la franquicia y sus sagas
+                            wrapperFS.remove();
+                        }
+                    });
+                } else {
+                    if (await fetchDeleteFranchise(id)) {
+                        // Eliminar el input que contiene a la franquicia y sus sagas
+                        wrapperFS.remove();
+                    }
+
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert(`Error: ${error.message}`);
             }
-        } catch (error) {
-            console.error('Error:', error);
-            alert(`Error: ${error.message}`);
+        });
+    }
+}
+async function fetchDeleteSaga(id) {
+    try {
+        const response = await fetch(`http://localhost:3000/api/sagas/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Error al eliminar franquicia');
         }
+        return true;
+    } catch (error) {
+        console.error('Error:', error);
+        alert(`Error: ${error.message}`);
+    }
+}
+function removeSaga(id, wrapperSaga) {
+    if (id) {
+        document.getElementById('confirm-delete-text').innerHTML = '¿Estás seguro que quieres eliminar ésta entidad?'
+        openDeleteModal(async () => {
+            try {
+                const response = await fetch(`http://localhost:3000/api/gamesbysaga/${id}`);
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Error al conseguir personajes por juego');
+                }
+
+                const games = data;
+                // Verificar cantidad de juegos nula
+                if (Object.keys(games).length !== 0) {
+                    document.getElementById('confirm-delete-text').innerHTML = 'Ésta saga tiene juegos asignados, si la eliminas sus juegos y sus personajes resultarán eliminados!'
+                    openDeleteModal(async () => {
+                        if (await fetchDeleteSaga(id)) {
+                            // Eliminar el input que contiene a la saga
+                            wrapperSaga.remove();
+                        }
+                    });
+                } else {
+                    if (await fetchDeleteSaga(id)) {
+                        // Eliminar el input que contiene a la saga
+                        wrapperSaga.remove();
+                    }
+                }
+
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert(`Error: ${error.message}`);
+            }
+        });
     }
 }
 
@@ -155,9 +252,8 @@ function addFranchise(id = '') {
     deleteBtn.appendChild(spanElement);
 
     // Eliminar la franquicia
-    deleteBtn.onclick = (async () => {
-        await removeFranchise(id);
-        wrapperFS.remove();
+    deleteBtn.onclick = (() => {
+        removeFranchise(id, wrapperFS);
     });
 
     franchiseWrapper.appendChild(inputFranchiseId);
@@ -186,8 +282,8 @@ function addFranchise(id = '') {
 function addSaga(container, id = '') {
 
     // Wrapper de los elementos relacionados a la saga
-    const sagaWrapper = document.createElement('div');
-    sagaWrapper.className = 'saga-wrapper is-flex mt-2';
+    const wrapperSaga = document.createElement('div');
+    wrapperSaga.className = 'saga-wrapper is-flex mt-2';
 
     // Elemento input donde se va a escribir el título de la saga
     const inputSagaTitle = document.createElement('input');
@@ -213,16 +309,15 @@ function addSaga(container, id = '') {
     deleteBtn.appendChild(spanElement);
 
     // Eliminar la saga
-    deleteBtn.onclick = (async () => {
-        await removeSaga(id);
-        sagaWrapper.remove()
+    deleteBtn.onclick = (() => {
+        removeSaga(id, wrapperSaga);
     });
 
     // Agrego a wrappers y contenedores
-    sagaWrapper.appendChild(inputSagaId);
-    sagaWrapper.appendChild(inputSagaTitle);
-    sagaWrapper.appendChild(deleteBtn);
-    container.appendChild(sagaWrapper);
+    wrapperSaga.appendChild(inputSagaId);
+    wrapperSaga.appendChild(inputSagaTitle);
+    wrapperSaga.appendChild(deleteBtn);
+    container.appendChild(wrapperSaga);
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -280,14 +375,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                         },
                         body: JSON.stringify(newFranchise)
                     });
+                    const data = await response.json();
                     if (!response.ok) {
-                        const errorData = await response.json();
                         throw new Error(errorData.error || 'Error al agregar franquicia');
                     }
-                    const data = await response.json();
                     franchiseId = data.id;
                 }
-               // Si el input de id no está vacío y el título cambió entonces hacer PUT
+                // Si el input de id no está vacío y el título cambió entonces hacer PUT
                 else if (loadedFranchises[franchiseId].title !== franchiseTitle) {
                     const updatedFranchise = {
                         title: franchiseTitle
@@ -313,7 +407,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             for (const $elSaga of inputsSagas) {
                 const sagaId = $elSaga.querySelector('.input.saga-id').value;
                 const sagaTitle = $elSaga.querySelector('.input.saga-title').value;
-                
+
                 // CREATE o UPDATE de saga
                 try {
                     // Si el input de id está vacío significa que es una nueva saga que se creó entonces hacer POST
@@ -361,7 +455,5 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         // Cerrar modal
         closeFSModal(franchisesAndSagasModal);
-        // Actualizar lista
-        await loadFranchisesSagas();
     });
 });

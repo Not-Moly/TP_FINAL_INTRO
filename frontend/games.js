@@ -307,11 +307,13 @@ function closeGameModal($el) {
             input.value = '';
         }
     });
+
+    // Actualizar lista
+    loadGames();
 }
 
 function openDeleteModal(onConfirm) {
     const modal = document.getElementById('confirm-delete-modal');
-    const modalClose = modal.querySelector('#modal-close');
     const modalCancel = modal.querySelector('#modal-cancel');
     const modalConfirm = modal.querySelector('#modal-confirm');
 
@@ -322,7 +324,6 @@ function openDeleteModal(onConfirm) {
         modalConfirm.onclick = null;
     };
 
-    modalClose.onclick = closeModal;
     modalCancel.onclick = closeModal;
 
     modalConfirm.onclick = () => {
@@ -507,6 +508,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // Eliminar juego
+
+    async function fetchDeleteGame(id) {
+        try {
+            const response = await fetch(`http://localhost:3000/api/games/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Error al eliminar juego');
+            }
+            return true;
+        } catch (error) {
+            console.error('Error:', error);
+            alert(`Error: ${error.message}`);
+        }
+    }
+
     document.getElementById('delete-btn').addEventListener('click', async () => {
         document.getElementById('confirm-delete-text').innerHTML = '¿Estás seguro que quieres eliminar ésta entidad?'
         openDeleteModal(async () => {
@@ -514,45 +535,33 @@ document.addEventListener("DOMContentLoaded", async () => {
             try {
 
                 const response = await fetch(`http://localhost:3000/api/charactersbygame/${game_id}`);
+                const data = await response.json();
                 if (!response.ok) {
-                    const errorData = await response.json();
                     throw new Error(errorData.error || 'Error al conseguir personajes por juego');
                 }
 
-                const characters = await response.json();
+                const characters = data;
 
                 // Verificar cantidad de juegos nula
-                if (Object.keys(characters).length != 0) {
+                if (Object.keys(characters).length !== 0) {
                     document.getElementById('confirm-delete-text').innerHTML = 'Éste juego tiene personajes asignados, si lo eliminas los personajes también resultarán eliminados!'
                     openDeleteModal(async () => {
-                        try {
-                            const response = await fetch(`http://localhost:3000/api/games/${game_id}`, {
-                                method: 'DELETE',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                }
-                            });
-                            if (!response.ok) {
-                                const errorData = await response.json();
-                                throw new Error(errorData.error || 'Error al eliminar juego');
-                            }
-
+                        if (await fetchDeleteGame(game_id)) {
                             // Cerrar modal
                             closeGameModal(gameModal);
-                            // Actualizar lista
-                            await loadGames();
-                        } catch (error) {
-                            console.error('Error:', error);
-                            alert(`Error: ${error.message}`);
                         }
                     });
+                } else {
+                    if (await fetchDeleteGame(game_id)) {
+                        // Cerrar modal
+                        closeGameModal(gameModal);
+                    }
                 }
-
             } catch (error) {
                 console.error('Error:', error);
                 alert(`Error: ${error.message}`);
             }
         });
-    })
+    });
 
 });

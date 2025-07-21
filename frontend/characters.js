@@ -75,11 +75,13 @@ function closeModal($el) {
             input.value = '';
         }
     });
+
+    // Actualizar lista
+    loadCharacters();
 }
 
 function openDeleteModal(onConfirm) {
     const modal = document.getElementById('confirm-delete-modal');
-    const modalClose = modal.querySelector('#modal-close');
     const modalCancel = modal.querySelector('#modal-cancel');
     const modalConfirm = modal.querySelector('#modal-confirm');
 
@@ -90,7 +92,6 @@ function openDeleteModal(onConfirm) {
         modalConfirm.onclick = null;
     };
 
-    modalClose.onclick = closeModal;
     modalCancel.onclick = closeModal;
 
     modalConfirm.onclick = () => {
@@ -267,8 +268,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             // Cerrar modal
             closeModal(modal);
-            // Actualizar lista
-            await loadCharacters();
         } catch (error) {
             console.error('Error:', error);
             alert(`Error: ${error.message}`);

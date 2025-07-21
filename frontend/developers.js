@@ -32,11 +32,13 @@ function closeModal($el) {
             input.value = '';
         }
     });
+
+    // Actualizar lista
+    loadDevelopers();
 }
 
 function openDeleteModal(onConfirm) {
     const modal = document.getElementById('confirm-delete-modal');
-    const modalClose = modal.querySelector('#modal-close');
     const modalCancel = modal.querySelector('#modal-cancel');
     const modalConfirm = modal.querySelector('#modal-confirm');
 
@@ -47,7 +49,6 @@ function openDeleteModal(onConfirm) {
         modalConfirm.onclick = null;
     };
 
-    modalClose.onclick = closeModal;
     modalCancel.onclick = closeModal;
 
     modalConfirm.onclick = () => {
@@ -119,7 +120,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 // Añadir funcionalidad click
                 card.addEventListener('click', () => {
                     // Colocar valores de personaje seleccionado en inputs
-                    document.getElementById('dev-id').value = id;
+                    document.getElementById('developer-id').value = id;
                     document.getElementById('dev-name').value = developer.name;
                     document.getElementById('dev-foundation').value = developer.foundation_year;
                     document.getElementById('dev-count').value = developer.game_count;
@@ -184,7 +185,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         try {
-            const developer_id = document.getElementById('dev-id').value;
+            const developer_id = document.getElementById('developer-id').value;
             if (!developer_id) {
                 const response = await fetch('http://localhost:3000/api/developers', {
                     method: 'POST',
@@ -223,56 +224,58 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-    document.getElementById('delete-btn').addEventListener('click', async () => {
+    // Eliminar desarrollador
+    async function fetchDeleteDeveloper(id) {
         try {
-            const developer_id = document.getElementById('dev-id').value;
+            // Eliminar desarrollador (lo que debería activar la eliminación en cascada)
+            const response = await fetch(`http://localhost:3000/api/developers/${id}`, {
+                method: 'DELETE',
+            });
 
-            // Verificar si hay juegos asociados al desarrollador
-            const gamesResponse = await fetch(`http://localhost:3000/api/gamesbydeveloper/${developer_id}`);
-            if (!gamesResponse.ok) throw new Error('Error al verificar juegos relacionados');
-
-            const games = await gamesResponse.json();
-
-            if (Object.keys(games).length > 0) {
-
-                openDeleteModal(async () => {
-                    try {
-                        // Eliminar desarrollador (lo que debería activar la eliminación en cascada)
-                        const response = await fetch(`http://localhost:3000/api/developers/${developer_id}`, {
-                            method: 'DELETE',
-                        });
-
-                        if (!response.ok) {
-                            const errorData = await response.json();
-                            throw new Error(errorData.error || 'Error al eliminar desarrollador');
-                        }
-
-                        // Cerrar modal y actualizar lista
-                        closeModal(modal);
-                        await loadDevelopers();
-                    } catch (error) {
-                        console.error('Error:', error);
-                        alert(`Error: ${error.message}`);
-                    }
-                });
-            } else {
-                // No hay juegos relacionados, eliminar directamente
-                const response = await fetch(`http://localhost:3000/api/developers/${developer_id}`, {
-                    method: 'DELETE',
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Error al eliminar desarrollador');
-                }
-
-                // Cerrar modal y actualizar lista
-                closeModal(modal);
-                await loadDevelopers();
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Error al eliminar desarrollador');
             }
+            return true;
         } catch (error) {
             console.error('Error:', error);
             alert(`Error: ${error.message}`);
         }
+    }
+
+    document.getElementById('delete-btn').addEventListener('click', async () => {
+        document.getElementById('confirm-delete-text').innerHTML = '¿Estás seguro que quieres eliminar ésta entidad?'
+        openDeleteModal(async () => {
+            const developer_id = document.getElementById('developer-id').value;
+            try {
+
+                const response = await fetch(`http://localhost:3000/api/gamesbydeveloper/${developer_id}`);
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(errorData.error || 'Error al conseguir juegos por desarrollador');
+                }
+
+                const games = data;
+
+                // Verificar cantidad de juegos nula
+                if (Object.keys(games).length !== 0) {
+                    document.getElementById('confirm-delete-text').innerHTML = 'Éstos desarrolladores tiene juegos asignados, si los eliminas los juegos y sus personajes también resultarán eliminados!'
+                    openDeleteModal(async () => {
+                        if (await fetchDeleteDeveloper(developer_id)) {
+                            // Cerrar modal
+                            closeModal(modal);
+                        }
+                    });
+                } else {
+                    if (await fetchDeleteDeveloper(developer_id)) {
+                        // Cerrar modal
+                        closeModal(modal);
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert(`Error: ${error.message}`);
+            }
+        });
     });
 });

@@ -64,7 +64,25 @@ async function getOneSaga(id) {
     });
     return sagas;
 };
+async function getAllSagasByFranchise(id) {
+    const result = await dbClient.query(
+        'SELECT sagas.id as saga_id, sagas.title as title, sagas.id_franchise as id_franchise'
+        + ' ' +
+        'FROM sagas WHERE sagas.id_franchise = $1', [id]
+    );
 
+    const sagas = {};
+
+    result.rows.forEach(row => {
+        if (!sagas[row.saga_id]) {
+            sagas[row.saga_id] = {
+                title: row.title,
+                id_franchise: row.id_franchise
+            }
+        }
+    });
+    return sagas;
+};
 
 // ╔═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╗
 //                PUT (UPDATE)
@@ -99,6 +117,7 @@ async function deleteSaga(id) {
 
 module.exports = {
     getAllSagas,
+    getAllSagasByFranchise,
     getOneSaga,
     createSaga,
     deleteSaga,

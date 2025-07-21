@@ -9,11 +9,12 @@ const PORT = process.env.PORT || 3000;
 
 const {
     getAllGames,
+    getGamesByDeveloper,
+    getGamesBySaga,
     getOneGame,
     createGame,
     deleteGame,
     updateGame,
-    getGamesByDeveloper
 } = require('./database/games_db');
 
 //   ██████╗  █████╗ ███╗   ███╗███████╗███████╗
@@ -79,6 +80,10 @@ app.get('/api/games/:id', async (req, res) => {
 });
 app.get('/api/gamesbydeveloper/:id', async (req, res) => {
     let games = await getGamesByDeveloper(req.params.id);
+    res.json((games));
+});
+app.get('/api/gamesbysaga/:id', async (req, res) => {
+    let games = await getGamesBySaga(req.params.id);
     res.json((games));
 });
 
@@ -527,6 +532,7 @@ app.delete('/api/franchises/:id', async (req, res) => {
 
 const {
     getAllSagas,
+    getAllSagasByFranchise,
     getOneSaga,
     createSaga,
     deleteSaga,
@@ -587,6 +593,13 @@ app.get('/api/sagas/:id', async (req, res) => {
         return res.sendStatus(404).json({ error: 'Saga not found' });
     }
     res.json((saga));
+});
+app.get('/api/sagasbyfranchise/:id', async (req, res) => {
+    let sagas = await getAllSagasByFranchise(req.params.id);
+    if (!sagas) {
+        return res.sendStatus(404).json({ error: 'Sagas not found' });
+    }
+    res.json((sagas));
 });
 
 
