@@ -18,7 +18,7 @@ CREATE TABLE franchises (
 CREATE TABLE sagas (
     id SERIAL PRIMARY KEY,
     title VARCHAR(100),
-    id_franchise INT REFERENCES franchises(id) ON DELETE SET NULL
+    id_franchise INT REFERENCES franchises(id) ON DELETE CASCADE
 );
 
 -- Tabla de juegos
@@ -30,9 +30,9 @@ CREATE TABLE games (
     genre VARCHAR(300) NOT NULL,
     perspective VARCHAR(300) NOT NULL,
     image VARCHAR(255) NOT NULL,
-    id_franchise INT REFERENCES franchises(id) ON DELETE SET NULL,
-    id_saga INT REFERENCES sagas(id) ON DELETE SET NULL,
-    id_developer INT REFERENCES developers(id) ON DELETE SET NULL
+    id_franchise INT REFERENCES franchises(id) ON DELETE CASCADE,
+    id_saga INT REFERENCES sagas(id) ON DELETE CASCADE,
+    id_developer INT REFERENCES developers(id) ON DELETE CASCADE
 );
 
 -- Tabla de personajes
@@ -44,5 +44,5 @@ CREATE TABLE characters (
     species VARCHAR(50) NOT NULL,
     description VARCHAR(500) NOT NULL,
     main_skill VARCHAR(100) NOT NULL,
-    id_game INT REFERENCES games(id) ON DELETE SET NULL
+    id_game INT REFERENCES games(id) ON DELETE CASCADE
 );
