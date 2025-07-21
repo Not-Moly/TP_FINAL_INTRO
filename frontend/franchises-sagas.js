@@ -1,4 +1,3 @@
-
 // Defino variables de funciones
 let loadFranchise;
 let loadSaga;
@@ -8,6 +7,9 @@ let loadedFranchises = {};
 let loadedSagas = {};
 
 async function loadFranchisesSagas() {
+    // Limpiar diccionarios
+    loadedFranchises = {};
+    loadedSagas = {};
     //#region Database Load
     loadFranchise = async () => {
         try {
@@ -260,18 +262,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const inputsFranchisesSagas = document.querySelectorAll('.franchise_and_saga-container');
 
-        inputsFranchisesSagas.forEach(async ($elFranchiseSaga) => {
-            const franchiseId = $elFranchiseSaga.querySelector('.input.franchise-id').value;
+        for (const $elFranchiseSaga of inputsFranchisesSagas) {
+            let franchiseId = $elFranchiseSaga.querySelector('.input.franchise-id').value;
             const franchiseTitle = $elFranchiseSaga.querySelector('.input.franchise-title').value;
             const inputsSagas = $elFranchiseSaga.querySelectorAll('.saga-wrapper');
 
-            // CREATE o UPDATE de franquicia
             try {
                 // Si el input de id está vacío significa que es una nueva franquicia que se creó entonces hacer POST
-                if (franchiseId == '') {
+                if (franchiseId === '') {
                     const newFranchise = {
                         title: franchiseTitle
-                    }
+                    };
                     const response = await fetch('http://localhost:3000/api/franchises', {
                         method: 'POST',
                         headers: {
@@ -283,14 +284,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                         const errorData = await response.json();
                         throw new Error(errorData.error || 'Error al agregar franquicia');
                     }
+                    const data = await response.json();
+                    franchiseId = data.id;
                 }
-                // Si el input de id no está vacío y el título cambió entonces hacer PUT
-                else if (loadedFranchises[franchiseId].title != franchiseTitle) {
+               // Si el input de id no está vacío y el título cambió entonces hacer PUT
+                else if (loadedFranchises[franchiseId].title !== franchiseTitle) {
                     const updatedFranchise = {
                         title: franchiseTitle
-                    }
-                    console.log(franchiseId);
-                    console.log(updatedFranchise);
+                    };
                     const response = await fetch(`http://localhost:3000/api/franchises/${franchiseId}`, {
                         method: 'PUT',
                         headers: {
@@ -309,19 +310,18 @@ document.addEventListener("DOMContentLoaded", async () => {
                 alert(`Error: ${error.message}`);
             }
 
-            inputsSagas.forEach(async ($elSaga) => {
-
+            for (const $elSaga of inputsSagas) {
                 const sagaId = $elSaga.querySelector('.input.saga-id').value;
                 const sagaTitle = $elSaga.querySelector('.input.saga-title').value;
-
+                
                 // CREATE o UPDATE de saga
                 try {
-                    // Si el input de id está vacío significa que es una nueva franquicia que se creó entonces hacer POST
-                    if (sagaId == '') {
-                        newSaga = {
+                    // Si el input de id está vacío significa que es una nueva saga que se creó entonces hacer POST
+                    if (sagaId === '') {
+                        const newSaga = {
                             title: sagaTitle,
                             id_franchise: franchiseId
-                        }
+                        };
                         const response = await fetch('http://localhost:3000/api/sagas', {
                             method: 'POST',
                             headers: {
@@ -335,13 +335,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                         }
                     }
                     // Si el input de id no está vacío y el título cambió entonces hacer PUT
-                    else if (loadedSagas[sagaId].title != sagaTitle) {
+                    else if (loadedSagas[sagaId].title !== sagaTitle) {
                         const updatedSaga = {
                             title: sagaTitle,
                             id_franchise: franchiseId
-                        }
-                        console.log(sagaId);
-                        console.log(updatedSaga);
+                        };
                         const response = await fetch(`http://localhost:3000/api/sagas/${sagaId}`, {
                             method: 'PUT',
                             headers: {
@@ -359,10 +357,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                     console.error('Error:', error);
                     alert(`Error: ${error.message}`);
                 }
-            });
-
-
-        });
+            }
+        }
         // Cerrar modal
         closeFSModal(franchisesAndSagasModal);
         // Actualizar lista
