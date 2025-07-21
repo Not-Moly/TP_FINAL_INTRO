@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <div class="card character-card entity-card">
                         <div class="card-image">
                             <figure class="image is-4by3">
-                                <img src="${character.image || 'https://via.placeholder.com/300'}" alt="Imagen del personaje">
+                                <img src="${character.image || 'https://via.placeholder.com/300'}" alt="Imagen de ${character.name}">
                             </figure>
                         </div>
                         <div class="card-content">
@@ -260,10 +260,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const character_id = document.getElementById('char-id').value;
 
             const response = await fetch(`http://localhost:3000/api/characters/${character_id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
+                method: 'DELETE'
             });
             if (!response.ok) {
                 const errorData = await response.json();
