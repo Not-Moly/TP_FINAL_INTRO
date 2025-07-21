@@ -82,17 +82,17 @@ async function getOneCharacter(id) {
 
 async function getCharactersByGame(gameId) {
     const result = await dbClient.query(
-        'SELECT characters.id as char_id, characters.name as name FROM characters WHERE characters.id_game = $1', 
+        'SELECT characters.id as char_id, characters.character_name as character_name FROM characters WHERE characters.id_game = $1', 
         [gameId]
     );
     
     const characters = {};
 
     result.rows.forEach(row => {
-        if (!games[row.char_id]) {
-            games[row.char_ii] = {
+        if (!characters[row.char_id]) {
+            characters[row.char_id] = {
                 id: row.char_id,
-                name: row.name
+                name: row.character_name
             }
         }
     });
