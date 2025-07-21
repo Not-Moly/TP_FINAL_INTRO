@@ -1,13 +1,15 @@
-
 // Defino variables de funciones
 let loadFranchise;
 let loadSaga;
 
 // Defino listas de Franquicias y Sagas (Se llenan al llamar las funciones anteriormente definidas)
-let loadedFranchises = [];
-let loadedSagas = [];
+let loadedFranchises = {};
+let loadedSagas = {};
 
 async function loadFranchisesSagas() {
+    // Limpiar diccionarios
+    loadedFranchises = {};
+    loadedSagas = {};
     //#region Database Load
     loadFranchise = async () => {
         try {
@@ -60,11 +62,11 @@ async function loadFranchisesSagas() {
 
 function updateFranchisesSagasModalValues() {
     // Los agrego al modal de Franquicias y Sagas
-    loadedFranchises.forEach((franchise, franchise_id) => {
+    Object.entries(loadedFranchises).forEach(([franchise_id, franchise]) => {
         if (loadedFranchises[franchise_id]) {
             const tempFranchiseContainer = addFranchise(franchise_id);
-            loadedSagas.forEach((saga, saga_id) => {
-                if (franchise_id === saga.id_franchise) {
+            Object.entries(loadedSagas).forEach(([saga_id, saga]) => {
+                if (franchise_id == saga.id_franchise) {
                     addSaga(tempFranchiseContainer, saga_id);
                 }
             });
@@ -81,6 +83,45 @@ function closeFSModal($el) {
 
     // Resetear formulario (Franquicias y Sagas) para que después puedan ser agregadas en orden
     document.getElementById('franchises_and_sagas-container').innerHTML = '';
+}
+
+async function removeFranchise(id) {
+    if (id) {
+        try {
+            const response = await fetch(`http://localhost:3000/api/franchises/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Error al eliminar franquicia');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert(`Error: ${error.message}`);
+        }
+    }
+}
+async function removeSaga(id) {
+    if (id) {
+        try {
+            const response = await fetch(`http://localhost:3000/api/sagas/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Error al eliminar saga');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert(`Error: ${error.message}`);
+        }
+    }
 }
 
 function addFranchise(id = '') {
@@ -114,7 +155,10 @@ function addFranchise(id = '') {
     deleteBtn.appendChild(spanElement);
 
     // Eliminar la franquicia
-    deleteBtn.onclick = () => wrapperFS.remove();
+    deleteBtn.onclick = (async () => {
+        await removeFranchise(id);
+        wrapperFS.remove();
+    });
 
     franchiseWrapper.appendChild(inputFranchiseId);
     franchiseWrapper.appendChild(inputFranchiseTitle);
@@ -169,7 +213,10 @@ function addSaga(container, id = '') {
     deleteBtn.appendChild(spanElement);
 
     // Eliminar la saga
-    deleteBtn.onclick = () => sagaWrapper.remove();
+    deleteBtn.onclick = (async () => {
+        await removeSaga(id);
+        sagaWrapper.remove()
+    });
 
     // Agrego a wrappers y contenedores
     sagaWrapper.appendChild(inputSagaId);
@@ -203,95 +250,118 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
+
+
+
     // Envío del formulario
     franchisesAndSagasModal.querySelector('#submit-btn').addEventListener('click', async () => {
         // Verificar si TODOS los inputs tienen un valor no vacío
         if (!Array.from(document.querySelectorAll('.franchise-title, .saga-title')).every(input => input.value.trim() !== '')) {
             throw new Error('Las franquicias o sagas no pueden tener un valor vacío');
-            return;
         }
 
-        const newFranchise = {
-            title: "test",
-        };
+        const inputsFranchisesSagas = document.querySelectorAll('.franchise_and_saga-container');
 
-        const inputsFranchises = document.querySelectorAll('.franchise-wrapper');
-        const inputsSagas = document.querySelectorAll('.saga-wrapper');
-        inputsFranchises.forEach(async ($el) => {
-            const franchiseId = $el.querySelector('.input franchise-id');
-            const franchiseTitle = $el.querySelector('.input franchise-title');
+        for (const $elFranchiseSaga of inputsFranchisesSagas) {
+            let franchiseId = $elFranchiseSaga.querySelector('.input.franchise-id').value;
+            const franchiseTitle = $elFranchiseSaga.querySelector('.input.franchise-title').value;
+            const inputsSagas = $elFranchiseSaga.querySelectorAll('.saga-wrapper');
+
             try {
-                let response;
-                if(franchiseId === '')
-                if (loadedFranchises[franchiseId].title != franchiseTitle) {
+                // Si el input de id está vacío significa que es una nueva franquicia que se creó entonces hacer POST
+                if (franchiseId === '') {
                     const newFranchise = {
-                        'title': franchiseTitle
-                    }
-                    response = await fetch(`http://localhost:3000/api/franchise/${franchiseId}`, {
-                        method: 'PUT',
+                        title: franchiseTitle
+                    };
+                    const response = await fetch('http://localhost:3000/api/franchises', {
+                        method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify(newFranchise)
                     });
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Error al agregar franquicia');
+                    }
+                    const data = await response.json();
+                    franchiseId = data.id;
+                }
+               // Si el input de id no está vacío y el título cambió entonces hacer PUT
+                else if (loadedFranchises[franchiseId].title !== franchiseTitle) {
+                    const updatedFranchise = {
+                        title: franchiseTitle
+                    };
+                    const response = await fetch(`http://localhost:3000/api/franchises/${franchiseId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(updatedFranchise)
+                    });
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Error al editar franquicia');
+                    }
+                }
 
-                }
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Error al editar juego');
-                }
             } catch (error) {
                 console.error('Error:', error);
                 alert(`Error: ${error.message}`);
             }
-        });
-        // inputsSagas.forEach(($el) => {
-        //     const sagaId = $el.querySelector('.input saga-id');
-        //     const sagaTitle = $el.querySelector('.input saga-title');
-        //     if (loadedSagas[sagaId].title != sagaTitle) {
-        //         // update
-        //     }
-        // });
 
+            for (const $elSaga of inputsSagas) {
+                const sagaId = $elSaga.querySelector('.input.saga-id').value;
+                const sagaTitle = $elSaga.querySelector('.input.saga-title').value;
+                
+                // CREATE o UPDATE de saga
+                try {
+                    // Si el input de id está vacío significa que es una nueva saga que se creó entonces hacer POST
+                    if (sagaId === '') {
+                        const newSaga = {
+                            title: sagaTitle,
+                            id_franchise: franchiseId
+                        };
+                        const response = await fetch('http://localhost:3000/api/sagas', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(newSaga)
+                        });
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.error || 'Error al agregar saga');
+                        }
+                    }
+                    // Si el input de id no está vacío y el título cambió entonces hacer PUT
+                    else if (loadedSagas[sagaId].title !== sagaTitle) {
+                        const updatedSaga = {
+                            title: sagaTitle,
+                            id_franchise: franchiseId
+                        };
+                        const response = await fetch(`http://localhost:3000/api/sagas/${sagaId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(updatedSaga)
+                        });
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.error || 'Error al editar saga');
+                        }
+                    }
 
-        try {
-            const game_id = document.getElementById('game-id').value;
-            if (!game_id) {
-                const response = await fetch('http://localhost:3000/api/games', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(newGame)
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Error al crear juego');
-                }
-            } else {
-                const response = await fetch(`http://localhost:3000/api/games/${game_id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(newGame)
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Error al editar juego');
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert(`Error: ${error.message}`);
                 }
             }
-
-            // Cerrar modal
-            closeGameModal(gameModal);
-            // Actualizar lista
-            await loadGames();
-
-        } catch (error) {
-            console.error('Error:', error);
-            alert(`Error: ${error.message}`);
         }
+        // Cerrar modal
+        closeFSModal(franchisesAndSagasModal);
+        // Actualizar lista
+        await loadFranchisesSagas();
     });
 });
