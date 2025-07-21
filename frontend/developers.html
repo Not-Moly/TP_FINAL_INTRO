@@ -14,14 +14,103 @@
 </head>
 
 <body>
-  <div id="tabs-container"></div>
-    <div class="has-text-right" style="padding: 20px;">
-        <button id="añadir" class="button is-primary is-rounded">
+    <div id="tabs-container"></div>
+    <div id="entity-page-title">
+        <h1 class="title has-text-centered">Desarrolladores</h1>
+    </div>
+
+    <div class="main-content">
+
+        <button id="add-button" class="button is-primary is-rounded">
             <span class="icon">
                 <i class="fas fa-plus"></i>
             </span>
         </button>
-    </div>
+
+        <div class="entities-container"></div>
+
+        <div class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">PLACEHOLDER-TEXT</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-scrollable modal-card-body">
+                    <form id="dev-form">
+                        <input id="dev-id" type="hidden" value="">
+                        <div class="field">
+                            <label class="label" for="dev-name">Nombre</label>
+                            <div class="control">
+                                <input id="dev-name" class="input" type="text" placeholder="Nombre del desarrollador">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="dev-foundation">Año de Fundacion</label>
+                            <div class="control">
+                                <input id="dev-foundation" class="input" type="number" placeholder="Año de Fundacion">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="dev-count">Cantidad de Juegos</label>
+                            <div class="control">
+                                <input id="dev-count" class="input" type="number" placeholder="Cantidad de Juegos">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="dev-country">Pais de Origen</label>
+                            <div class="control">
+                                <input id="dev-country" class="input" type="text" placeholder="Pais de Origen">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="dev-type">Tipo de Entidad</label>
+                            <div class="control">
+                                <div class="select">
+                                    <select id="dev-type">
+                                        <option value="" disabled selected>Seleccione un tipo de Entidad</option>
+                                        <option value="indie">Independiente</option>
+                                        <option value="estudio">Estudio</option>
+                                        <option value="AAA">AAA</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+                <footer class="modal-card-foot is-flex">
+                    <div class="buttons" style="margin-bottom: 0px;">
+                        <button id="submit-btn" class="button is-success">PLACEHOLDER-TEXT</button>
+                        <button id="cancel-btn" class="button">Cancelar</button>
+                    </div>
+                    <div class="buttons ml-auto">
+                        <button id="delete-btn" class="button is-danger">
+                            <span class="icon is-small">
+                                <i class="fas fa-trash"></i>
+                            </span>
+                        </button>
+                    </div>
+                </footer>
+            </div>
+        </div>
+
+        <div id="confirm-delete-modal" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head has-background-danger">
+                    <p class="modal-card-title has-text-warning-dark">Estas seguro?</p>
+                    <button class="delete" aria-label="close" id="modal-close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <p>Estas seguro que quieres eliminar esta entidad?</p>
+                    <p>Cualquier otra entidad relacionada a esta sera eliminada!</p>
+                    <div class="buttons mt-5">
+                        <button class="button is-danger" id="modal-confirm">Si, borrar</button>
+                        <button class="button" id="modal-cancel">Cancelar</button>
+                    </div>
+                </section>
+            </div>
+        </div>
 </body>
 
 
