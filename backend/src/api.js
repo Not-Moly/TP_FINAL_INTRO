@@ -12,7 +12,8 @@ const {
     getOneGame,
     createGame,
     deleteGame,
-    updateGame
+    updateGame,
+    getGamesByDeveloper
 } = require('./database/games_db');
 
 //   ██████╗  █████╗ ███╗   ███╗███████╗███████╗
@@ -75,6 +76,10 @@ app.get('/api/games/:id', async (req, res) => {
         return res.sendStatus(404).json({ error: 'Game not found' });
     }
     res.json((game));
+});
+app.get('/api/gamesbydeveloper/:id', async (req, res) => {
+    let games = await getGamesByDeveloper(req.params.id);
+    res.json((games));
 });
 
 
@@ -264,6 +269,7 @@ app.delete('/api/developers/:id', async (req, res) => {
 const {
     getAllCharacters,
     getOneCharacter,
+    getCharactersByGame,
     createCharacter,
     deleteCharacter,
     updateCharacter
@@ -327,6 +333,10 @@ app.get('/api/characters/:id', async (req, res) => {
     if (!character) {
         return res.sendStatus(404).json({ error: 'Character not found' });
     }
+    res.json((character));
+});
+app.get('/api/charactersbygame/:id', async (req, res) => {
+    let character = await getCharactersByGame(req.params.id);
     res.json((character));
 });
 
