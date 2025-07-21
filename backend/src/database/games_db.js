@@ -68,11 +68,11 @@ async function getOneGame(id) {
         'FROM games WHERE games.id = $1', [id]
     );
 
-    const games = {};
+    const game = {};
 
     result.rows.forEach(row => {
-        if (!games[row.game_id]) {
-            games[row.game_id] = {
+        if (!game[row.game_id]) {
+            game[row.game_id] = {
                 title: row.title,
                 release_year: row.release_year,
                 gamemode: row.gamemode,
@@ -85,15 +85,27 @@ async function getOneGame(id) {
             }
         }
     });
-    return games;
+    return game;
 };
 
 async function getGamesByDeveloper(developerId) {
     const result = await dbClient.query(
-        'SELECT id, title FROM games WHERE id_developer = $1', 
+        'SELECT games.id as game_id, games.title as title FROM games WHERE games.id_developer = $1', 
         [developerId]
     );
-    return result.rows;
+    
+    const games = {};
+
+    result.rows.forEach(row => {
+        if (!games[row.game_id]) {
+            games[row.game_id] = {
+                id: row.game_id,
+                title: row.title
+            }
+        }
+    });
+
+    return games;
 }
 
 
