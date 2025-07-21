@@ -49,7 +49,7 @@ async function createGameModal() {
     let loadDeveloperOptions;
     let loadFranchiseOptions;
     let loadSagaOptions;
-    
+
     //#region Database Load
     loadDeveloperOptions = async () => {
         const gameDeveloperOptions = document.getElementById('game-developer');
@@ -89,7 +89,7 @@ async function createGameModal() {
         }
     };
     await loadDeveloperOptions();
-    
+
 
     loadFranchiseOptions = async () => {
         const gameFranchiseOptions = document.getElementById('game-franchise');
@@ -309,6 +309,28 @@ function closeGameModal($el) {
     });
 }
 
+function openDeleteModal(onConfirm) {
+    const modal = document.getElementById('confirm-delete-modal');
+    const modalClose = modal.querySelector('#modal-close');
+    const modalCancel = modal.querySelector('#modal-cancel');
+    const modalConfirm = modal.querySelector('#modal-confirm');
+
+    modal.classList.add('is-active');
+
+    const closeModal = () => {
+        modal.classList.remove('is-active');
+        modalConfirm.onclick = null;
+    };
+
+    modalClose.onclick = closeModal;
+    modalCancel.onclick = closeModal;
+
+    modalConfirm.onclick = () => {
+        closeModal();
+        onConfirm();
+    };
+}
+
 
 document.addEventListener("DOMContentLoaded", async () => {
     // Creo modal para la edición de datos de juegos
@@ -486,28 +508,51 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Eliminar juego
     document.getElementById('delete-btn').addEventListener('click', async () => {
-        try {
+        document.getElementById('confirm-delete-text').innerHTML = '¿Estás seguro que quieres eliminar ésta entidad?'
+        openDeleteModal(async () => {
             const game_id = document.getElementById('game-id').value;
+            try {
 
-            const response = await fetch(`http://localhost:3000/api/games/${game_id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
+                const response = await fetch(`http://localhost:3000/api/charactersbygame/${game_id}`);
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Error al conseguir personajes por juego');
                 }
-            });
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Error al eliminar juego');
-            }
 
-            // Cerrar modal
-            closeGameModal(gameModal);
-            // Actualizar lista
-            await loadGames();
-        } catch (error) {
-            console.error('Error:', error);
-            alert(`Error: ${error.message}`);
-        }
-    });
+                const characters = await response.json();
+
+                // Verificar cantidad de juegos nula
+                if (Object.keys(characters).length != 0) {
+                    document.getElementById('confirm-delete-text').innerHTML = 'Éste juego tiene personajes asignados, si lo eliminas los personajes también resultarán eliminados!'
+                    openDeleteModal(async () => {
+                        try {
+                            const response = await fetch(`http://localhost:3000/api/games/${game_id}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                }
+                            });
+                            if (!response.ok) {
+                                const errorData = await response.json();
+                                throw new Error(errorData.error || 'Error al eliminar juego');
+                            }
+
+                            // Cerrar modal
+                            closeGameModal(gameModal);
+                            // Actualizar lista
+                            await loadGames();
+                        } catch (error) {
+                            console.error('Error:', error);
+                            alert(`Error: ${error.message}`);
+                        }
+                    });
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert(`Error: ${error.message}`);
+            }
+        });
+    })
 
 });
