@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.getElementById('no-chars').style = Object.keys(characters).length === 0 ? 'display: block;' : 'display: none;';
 
             // Verificar cantidad de personajes nula
-            if (Object.keys(characters).length === 0) {
+            if (Object.keys(characters).length !== 0) {
                 // Crear grid de personajes
                 const grid = document.createElement('div');
                 grid.className = 'columns is-multiline is-centered';

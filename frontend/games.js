@@ -371,7 +371,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             document.getElementById('no-games').style = Object.keys(games).length === 0 ? 'display: block;' : 'display: none;';
 
-            if (Object.keys(games).length === 0) {
+            if (Object.keys(games).length !== 0) {
                 // Crear grid de juegos
                 const grid = document.createElement('div');
                 grid.className = 'columns is-multiline is-centered';
