@@ -1,12 +1,13 @@
-let loadGames;
+export let loadGames;
 let updateValueSelects;
 let updateAllValueSelects;
 
-import {allGameGamemodes, allGameGenres, allGamePerspectives} from './datasets.js';
-import {loadDevelopers, loadFranchisesSagas, loadedDevelopers, loadedFranchises, loadedSagas} from './games-page-utils.js';
+import { allGameGamemodes, allGameGenres, allGamePerspectives } from './datasets.js';
+import { loadDevelopers, loadFranchisesSagas, loadedDevelopers, loadedFranchises, loadedSagas } from './games-page-utils.js';
 
 function createDeveloperOptions() {
     const gameDeveloperOptions = document.getElementById('game-developer');
+    gameDeveloperOptions.innerHTML = '<option value="" disabled selected>Seleccione un desarrollador</option>';
 
     // Crear opciones de desarrolladores
     for (const [id, developer] of Object.entries(loadedDevelopers)) {
@@ -17,8 +18,9 @@ function createDeveloperOptions() {
     }
 }
 
-async function createFranchiseOptions() {
+function createFranchiseOptions() {
     const gameFranchiseOptions = document.getElementById('game-franchise');
+    gameFranchiseOptions.innerHTML = '<option value="" disabled selected>Seleccione una franquicia</option>';
 
     // Crear opciones de franquicias
     for (const [id, franchise] of Object.entries(loadedFranchises)) {
@@ -27,12 +29,11 @@ async function createFranchiseOptions() {
         newOption.innerHTML = `${franchise.title}`;
         gameFranchiseOptions.append(newOption);
     }
-
-
 };
 
-async function createSagaOptions() {
+function createSagaOptions() {
     const gameSagaOptions = document.getElementById('game-saga');
+    gameSagaOptions.innerHTML = '<option value="" disabled selected>Seleccione una saga</option>';
 
     // Crear opciones de sagas
     for (const [id, saga] of Object.entries(loadedSagas)) {
@@ -41,16 +42,21 @@ async function createSagaOptions() {
         newOption.innerHTML = `${saga.title}`;
         gameSagaOptions.append(newOption);
     }
-
+    console.log(gameSagaOptions);
+    
 };
+
+export function createGameModalFixedOptions() {
+    createDeveloperOptions();
+    createFranchiseOptions();
+    createSagaOptions();
+}
 
 async function createGameModal() {
 
     const gameModal = document.getElementById('game-modal');
-    // Agrego opción de desarrolladores al que pertenece
-    createDeveloperOptions();
-    createFranchiseOptions();
-    createSagaOptions();
+    // Agrego opción de desarrolladores, franquicias y sagas
+    createGameModalFixedOptions();
 
     //#region Option Values Methods
     function createSelect(allValues = [], selectedValues = [], selectedValue = '', typeOfValue = '') {
@@ -71,7 +77,7 @@ async function createGameModal() {
         // Clase para añadir scrollbar
         select.classList.add('modal-scrollable');
         // Opción default si no hay valor seleccionado
-        const customString = typeOfValue === "genre" ? "Seleccione un genero" : typeOfValue === "gamemode" ? "Seleccione un modo de juego" : typeOfValue === "perspective" ? "Seleccione una perspectiva" : "" ;
+        const customString = typeOfValue === "genre" ? "Seleccione un genero" : typeOfValue === "gamemode" ? "Seleccione un modo de juego" : typeOfValue === "perspective" ? "Seleccione una perspectiva" : "";
         select.innerHTML = `<option disabled ${!selectedValue ? 'selected' : ''} value="">${customString}</option>`;
         // Solo agregar las opciones disponibles
         availableOptions.forEach(valueOption => {
@@ -228,8 +234,6 @@ document.addEventListener("dataLoaded", async () => {
 
             const games = await response.json();
 
-            console.log(games);
-
             // Limpiar contenido existente
             const oldGrid = document.querySelector('.columns.is-multiline');
             if (oldGrid) oldGrid.remove();
@@ -290,10 +294,6 @@ document.addEventListener("dataLoaded", async () => {
                 }
                 container.appendChild(grid);
             }
-
-
-
-
         } catch (error) {
             console.error('Error:', error);
             const errorMessage = document.createElement('p');

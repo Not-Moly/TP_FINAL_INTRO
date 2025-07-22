@@ -1,4 +1,5 @@
 import { loadFranchisesSagas, loadedFranchises, loadedSagas } from './games-page-utils.js';
+import { loadGames, createGameModalFixedOptions } from './games.js';
 
 function updateFranchisesSagasModalValues() {
     // Los agrego al modal de Franquicias y Sagas
@@ -25,8 +26,7 @@ function closeFSModal($el) {
     document.getElementById('franchises_and_sagas-container').innerHTML = '';
 
     // Actualizar juegos
-    loadGames();
-    loadFranchisesSagas();
+    loadFranchisesSagas().then(() => loadGames().then(() => createGameModalFixedOptions() ));
 }
 
 function openDeleteModal(onConfirm) {
@@ -264,6 +264,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadFranchisesSagas();
     const franchisesAndSagasModal = document.getElementById('franchises_and_sagas-modal');
     const openModalButton = document.getElementById("manage-franchises_and_sagas-button");
+    // Agregar funcionalidad al botón "Agregar Franquicia"
+    document.getElementById('add-franchise').addEventListener('click', () => { addFranchise(); });
 
     openModalButton.addEventListener('click', () => {
         updateFranchisesSagasModalValues();
