@@ -27,10 +27,10 @@ INSERT INTO sagas (title, id_franchise) VALUES
 ('Black Ops',6),
 ('Modern Warfare (OLD)',6);
 
-
 -- Games
 INSERT INTO games (title, release_year, gamemode, genre, perspective, image, id_franchise, id_saga, id_developer) VALUES
 ('The Legend of Zelda: Breath of the Wild', 2017, 'Un jugador', 'Acción, Aventura, Plataformas, Puzle / Rompecabezas, Rol (RPG)', 'Tercera persona', 'https://upload.wikimedia.org/wikipedia/en/thumb/c/c6/The_Legend_of_Zelda_Breath_of_the_Wild.jpg/250px-The_Legend_of_Zelda_Breath_of_the_Wild.jpg', 1, 1, 1),
+('The Witcher 2: Assassins of Kings', 2011, 'Un jugador', 'Acción, Aventura, Rol (RPG)', 'Tercera persona', 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/20920/capsule_616x353.jpg?t=1749200131', 2, 2, 2),
 ('The Witcher 3: Wild Hunt', 2015, 'Un jugador', 'Acción, Aventura, Rol (RPG)', 'Tercera persona', 'https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Witcher_3_cover_art.jpg/250px-Witcher_3_cover_art.jpg', 2, 2, 2),
 ('Hades', 2020, 'Un jugador', 'Hack and Slash, Roguelike / Roguelite', 'Vista de pájaro / Isométrica', 'https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/ncom/software/switch/70010000033131/dbc8c55a21688b446a5c57711b726956483a14ef8c5ddb861f897c0595ccb6b5', 3, 3, 3),
 ('Dark Souls III', 2016, 'Cooperativo, Un jugador', 'Aventura, Rol (RPG), Soulslike', 'Tercera persona', 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQ-H2Wca6bBgYkATIE55kFkQ5-ss3jDW8_wjrqu7D_2e4wTd6s8acGBAEwWO0ZAwfZrAjp_lNjp4PLQ6BTBCqFsuCyElA9j66dTJD-9zA', 4, 4, 4),
@@ -53,9 +53,9 @@ INSERT INTO characters (character_name, image, gender, species, description, mai
 
 INSERT INTO game_characters (id_game, id_character) VALUES
 (1, 1),  -- Zelda BOTW -> Link
-(2, 2),  -- Witcher 3 -> Geralt
-(3, 3),  -- Hades -> Zagreus
-(4, 4),  -- Dark Souls 3 -> Solaire
-(5, 5),  -- Stardew Valley -> Abigail
-(7, 6), (7, 7),  -- COD4: Soap y Price
-(6, 8), (6, 9), (6, 10);  -- BO2: Mason, Woods, Menendez
+(2, 2), (3,2),  -- Witcher 3 y Witcher 2 -> Geralt
+(4, 3),  -- Hades -> Zagreus
+(5, 4),  -- Dark Souls 3 -> Solaire
+(6, 5),  -- Stardew Valley -> Abigail
+(7, 8), (7, 9), (7, 10),  -- BO2: Mason, Woods, Menendez
+(8, 6), (8, 7);  -- COD4: Soap y Price
