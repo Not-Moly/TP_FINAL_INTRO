@@ -1,5 +1,5 @@
 let loadGames;
-let loadedDevelopers = {};
+
 
 const allGameGamemodes = [
     "Cooperativo",
@@ -58,6 +58,54 @@ const allGamePerspectives = [
 let updateValueSelects;
 let updateAllValueSelects;
 
+function loadDeveloperOptions() {
+    const gameDeveloperOptions = document.getElementById('game-developer');
+
+    // Crear opciones de desarrolladores
+    for (const [id, developer] of Object.entries(developers)) {
+        const newOption = document.createElement('option');
+        newOption.value = id;
+        newOption.innerHTML = `${developer.name}`;
+        gameDeveloperOptions.append(newOption);
+
+        // Agregar a lista de developers global
+        loadedDevelopers[id] = developer;
+    }
+}
+
+async function loadFranchiseOptions() {
+    const gameFranchiseOptions = document.getElementById('game-franchise');
+
+    // Crear opciones de franquicias
+    for (const [id, franchise] of Object.entries(franchises)) {
+        const newOption = document.createElement('option');
+        newOption.value = id;
+        newOption.innerHTML = `${franchise.title}`;
+        gameFranchiseOptions.append(newOption);
+
+        // Agregar a lista de franchises global
+        loadedFranchises[id] = franchise;
+    }
+
+
+};
+
+async function loadSagaOptions() {
+    const gameSagaOptions = document.getElementById('game-saga');
+
+    // Crear opciones de sagas
+    for (const [id, saga] of Object.entries(sagas)) {
+        const newOption = document.createElement('option');
+        newOption.value = id;
+        newOption.innerHTML = `${saga.title}`;
+        gameSagaOptions.append(newOption);
+
+        // Agregar a lista de sagas global
+        loadedSagas[id] = saga;
+    }
+
+};
+
 async function createGameModal() {
 
     const gameModal = document.getElementById('game-modal');
@@ -65,127 +113,6 @@ async function createGameModal() {
     let loadDeveloperOptions;
     let loadFranchiseOptions;
     let loadSagaOptions;
-
-    //#region Database Load
-    loadDeveloperOptions = async () => {
-        const gameDeveloperOptions = document.getElementById('game-developer');
-        try {
-            // Conseguir conexión con la base de datos de los desarrolladores
-            const response = await fetch('http://localhost:3000/api/developers');
-            if (!response.ok) throw new Error('Error al cargar desarrolladores');
-
-            const developers = await response.json();
-
-            // Verificar cantidad de desarrolladores nula
-            if (Object.keys(developers).length === 0) {
-                const emptyMessage = document.createElement('p');
-                emptyMessage.textContent = 'No hay desarrolladores registrados';
-                emptyMessage.className = 'has-text-centered';
-                gameDeveloperOptions.appendChild(emptyMessage);
-                return;
-            }
-
-            // Crear opciones de desarrolladores
-            for (const [id, developer] of Object.entries(developers)) {
-                const newOption = document.createElement('option');
-                newOption.value = id;
-                newOption.innerHTML = `${developer.name}`;
-                gameDeveloperOptions.append(newOption);
-
-                // Agregar a lista de developers global
-                loadedDevelopers[id] = developer;
-            }
-
-        } catch (error) {
-            console.error('Error:', error);
-            const errorMessage = document.createElement('p');
-            errorMessage.textContent = 'Error al cargar los desarrolladores';
-            errorMessage.className = 'has-text-centered has-text-danger';
-            gameDeveloperOptions.appendChild(errorMessage);
-        }
-    };
-    await loadDeveloperOptions();
-
-
-    loadFranchiseOptions = async () => {
-        const gameFranchiseOptions = document.getElementById('game-franchise');
-        try {
-            // Conseguir conexión con la base de datos de los franquicias
-            const response = await fetch('http://localhost:3000/api/franchises');
-            if (!response.ok) throw new Error('Error al cargar franquicias');
-
-            const franchises = await response.json();
-
-            // Verificar cantidad de franquicias nula
-            if (Object.keys(franchises).length === 0) {
-                const emptyMessage = document.createElement('p');
-                emptyMessage.textContent = 'No hay franquicias registrados';
-                emptyMessage.className = 'has-text-centered';
-                gameFranchiseOptions.appendChild(emptyMessage);
-                return;
-            }
-
-            // Crear opciones de franquicias
-            for (const [id, franchise] of Object.entries(franchises)) {
-                const newOption = document.createElement('option');
-                newOption.value = id;
-                newOption.innerHTML = `${franchise.title}`;
-                gameFranchiseOptions.append(newOption);
-
-                // Agregar a lista de franchises global
-                loadedFranchises[id] = franchise;
-            }
-
-        } catch (error) {
-            console.error('Error:', error);
-            const errorMessage = document.createElement('p');
-            errorMessage.textContent = 'Error al cargar los franquicias';
-            errorMessage.className = 'has-text-centered has-text-danger';
-            gameFranchiseOptions.appendChild(errorMessage);
-        }
-    };
-    await loadFranchiseOptions();
-
-    loadSagaOptions = async () => {
-        const gameSagaOptions = document.getElementById('game-saga');
-        try {
-            // Conseguir conexión con la base de datos de los sagas
-            const response = await fetch('http://localhost:3000/api/sagas');
-            if (!response.ok) throw new Error('Error al cargar sagas');
-
-            const sagas = await response.json();
-
-            // Verificar cantidad de sagas nula
-            if (Object.keys(sagas).length === 0) {
-                const emptyMessage = document.createElement('p');
-                emptyMessage.textContent = 'No hay sagas registrados';
-                emptyMessage.className = 'has-text-centered';
-                gameSagaOptions.appendChild(emptyMessage);
-                return;
-            }
-
-            // Crear opciones de sagas
-            for (const [id, saga] of Object.entries(sagas)) {
-                const newOption = document.createElement('option');
-                newOption.value = id;
-                newOption.innerHTML = `${saga.title}`;
-                gameSagaOptions.append(newOption);
-
-                // Agregar a lista de sagas global
-                loadedSagas[id] = saga;
-            }
-
-        } catch (error) {
-            console.error('Error:', error);
-            const errorMessage = document.createElement('p');
-            errorMessage.textContent = 'Error al cargar los sagas';
-            errorMessage.className = 'has-text-centered has-text-danger';
-            gameSagaOptions.appendChild(errorMessage);
-        }
-    };
-    await loadSagaOptions();
-    //#endregion
-    // ------------------------------------------------------------
 
     //#region Option Values Methods
     function createSelect(allValues = [], selectedValues = [], selectedValue = '', typeOfValue = '') {
@@ -348,7 +275,6 @@ function openDeleteModal(onConfirm) {
     };
 }
 
-
 document.addEventListener("DOMContentLoaded", async () => {
     // Creo modal para la edición de datos de juegos
     // Lo llamo al principio para tener la referencia al elemento y poder agregarlo a la función de abrir modal al clickear en un juego
@@ -364,7 +290,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (!response.ok) throw new Error('Error al cargar juegos');
 
             const games = await response.json();
-            
+
             console.log(games);
 
             // Limpiar contenido existente
@@ -431,7 +357,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
-           
+
         } catch (error) {
             console.error('Error:', error);
             const errorMessage = document.createElement('p');
@@ -446,9 +372,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     //Agregar funcionalidad al botón
     const addButton = document.getElementById('add-button');
+    const modalCreateError = document.getElementById('error-create-modal');
     if (addButton) {
         addButton.addEventListener('click', () => {
-            openGameModal(gameModal, 'add');
+            if (Object.keys(loadedDevelopers).length === 0 || Object.keys(loadedFranchises).length === 0 || Object.keys(loadedSagas).length === 0) {
+                modalCreateError.classList.add("is-active");
+            }
+            else {
+                openGameModal(gameModal, 'add');
+            }
+
         });
     }
 
@@ -463,6 +396,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             closeGameModal(gameModal);
         }
     });
+
+    (modalCreateError.querySelectorAll('.modal-background, .delete, #cancel-btn, #modal-confirm') || []).forEach(($close) => {
+        $close.addEventListener('click', () => {
+            modalCreateError.classList.remove("is-active");
+        });
+    });
+    document.addEventListener('keydown', (event) => {
+        if (event.key === "Escape") {
+            modalCreateError.classList.remove("is-active");
+        }
+    });
+
 
     // Envío del formulario
     gameModal.querySelector('#submit-btn').addEventListener('click', async () => {
