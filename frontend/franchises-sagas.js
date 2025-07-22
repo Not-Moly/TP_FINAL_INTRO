@@ -26,13 +26,13 @@ function closeFSModal($el) {
     document.getElementById('franchises_and_sagas-container').innerHTML = '';
 
     // Actualizar juegos
-    loadFranchisesSagas().then(() => loadGames().then(() => createGameModalFixedOptions() ));
+    loadFranchisesSagas().then(() => loadGames().then(() => createGameModalFixedOptions()));
 }
 
 function openDeleteModal(onConfirm) {
     const modal = document.getElementById('confirm-delete-modal');
-    const modalCancel = modal.querySelector('#modal-cancel');
-    const modalConfirm = modal.querySelector('#modal-confirm');
+    const modalCancel = modal.querySelector('#confirm-delete-modal-cancel');
+    const modalConfirm = modal.querySelector('#confirm-delete-modal-confirm');
 
     modal.classList.add('is-active');
 
@@ -87,12 +87,14 @@ function removeFranchise(id, wrapperFS) {
                         if (await fetchDeleteFranchise(id)) {
                             // Eliminar el input que contiene a la franquicia y sus sagas
                             wrapperFS.remove();
+                            await loadGames();
                         }
                     });
                 } else {
                     if (await fetchDeleteFranchise(id)) {
                         // Eliminar el input que contiene a la franquicia y sus sagas
                         wrapperFS.remove();
+                        await loadGames();
                     }
 
                 }
@@ -142,12 +144,14 @@ function removeSaga(id, wrapperSaga) {
                         if (await fetchDeleteSaga(id)) {
                             // Eliminar el input que contiene a la saga
                             wrapperSaga.remove();
+                            await loadGames();
                         }
                     });
                 } else {
                     if (await fetchDeleteSaga(id)) {
                         // Eliminar el input que contiene a la saga
                         wrapperSaga.remove();
+                        await loadGames();
                     }
                 }
 
@@ -275,7 +279,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     // Manejadores de cierre del modal
-    (franchisesAndSagasModal.querySelectorAll('.modal-background, .delete, #cancel-btn') || []).forEach(($close) => {
+    (franchisesAndSagasModal.querySelectorAll('.modal-background, .delete, #cancel-franchises_and_sagas-btn') || []).forEach(($close) => {
         $close.addEventListener('click', () => {
             closeFSModal(franchisesAndSagasModal);
         });
@@ -290,7 +294,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     // Envío del formulario
-    franchisesAndSagasModal.querySelector('#submit-btn').addEventListener('click', async () => {
+    franchisesAndSagasModal.querySelector('#submit-franchises_and_sagas-btn').addEventListener('click', async () => {
         // Verificar si TODOS los inputs tienen un valor no vacío
         if (!Array.from(document.querySelectorAll('.franchise-title, .saga-title')).every(input => input.value.trim() !== '')) {
             throw new Error('Las franquicias o sagas no pueden tener un valor vacío');

@@ -170,18 +170,18 @@ async function createGameModal() {
     return gameModal;
 }
 
-//#region OPEN/CLOSE MODAL
+//#region OPEN/CLOSE MODAL METHODS
 function openGameModal($el, mode) {
     $el.classList.add('is-active');
     // Editar texto identificador de modal y visibilidad de botón borrar
     if (mode === 'edit') {
         $el.querySelector('.modal-card-title').innerHTML = `Editar Juego`;
-        $el.querySelector('#submit-btn').innerHTML = `Guardar cambios`;
-        $el.querySelector('#delete-btn').style.display = 'inline-flex';
+        $el.querySelector('#submit-game-btn').innerHTML = `Guardar cambios`;
+        $el.querySelector('#delete-game-btn').style.display = 'inline-flex';
     } else if (mode === 'add') {
         $el.querySelector('.modal-card-title').innerHTML = `Añadir Juego`;
-        $el.querySelector('#submit-btn').innerHTML = `Añadir`;
-        $el.querySelector('#delete-btn').style.display = 'none';
+        $el.querySelector('#submit-game-btn').innerHTML = `Añadir`;
+        $el.querySelector('#delete-game-btn').style.display = 'none';
     }
     updateAllValueSelects();
 }
@@ -207,8 +207,8 @@ function closeGameModal($el) {
 
 function openDeleteModal(onConfirm) {
     const modal = document.getElementById('confirm-delete-modal');
-    const modalCancel = modal.querySelector('#modal-cancel');
-    const modalConfirm = modal.querySelector('#modal-confirm');
+    const modalCancel = modal.querySelector('#confirm-delete-modal-cancel');
+    const modalConfirm = modal.querySelector('#confirm-delete-modal-confirm');
 
     modal.classList.add('is-active');
 
@@ -316,19 +316,20 @@ document.addEventListener("dataLoaded", async () => {
     const addButton = document.getElementById('add-button');
     const modalCreateError = document.getElementById('error-create-modal');
     if (addButton) {
-        addButton.addEventListener('click', () => {
-            if (Object.keys(loadedDevelopers).length === 0 || Object.keys(loadedFranchises).length === 0 || Object.keys(loadedSagas).length === 0) {
-                modalCreateError.classList.add("is-active");
-            }
-            else {
-                openGameModal(gameModal, 'add');
-            }
-
-        });
+        if (modalCreateError) {
+            addButton.addEventListener('click', () => {
+                if (Object.keys(loadedDevelopers).length === 0 || Object.keys(loadedFranchises).length === 0 || Object.keys(loadedSagas).length === 0) {
+                    modalCreateError.classList.add("is-active");
+                }
+                else {
+                    openGameModal(gameModal, 'add');
+                }
+            });
+        }
     }
 
     // Manejadores de cierre del modal
-    (gameModal.querySelectorAll('.modal-background, .delete, #cancel-btn') || []).forEach(($close) => {
+    (gameModal.querySelectorAll('.modal-background, .delete, #cancel-game-btn') || []).forEach(($close) => {
         $close.addEventListener('click', () => {
             closeGameModal(gameModal);
         });
@@ -339,20 +340,14 @@ document.addEventListener("dataLoaded", async () => {
         }
     });
 
-    (modalCreateError.querySelectorAll('.modal-background, .delete, #cancel-btn, #modal-confirm') || []).forEach(($close) => {
-        $close.addEventListener('click', () => {
-            modalCreateError.classList.remove("is-active");
-        });
-    });
-    document.addEventListener('keydown', (event) => {
-        if (event.key === "Escape") {
-            modalCreateError.classList.remove("is-active");
-        }
+    // Manejadores de cierre de modal de error al crear (Faltan entidades de dependencia) 
+    modalCreateError.querySelector('#error-create-modal-confirm').addEventListener('click', () => {
+        modalCreateError.classList.remove("is-active");
     });
 
 
     // Envío del formulario
-    gameModal.querySelector('#submit-btn').addEventListener('click', async () => {
+    gameModal.querySelector('#submit-game-btn').addEventListener('click', async () => {
         const newGame = {
             title: document.getElementById('game-title').value,
             release_year: document.getElementById('game-year').value,
@@ -433,7 +428,7 @@ document.addEventListener("dataLoaded", async () => {
         }
     }
 
-    document.getElementById('delete-btn').addEventListener('click', async () => {
+    document.getElementById('delete-game-btn').addEventListener('click', async () => {
         document.getElementById('confirm-delete-text').innerHTML = '¿Estás seguro que quieres eliminar ésta entidad?'
         openDeleteModal(async () => {
             const game_id = document.getElementById('game-id').value;

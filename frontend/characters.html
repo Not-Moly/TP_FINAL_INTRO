@@ -33,7 +33,7 @@
 
         </div>
 
-        <div class="modal">
+        <div id="character-modal" class="modal">
             <div class="modal-background"></div>
             <div class="modal-content">
                 <header class="modal-card-head">
@@ -113,11 +113,11 @@
                 </section>
                 <footer class="modal-card-foot is-flex">
                     <div class="buttons" style="margin-bottom: 0px;">
-                        <button id="submit-btn" class="button is-success">PLACEHOLDER-TEXT</button>
-                        <button id="cancel-btn" class="button">Cancelar</button>
+                        <button id="submit-char-btn" class="button is-success">PLACEHOLDER-TEXT</button>
+                        <button id="cancel-char-btn" class="button">Cancelar</button>
                     </div>
                     <div class="buttons ml-auto">
-                        <button id="delete-btn" class="button is-danger">
+                        <button id="delete-char-btn" class="button is-danger">
                             <span class="icon is-small">
                                 <i class="fas fa-trash"></i>
                             </span>
@@ -126,6 +126,9 @@
                 </footer>
             </div>
         </div>
+
+
+
         <div id="confirm-delete-modal" class="modal">
             <div class="modal-background"></div>
             <div class="modal-card">
@@ -135,8 +138,23 @@
                 <section class="modal-card-body">
                     <p id="confirm-delete-text">Estas seguro que quieres eliminar esta entidad?</p>
                     <div class="buttons mt-5">
-                        <button class="button is-danger" id="modal-confirm">Si, borrar</button>
-                        <button class="button" id="modal-cancel">Cancelar</button>
+                        <button class="button is-danger" id="confirm-delete-modal-confirm">Si, borrar</button>
+                        <button class="button" id="confirm-delete-modal-cancel">Cancelar</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div id="error-create-modal" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head has-background-danger">
+                    <p class="modal-card-title has-text-warning-dark">Error</p>
+                </header>
+                <section class="modal-card-body">
+                    <p id="confirm-delete-text">Añade juegos antes de poder agregar un personaje!</p>
+                    <div class="buttons mt-5">
+                        <button class="button is-danger" id="error-create-modal-confirm">Ok</button>
                     </div>
                 </section>
             </div>
