@@ -1,8 +1,23 @@
 // developers.js
 
+devTypes = [
+    "Indie",
+    "AA",
+    "AAA"
+]
+
 async function createDeveloperModal() {
 
     const modal = document.querySelector('.modal');
+    const devTypeSelectInput = modal.querySelector('#dev-type');
+    if(devTypeSelectInput){
+        devTypes.forEach((type) => {
+            const typeSelect = document.createElement('option');
+            typeSelect.value = type;
+            typeSelect.innerHTML = type;
+            devTypeSelectInput.appendChild(typeSelect);
+        });
+    }
     return modal;
 }
 
