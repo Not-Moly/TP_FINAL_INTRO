@@ -1,53 +1,61 @@
 -- Developers
 INSERT INTO developers (name, foundation_year, game_count, origin_country, entity_type) VALUES
-('FromSoftware', 1986, 15, 'Japón', 'Privada'),
-('Naughty Dog', 1984, 20, 'Estados Unidos', 'Subsidiaria'),
-('CD Projekt RED', 2002, 10, 'Polonia', 'Pública'),
-('Nintendo EPD', 2015, 30, 'Japón', 'División interna'),
-('Valve', 1996, 12, 'Estados Unidos', 'Privada'),
-('Infinity Ward', 2002, 18, 'Estados Unidos', 'Subsidiaria'),
-('Treyarch', 1996, 22, 'Estados Unidos', 'Subsidiaria');
+('Nintendo EPD', 1889, 800, 'Japón', 'AAA'),
+('CD Projekt Red', 1994, 15, 'Polonia', 'AAA'),
+('Supergiant Games', 2009, 5, 'EE.UU.', 'Indie'),
+('FromSoftware', 1986, 40, 'Japón', 'AA'),
+('ConcernedApe', 2012, 1, 'EE.UU.', 'Indie'),
+('Treyarch', 1996, 9 ,'EE.UU','AAA'),
+('Sledgehammer Games',2009,5,'EE.UU','AAA');
 
 -- Franchises
 INSERT INTO franchises (title) VALUES
+('The Legend of Zelda'),
+('The Witcher'),
+('Hades'),
 ('Dark Souls'),
-('The Last of Us'),
-('Cyberpunk'),
-('Half-Life'),
-('Call of Duty'),
-('The Legend of Zelda');
+('Stardew Valley'),
+('Call of Duty');
 
 -- Sagas
 INSERT INTO sagas (title, id_franchise) VALUES
-('Dark Souls Trilogy', 1),
-('The Last of Us Main', 2),
-('Modern Warfare', 5),
-('Black Ops', 5),
-('Half-Life Series', 4),
-('Cyberpunk Universe', 3),
-('Zelda Breath of the Wild Era', 6);
+('Saga del Héroe del Tiempo', 1),
+('Saga de Geralt de Rivia', 2),
+('Saga del Inframundo', 3),
+('Saga del Fuego', 4),
+('Stardew Valley Game',5),
+('Black Ops',6),
+('Modern Warfare (OLD)',6);
+
 
 -- Games
 INSERT INTO games (title, release_year, gamemode, genre, perspective, image, id_franchise, id_saga, id_developer) VALUES
-('Dark Souls', 2011, 'Un jugador', 'Acción RPG', 'Tercera persona', 'darksouls1.jpg', 1, 1, 1),
-('Dark Souls II', 2014, 'Un jugador', 'Acción RPG', 'Tercera persona', 'darksouls2.jpg', 1, 1, 1),
-('The Legend of Zelda: Breath of the Wild', 2017, 'Un jugador', 'Acción-aventura', 'Tercera persona', 'botw.jpg', 6, 7, 4),
-('The Last of Us', 2013, 'Un jugador', 'Acción-aventura', 'Tercera persona', 'tlou1.jpg', 2, 2, 2),
-('Cyberpunk 2077', 2020, 'Un jugador', 'RPG', 'Primera persona', 'cyberpunk.jpg', 3, 6, 3),
-('Half-Life 2', 2004, 'Un jugador', 'Shooter', 'Primera persona', 'hl2.jpg', 4, 5, 5),
-('Call of Duty: Modern Warfare', 2019, 'Multijugador', 'Shooter', 'Primera persona', 'mw2019.jpg', 5, 3, 6),
-('Call of Duty: Black Ops II', 2012, 'Multijugador', 'Shooter', 'Primera persona', 'bo2.jpg', 5, 4, 7);
+('The Legend of Zelda: Breath of the Wild', 2017, 'Un jugador', 'Acción, Aventura, Plataformas, Puzle / Rompecabezas, Rol (RPG)', 'Tercera persona', 'https://upload.wikimedia.org/wikipedia/en/thumb/c/c6/The_Legend_of_Zelda_Breath_of_the_Wild.jpg/250px-The_Legend_of_Zelda_Breath_of_the_Wild.jpg', 1, 1, 1),
+('The Witcher 3: Wild Hunt', 2015, 'Un jugador', 'Acción, Aventura, Rol (RPG)', 'Tercera persona', 'https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Witcher_3_cover_art.jpg/250px-Witcher_3_cover_art.jpg', 2, 2, 2),
+('Hades', 2020, 'Un jugador', 'Hack and Slash, Roguelike / Roguelite', 'Vista de pájaro / Isométrica', 'https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/ncom/software/switch/70010000033131/dbc8c55a21688b446a5c57711b726956483a14ef8c5ddb861f897c0595ccb6b5', 3, 3, 3),
+('Dark Souls III', 2016, 'Cooperativo, Un jugador', 'Aventura, Rol (RPG), Soulslike', 'Tercera persona', 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQ-H2Wca6bBgYkATIE55kFkQ5-ss3jDW8_wjrqu7D_2e4wTd6s8acGBAEwWO0ZAwfZrAjp_lNjp4PLQ6BTBCqFsuCyElA9j66dTJD-9zA', 4, 4, 4),
+('Stardew Valley', 2016, 'Cooperativo', 'Simulación', 'Vista de pájaro / Isométrica', 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/413150/capsule_616x353.jpg?t=1711128146', 5, 5, 5),
+('Call of Duty: Black Ops II', 2012, 'Cooperativo, Multijugador, Un jugador', 'Acción, Disparos en primera persona, Shooter', 'Primera Persona', 'https://upload.wikimedia.org/wikipedia/commons/2/25/Call_of_Duty_Black_Ops_-_Teaser_Logo.jpg', 6, 6, 6),
+('Call of Duty: Modern Warfare 3', 2011, 'Cooperativo, Multijugador, Un jugador', 'Acción, Disparos en primera persona, Shooter', 'Primera persona', 'https://upload.wikimedia.org/wikipedia/en/b/bf/Call_of_Duty_Modern_Warfare_3_box_art.png',6,7,7);
 
 -- Characters
-INSERT INTO characters (character_name, image, gender, species, description, main_skill, id_game) VALUES
-('Joel', 'joel.jpg', 'Masculino', 'Humano', 'Un hombre endurecido por la pérdida que guía a Ellie.', 'Combate cuerpo a cuerpo', 4),
-('Ellie', 'ellie.jpg', 'Femenino', 'Humano', 'Una chica inmune al virus que asola el mundo.', 'Sigilo y cuchillo', 4),
-('V', 'v.jpg', 'Otro', 'Humano con ciberimplantes', 'Protagonista personalizado en Night City.', 'Hackeo y combate', 5),
-('Gordon Freeman', 'gordon.jpg', 'Masculino', 'Humano', 'Científico que lucha contra invasores alienígenas.', 'Armas de energía', 6),
-('Chosen Undead', 'chosen.jpg', 'Masculino', 'No muerto', 'Protagonista silencioso de Dark Souls.', 'Versatilidad en combate', 1),
-('Bearer of the Curse', 'bearer.jpg', 'Femenino', 'No muerto', 'Protagonista de Dark Souls II.', 'Espadas y magia', 2),
-('Captain Price', 'price.jpg', 'Masculino', 'Humano', 'Soldado veterano del SAS.', 'Tácticas militares', 7),
-('Alex Mason', 'mason.jpg', 'Masculino', 'Humano', 'Agente de la CIA marcado por la guerra fría.', 'Disparos y espionaje', 8),
-('Link', 'link.jpg', 'Masculino', 'Hyliano', 'Un joven valiente que lucha contra el mal en Hyrule.', 'Espadachín', 3),
-('Zelda', 'zelda.jpg', 'Femenino', 'Hyliano', 'Princesa sabia con poderes mágicos.', 'Magia', 3);
-    
+INSERT INTO characters (character_name, image, gender, species, description, main_skill) VALUES
+('Link', 'https://images.wikidexcdn.net/mwuploads/esssbwiki/thumb/3/32/latest/20230118170552/Link_SSB4.png/800px-Link_SSB4.png', 'Masculino', 'Hyliano', 'Héroe elegido por la Espada Maestra', 'Maestría con armas'),
+('Geralt de Rivia', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQW7aQKDEBn_9AIdxeYOSZ5YnD0n76Zk6MkcQ&s', 'Masculino', 'Mutante', 'Cazador de monstruos con poderes sobrenaturales', 'Combate con espadas'),
+('Zagreus', 'https://static.wikia.nocookie.net/hades_gamepedia_en/images/2/29/Zagreus.png/revision/latest?cb=20181210044005', 'Masculino', 'Semi-dios', 'Príncipe del Inframundo en busca de libertad', 'Esquiva ágil'),
+('Solaire of Astora', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWn6-f8AXnpM6FA34yroHyAdme__B4tcqXAw&s', 'Masculino', 'Humano', 'Guerrero devoto del Sol', 'Milagros de luz'),
+('Abigail', 'https://static.wikia.nocookie.net/stardew-valley-esp/images/8/88/Abigail.png/revision/latest/thumbnail/width/360/height/360?cb=20190301065522&path-prefix=es', 'Femenino', 'Humana', 'Aventurera amante de lo sobrenatural', 'Combate con cuarzo'),
+('John "Soap" MacTavish', 'https://static.wikia.nocookie.net/cod/images/0/04/Soapg.png/revision/latest?cb=20190414195651&path-prefix=es', 'Masculino', 'Humano', 'Líder del equipo SAS, experto en operaciones encubiertas', 'Francotirador'),
+('Captain Price', 'https://static.wikia.nocookie.net/cod/images/0/01/Price_MW3_model.png/revision/latest?cb=20120801171436&path-prefix=es', 'Masculino', 'Humano', 'Veterano comandante del SAS con décadas de experiencia', 'Estrategia militar'),
+('Alex Mason', 'https://static.wikia.nocookie.net/callofduty/images/c/c0/Alex_Mason_Infobox_1986_BOII.png/revision/latest?cb=20231213181030', 'Masculino', 'Humano', 'Agente de la CIA con memorias fragmentadas', 'Combate cuerpo a cuerpo'),
+('Frank Woods', 'https://static.wikia.nocookie.net/cod/images/7/7b/Skin_Metro.png/revision/latest/scale-to-width-down/250?cb=20210510221202&path-prefix=es', 'Masculino', 'Humano', 'Soldado de élite de las Fuerzas Especiales', 'Armas pesadas'),
+('Raul Menendez', 'https://static.wikia.nocookie.net/cod/images/b/ba/Raul-menendez-spike-video-game-awards-21.7.jpg/revision/latest?cb=20171014112018&path-prefix=es', 'Masculino', 'Humano', 'Líder de Cordis Die y antagonista principal', 'Manipulación');
+
+INSERT INTO game_characters (id_game, id_character) VALUES
+(1, 1),  -- Zelda BOTW -> Link
+(2, 2),  -- Witcher 3 -> Geralt
+(3, 3),  -- Hades -> Zagreus
+(4, 4),  -- Dark Souls 3 -> Solaire
+(5, 5),  -- Stardew Valley -> Abigail
+(7, 6), (7, 7),  -- COD4: Soap y Price
+(6, 8), (6, 9), (6, 10);  -- BO2: Mason, Woods, Menendez
