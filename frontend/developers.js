@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Manejadores de cierre del modal
-    (document.querySelectorAll('.modal-background, .delete, #cancel-btn') || []).forEach(($close) => {
+    (document.querySelectorAll('.modal-background, .delete, #cancel-dev-btn') || []).forEach(($close) => {
         $close.addEventListener('click', () => {
             closeModal(modal);
         });
