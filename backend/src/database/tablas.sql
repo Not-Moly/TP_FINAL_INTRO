@@ -8,6 +8,19 @@ CREATE TABLE developers (
     entity_type VARCHAR(50) NOT NULL
 );
 
+--Tabla de Franquicias
+CREATE TABLE franchises (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(100)
+);
+
+--Tabla de Sagas
+CREATE TABLE sagas (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(100),
+    id_franchise INT REFERENCES franchises(id) ON DELETE SET NULL
+);
+
 -- Tabla de juegos
 CREATE TABLE games (
     id SERIAL PRIMARY KEY,
@@ -17,7 +30,8 @@ CREATE TABLE games (
     genre VARCHAR(300) NOT NULL,
     perspective VARCHAR(300) NOT NULL,
     image VARCHAR(255) NOT NULL,
-    franchise VARCHAR(100) NOT NULL,
+    id_franchise INT REFERENCES franchises(id) ON DELETE SET NULL,
+    id_saga INT REFERENCES sagas(id) ON DELETE SET NULL,
     id_developer INT REFERENCES developers(id) ON DELETE SET NULL
 );
 
@@ -25,7 +39,6 @@ CREATE TABLE games (
 CREATE TABLE characters (
     id SERIAL PRIMARY KEY,
     character_name VARCHAR(100) NOT NULL,
-    franchise VARCHAR(100) NOT NULL,
     image VARCHAR(255) NOT NULL,
     gender VARCHAR(50) NOT NULL,
     species VARCHAR(50) NOT NULL,
@@ -33,6 +46,3 @@ CREATE TABLE characters (
     main_skill VARCHAR(100) NOT NULL,
     id_game INT REFERENCES games(id) ON DELETE SET NULL
 );
-
-
-
