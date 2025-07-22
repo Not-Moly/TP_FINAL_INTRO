@@ -80,7 +80,6 @@ async function getAllFranchisesWithSagas() {
                 franchise_title: row.franchise_title,
                 sagas: []
             }
-            console.log(franchisesWithSagas);
         }
         let saga = {id: row.saga_id, title: row.saga_title};
         

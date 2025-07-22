@@ -42,8 +42,6 @@ function createSagaOptions() {
         newOption.innerHTML = `${saga.title}`;
         gameSagaOptions.append(newOption);
     }
-    console.log(gameSagaOptions);
-    
 };
 
 export function createGameModalFixedOptions() {
