@@ -43,7 +43,7 @@ CREATE TABLE characters (
     gender VARCHAR(50) NOT NULL,
     species VARCHAR(50) NOT NULL,
     description VARCHAR(500) NOT NULL,
-    main_skill VARCHAR(100) NOT NULL,
+    main_skill VARCHAR(100) NOT NULL
 );
 
 -- Tabla de Relacion de Juegos con Personajes
@@ -52,4 +52,4 @@ CREATE TABLE game_characters(
     id_game INT NOT NULL REFERENCES games(id) ON DELETE CASCADE,
     id_character INT NOT NULL REFERENCES characters(id) ON DELETE CASCADE,
     UNIQUE(id_game, id_character)
-)
+);
