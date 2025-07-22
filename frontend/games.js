@@ -40,6 +40,7 @@ const allGameGenres = [
     "Simulación",
     "Sigilo",
     "Sobrevivencia / Supervivencia",
+    "Soulslike",
     "Terror",
     "Terror psicológico",
     "Táctico",
