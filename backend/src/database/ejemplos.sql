@@ -1,24 +1,53 @@
+-- Developers
 INSERT INTO developers (name, foundation_year, game_count, origin_country, entity_type) VALUES
-('Mojang Studios', 2009, 5, 'Sweden', 'Subsidiary'),
-('Nintendo', 1889, 250, 'Japan', 'Public'),
-('Rockstar Games', 1998, 30, 'USA', 'Private'),
-('CD Projekt Red', 2002, 15, 'Poland', 'Public'),
-('Valve Corporation', 1996, 20, 'USA', 'Private'),
-('Santa Monica Studio', 1999, 10, 'USA', 'Subsidiary');
+('FromSoftware', 1986, 15, 'Japón', 'Privada'),
+('Naughty Dog', 1984, 20, 'Estados Unidos', 'Subsidiaria'),
+('CD Projekt RED', 2002, 10, 'Polonia', 'Pública'),
+('Nintendo EPD', 2015, 30, 'Japón', 'División interna'),
+('Valve', 1996, 12, 'Estados Unidos', 'Privada'),
+('Infinity Ward', 2002, 18, 'Estados Unidos', 'Subsidiaria'),
+('Treyarch', 1996, 22, 'Estados Unidos', 'Subsidiaria');
 
-INSERT INTO games (title, release_year, gamemode, genre, perspective, image, franchise, id_developer) VALUES
-('Minecraft', 2011, 'Single-player, Multiplayer', 'Sandbox, Survival', 'First-person / Third-person', 'minecraft.jpg', 'Minecraft', 1),
-('The Legend of Zelda: Breath of the Wild', 2017, 'Single-player', 'Action-adventure', 'Third-person', 'zelda.jpg', 'The Legend of Zelda', 2),
-('Grand Theft Auto V', 2013, 'Single-player, Multiplayer', 'Action-adventure', 'Third-person / First-person', 'gta5.jpg', 'Grand Theft Auto', 3),
-('The Witcher 3: Wild Hunt', 2015, 'Single-player', 'RPG', 'Third-person', 'witcher3.jpg', 'The Witcher', 4),
-('Half-Life 2', 2004, 'Single-player', 'First-person shooter', 'First-person', 'halflife2.jpg', 'Half-Life', 5),
-('God of War', 2018, 'Single-player', 'Action-adventure', 'Third-person', 'gow.jpg', 'God of War', 6);
+-- Franchises
+INSERT INTO franchises (title) VALUES
+('Dark Souls'),
+('The Last of Us'),
+('Cyberpunk'),
+('Half-Life'),
+('Call of Duty'),
+('The Legend of Zelda');
 
-INSERT INTO characters (character_name, franchise, image, gender, species, description, main_skill, id_game) VALUES
-('Steve', 'Minecraft', 'steve.jpg', 'Male', 'Human', 'The default Minecraft character', 'Building and mining', 1),
-('Link', 'The Legend of Zelda', 'link.jpg', 'Male', 'Hylian', 'Courageous hero of Hyrule', 'Swordsmanship', 2),
-('Trevor Philips', 'Grand Theft Auto', 'trevor.jpg', 'Male', 'Human', 'Unpredictable and violent criminal', 'Combat and chaos', 3),
-('Geralt of Rivia', 'The Witcher', 'geralt.jpg', 'Male', 'Witcher', 'Monster hunter with superhuman abilities', 'Sword & Signs', 4),
-('Gordon Freeman', 'Half-Life', 'gordon.jpg', 'Male', 'Human', 'Silent protagonist and physicist', 'Crowbar and science', 5),
-('Kratos', 'God of War', 'kratos.jpg', 'Male', 'Demigod', 'Spartan warrior with tragic past', 'Godly strength', 6);
+-- Sagas
+INSERT INTO sagas (title, id_franchise) VALUES
+('Dark Souls Trilogy', 1),
+('The Last of Us Main', 2),
+('Modern Warfare', 5),
+('Black Ops', 5),
+('Half-Life Series', 4),
+('Cyberpunk Universe', 3),
+('Zelda Breath of the Wild Era', 6);
 
+-- Games
+INSERT INTO games (title, release_year, gamemode, genre, perspective, image, id_franchise, id_saga, id_developer) VALUES
+('Dark Souls', 2011, 'Un jugador', 'Acción RPG', 'Tercera persona', 'darksouls1.jpg', 1, 1, 1),
+('Dark Souls II', 2014, 'Un jugador', 'Acción RPG', 'Tercera persona', 'darksouls2.jpg', 1, 1, 1),
+('The Legend of Zelda: Breath of the Wild', 2017, 'Un jugador', 'Acción-aventura', 'Tercera persona', 'botw.jpg', 6, 7, 4),
+('The Last of Us', 2013, 'Un jugador', 'Acción-aventura', 'Tercera persona', 'tlou1.jpg', 2, 2, 2),
+('Cyberpunk 2077', 2020, 'Un jugador', 'RPG', 'Primera persona', 'cyberpunk.jpg', 3, 6, 3),
+('Half-Life 2', 2004, 'Un jugador', 'Shooter', 'Primera persona', 'hl2.jpg', 4, 5, 5),
+('Call of Duty: Modern Warfare', 2019, 'Multijugador', 'Shooter', 'Primera persona', 'mw2019.jpg', 5, 3, 6),
+('Call of Duty: Black Ops II', 2012, 'Multijugador', 'Shooter', 'Primera persona', 'bo2.jpg', 5, 4, 7);
+
+-- Characters
+INSERT INTO characters (character_name, image, gender, species, description, main_skill, id_game) VALUES
+('Joel', 'joel.jpg', 'Masculino', 'Humano', 'Un hombre endurecido por la pérdida que guía a Ellie.', 'Combate cuerpo a cuerpo', 4),
+('Ellie', 'ellie.jpg', 'Femenino', 'Humano', 'Una chica inmune al virus que asola el mundo.', 'Sigilo y cuchillo', 4),
+('V', 'v.jpg', 'Otro', 'Humano con ciberimplantes', 'Protagonista personalizado en Night City.', 'Hackeo y combate', 5),
+('Gordon Freeman', 'gordon.jpg', 'Masculino', 'Humano', 'Científico que lucha contra invasores alienígenas.', 'Armas de energía', 6),
+('Chosen Undead', 'chosen.jpg', 'Masculino', 'No muerto', 'Protagonista silencioso de Dark Souls.', 'Versatilidad en combate', 1),
+('Bearer of the Curse', 'bearer.jpg', 'Femenino', 'No muerto', 'Protagonista de Dark Souls II.', 'Espadas y magia', 2),
+('Captain Price', 'price.jpg', 'Masculino', 'Humano', 'Soldado veterano del SAS.', 'Tácticas militares', 7),
+('Alex Mason', 'mason.jpg', 'Masculino', 'Humano', 'Agente de la CIA marcado por la guerra fría.', 'Disparos y espionaje', 8),
+('Link', 'link.jpg', 'Masculino', 'Hyliano', 'Un joven valiente que lucha contra el mal en Hyrule.', 'Espadachín', 3),
+('Zelda', 'zelda.jpg', 'Femenino', 'Hyliano', 'Princesa sabia con poderes mágicos.', 'Magia', 3);
+    
