@@ -361,7 +361,7 @@ app.get('/api/charactersbygame/:id', async (req, res) => {
 curl http://localhost:3000/api/characters/5 \
     --request PUT \
     --header "Content-Type: application/json" \
-    --data '{"character_name":"Test1", "image":"Test1", "gender":"Test1", "species":"Test1", "description":"Test1", "main_skill":"Test1", "games_ids":"[1,2]"}'
+    --data '{"character_name":"Test1", "image":"Test1", "gender":"Test1", "species":"Test1", "description":"Test1", "main_skill":"Test1", "games_ids":"[1,4]"}'
 */
 app.put('/api/characters/:id', async (req, res) => {
     let old_character_info = await getOneCharacter(req.params.id);

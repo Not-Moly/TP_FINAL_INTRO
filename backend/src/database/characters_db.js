@@ -156,14 +156,14 @@ async function updateCharacter(
         [id]
     );
 
-    if (updated_character_info.games && updated_character_info.games.length > 0) {
-        for (const gameId of updated_character_info.games) {
+    if (updated_character_info.games_ids && updated_character_info.games_ids.length > 0) {
+        for (const gameId of updated_character_info.games_ids) {
             await dbClient.query(
                 'INSERT INTO game_characters (id_character, id_game) VALUES ($1, $2)',
                 [id, gameId]
             );
         }
-    }
+    };
 
     return result.rows[0];
 };
