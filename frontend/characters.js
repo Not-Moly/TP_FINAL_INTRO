@@ -6,7 +6,7 @@ async function createCharacterModal() {
 
     const modal = document.querySelector('.modal');
     // Agrego opción de videojuego al que pertenece
-    const charGameOptions = document.getElementById('char-game');
+    const charGameOptions = document.getElementById('games-selects');
     let loadGameOptions;
 
     loadGameOptions = async () => {
@@ -46,6 +46,106 @@ async function createCharacterModal() {
     };
     await loadGameOptions();
 
+    //#region Option Values Methods For Games
+    function createSelect(allValues = [], selectedValues = [], selectedValue = '', typeOfValue = '') {
+        // Crear wrappers para el select
+        const controlWrapper = document.createElement('div');
+        controlWrapper.classList.add('control', 'mb-2');
+        // Estilo modifica el posicionamiento de los items para que el botón de eliminar quede centrado
+        controlWrapper.style = "display: flex; align-items: center; gap: 0.5rem;";
+        const selectWrapper = document.createElement('div');
+        selectWrapper.classList.add('select', 'is-fullwidth');
+        selectWrapper.style = "max-width: 25rem";
+
+        // Conseguir valores de opciones disponibles PERO agregar opción ya seleccionada si se crea un select con un valor ya seleccionado
+        const availableValueOptions = allValues.filter(value => !selectedValues.includes(value) || (selectedValue && value === selectedValue));
+
+
+        // Crear el elemento (input) select
+        const select = document.createElement('select');
+        // Clase para añadir scrollbar
+        select.classList.add('modal-scrollable');
+        // Opción default si no hay valor seleccionado
+        select.innerHTML = `<option disabled ${!selectedValue ? 'selected' : ''} value="">Selecciona un juego</option>`;
+        // Solo agregar las opciones disponibles
+        availableValueOptions.forEach(valueOption => {
+            const opt = document.createElement('option');
+            opt.value = valueOption;
+            opt.textContent = loadedGames[valueOption].title;
+            // Agregar atributo 'selected' si valor igual al seleccionado si lo hubiese
+            if (valueOption === selectedValue) opt.selected = true;
+            select.appendChild(opt);
+        });
+
+        // Actualizar selects cada que se cambie de valor
+        select.addEventListener('change', () => {
+            updateValueSelects(allValues, typeOfValue)
+        });
+
+        selectWrapper.appendChild(select);
+        controlWrapper.appendChild(selectWrapper);
+
+        // Boton para eliminar género (Solo agregado si hay un valor seleccionado)
+        if (selectedValue) {
+            const deleteOptionBtn = document.createElement('button');
+            deleteOptionBtn.id = 'delete-option';
+            deleteOptionBtn.classList.add('button', 'is-small', 'is-danger');
+            deleteOptionBtn.addEventListener('click', () => {
+                controlWrapper.remove();
+                updateValueSelects(allValues, typeOfValue);
+            });
+            const spanElement = document.createElement('span');
+            spanElement.classList.add('icon', 'is-small');
+            const iconElement = document.createElement('i');
+            iconElement.classList.add('fa-regular', 'fa-circle-xmark');
+            spanElement.appendChild(iconElement)
+            deleteOptionBtn.appendChild(spanElement);
+
+            controlWrapper.appendChild(deleteOptionBtn);
+        }
+
+        document.getElementById(`${typeOfValue}s-selects`).appendChild(controlWrapper);
+
+    }
+
+    function getCurrentValueSelections(typeOfValue) {
+        const valueSelection = document.getElementById(`${typeOfValue}s-selects`);
+
+        // Selects = Elementos selects ya existentes dentro del elemento de selecciones del tipo de valor
+        const selects = valueSelection.querySelectorAll('select');
+        // Mapeo todos los elementos por su valor
+        return Array.from(selects).map(sel => sel.value).filter(val => val); // El último filter se saltea el valor default ''
+    }
+
+    updateValueSelects = (allValues, typeOfValue, stringOfValues = '') => {
+        
+        const selected = stringOfValues ? stringOfValues.split(",").map(item => item.trim()) : getCurrentValueSelections(typeOfValue);
+
+        // Limpiar y volver a armar selection
+        document.getElementById(`${typeOfValue}s-selects`).innerHTML = '';
+
+        // Crear selects ya seleccionados
+        selected.forEach((value, i) => {
+            createSelect(allValues, selected, value, typeOfValue);
+        });
+
+        // Crear nuevo select si quedan generos por agregar
+        if (selected.length < allValues.length) {
+            createSelect(allValues, selected, undefined, typeOfValue);
+        }
+
+        // Guardar selecciones en un string oculto con los valores ordenados alfabeticamente y separados por coma
+        const sorted = [...selected].sort();
+        document.getElementById(`char-${typeOfValue}s-string`).value = sorted.join(', ');
+    }
+
+    updateAllValueSelects = () => {
+        updateValueSelects(Object.keys(loadedGames), 'game');
+    }
+
+    //#endregion
+
+    updateValueSelects(Object.keys(loadedGames), 'game');
     return modal;
 }
 
@@ -61,6 +161,7 @@ function openModal($el, mode) {
         document.getElementById('submit-btn').innerHTML = `Añadir`;
         document.getElementById('delete-btn').style.display = 'none';
     }
+    updateAllValueSelects();
 }
 
 function closeModal($el) {
@@ -136,6 +237,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 // Crear tarjetas para cada personaje y agregar al grid
                 for (const [id, character] of Object.entries(characters)) {
+
+                    // Crear string de juegos a los que pertenece el personaje
+                    const gamesOfCharacter = character.games.map(game_id => game_id.toString()).filter(string_id => loadedGames[string_id]).map(string_id => loadedGames[string_id].title).sort().join(', ');
+
                     const card = document.createElement('div');
                     card.className = 'column is-one-quarter';
                     card.innerHTML = `
@@ -149,7 +254,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                             <div class="media">
                                 <div class="media-content">
                                     <p class="title is-4">${character.name}</p>
-                                    <p class="subtitle is-6">${loadedGames[character.id_game].title}</p>
+                                    <p class="subtitle is-6">${gamesOfCharacter}</p>
                                 </div>
                             </div>
                             <div class="content">
@@ -170,9 +275,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                         document.getElementById('char-gender').value = character.gender;
                         document.getElementById('char-species').value = character.species;
                         document.getElementById('char-description').value = character.description;
-                        document.getElementById('char-skill').value = character.skill
-                        document.getElementById('char-game').value = character.id_game;
-
+                        document.getElementById('char-skill').value = character.skill;
+                        updateValueSelects(Object.keys(loadedGames),'game',character.games.join(','));
                         openModal(modal, 'edit');
                     })
                     grid.appendChild(card);
@@ -225,7 +329,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             species: document.getElementById('char-species').value,
             description: document.getElementById('char-description').value,
             main_skill: document.getElementById('char-skill').value,
-            id_game: document.getElementById('char-game').value
+            games_ids: document.getElementById('char-games-string').value.split(',').map(g_id => parseInt(g_id.trim()))
         };
 
         // Validación de campos requeridos
