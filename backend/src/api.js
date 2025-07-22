@@ -302,7 +302,7 @@ const {
 curl http://localhost:3000/api/characters \
     --request POST \
     --header "Content-Type: application/json" \
-    --data '{"character_name":"Test1", "image":"Test1", "gender":"Test1", "species":"Test1", "description":"Test1", "main_skill":"Test1", "id_game":"3"}'
+    --data '{"character_name":"Test1", "image":"Test1", "gender":"Test1", "species":"Test1", "description":"Test1", "main_skill":"Test1", "games_ids":[1,2]}'
 */
 app.post('/api/characters', async (req, res) => {
     const new_character_info = {
@@ -312,7 +312,7 @@ app.post('/api/characters', async (req, res) => {
         species: req.body.species,
         description: req.body.description,
         main_skill: req.body.main_skill,
-        id_game: req.body.id_game
+        games_ids: req.body.games_ids
     };
     for (let data in new_character_info) {
         if (!new_character_info[data])
@@ -361,7 +361,7 @@ app.get('/api/charactersbygame/:id', async (req, res) => {
 curl http://localhost:3000/api/characters/5 \
     --request PUT \
     --header "Content-Type: application/json" \
-    --data '{"character_name":"Test1", "image":"Test1", "gender":"Test1", "species":"Test1", "description":"Test1", "main_skill":"Test1", "id_game":"3"}'
+    --data '{"character_name":"Test1", "image":"Test1", "gender":"Test1", "species":"Test1", "description":"Test1", "main_skill":"Test1", "games_ids":"[1,2]"}'
 */
 app.put('/api/characters/:id', async (req, res) => {
     let old_character_info = await getOneCharacter(req.params.id);
@@ -376,7 +376,7 @@ app.put('/api/characters/:id', async (req, res) => {
         species: req.body.species,
         description: req.body.description,
         main_skill: req.body.main_skill,
-        id_game: req.body.id_game
+        games_ids: req.body.games_ids
     };
     for (let data in updated_character_info) {
         if (!updated_character_info[data])
