@@ -111,9 +111,9 @@ async function getCharactersByGame(gameId) {
     const result = await dbClient.query(
         'SELECT c.id as char_id, c.character_name as character_name'
         + ' ' +
-        'FROM characters c JOIN character_games cg ON c.id = cg.id_character'
+        'FROM characters c JOIN game_characters cg ON c.id = cg.id_character'
         + ' ' +
-        'WHERE characters.id_game = $1'
+        'WHERE c.id = $1',
         [gameId]
     );
 
