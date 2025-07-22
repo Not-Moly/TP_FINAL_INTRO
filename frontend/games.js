@@ -1,4 +1,3 @@
-export let loadGames;
 let updateValueSelects;
 let updateAllValueSelects;
 
@@ -159,7 +158,6 @@ async function createGameModal() {
 
     updateAllValueSelects();
 
-
     return gameModal;
 }
 
@@ -215,41 +213,33 @@ function openDeleteModal(onConfirm) {
         onConfirm();
     };
 }
+// Función para cargar y mostrar juegos
+export async function loadGames() {
+    const gameContainer = document.querySelector('.entities-container');
+    try {
+        const response = await fetch('http://localhost:3000/api/games');
+        if (!response.ok) throw new Error('Error al cargar juegos');
 
-document.addEventListener("dataLoaded", async () => {
-    // Creo modal para la edición de datos de juegos
-    // Lo llamo al principio para tener la referencia al elemento y poder agregarlo a la función de abrir modal al clickear en un juego
-    const gameModal = await createGameModal();
+        const games = await response.json();
 
-    // Conseguir contenedor de las entidades
-    const container = document.querySelector('.entities-container');
+        // Limpiar contenido existente
+        const oldGrid = document.querySelector('.columns.is-multiline');
+        if (oldGrid) oldGrid.remove();
 
-    // Función para cargar y mostrar juegos
-    loadGames = async () => {
-        try {
-            const response = await fetch('http://localhost:3000/api/games');
-            if (!response.ok) throw new Error('Error al cargar juegos');
+        document.getElementById('no-games').style = Object.keys(games).length === 0 ? 'display: block;' : 'display: none;';
 
-            const games = await response.json();
+        if (Object.keys(games).length !== 0) {
+            // Crear grid de juegos
+            const grid = document.createElement('div');
+            grid.className = 'columns is-multiline is-centered';
+            grid.style.marginTop = '20px';
+            grid.style.marginInline = '10px';
 
-            // Limpiar contenido existente
-            const oldGrid = document.querySelector('.columns.is-multiline');
-            if (oldGrid) oldGrid.remove();
-
-            document.getElementById('no-games').style = Object.keys(games).length === 0 ? 'display: block;' : 'display: none;';
-
-            if (Object.keys(games).length !== 0) {
-                // Crear grid de juegos
-                const grid = document.createElement('div');
-                grid.className = 'columns is-multiline is-centered';
-                grid.style.marginTop = '20px';
-                grid.style.marginInline = '10px';
-
-                // Crear tarjetas para cada juego
-                for (const [id, game] of Object.entries(games)) {
-                    const card = document.createElement('div');
-                    card.className = 'column is-one-quarter';
-                    card.innerHTML = `
+            // Crear tarjetas para cada juego
+            for (const [id, game] of Object.entries(games)) {
+                const card = document.createElement('div');
+                card.className = 'column is-one-quarter';
+                card.innerHTML = `
                     <div class="card game-card entity-card">
                         <div class="card-image">
                             <figure class="image is-4by3">
@@ -272,34 +262,38 @@ document.addEventListener("dataLoaded", async () => {
                         </div>
                     </div>
                 `;
-                    // Añadir funcionalidad click
-                    card.addEventListener('click', () => {
-                        // Colocar valores de personaje seleccionado en inputs
-                        document.getElementById('game-id').value = id;
-                        document.getElementById('game-title').value = game.title;
-                        document.getElementById('game-year').value = game.release_year;
-                        updateValueSelects(allGameGamemodes, 'gamemode', game.gamemode);
-                        updateValueSelects(allGameGenres, 'genre', game.genre);
-                        updateValueSelects(allGamePerspectives, 'perspective', game.perspective);
-                        document.getElementById('game-image').value = game.image;
-                        document.getElementById('game-franchise').value = game.id_franchise;
-                        document.getElementById('game-saga').value = game.id_saga;
-                        document.getElementById('game-developer').value = game.id_developer;
+                // Añadir funcionalidad click
+                card.addEventListener('click', () => {
+                    // Colocar valores de personaje seleccionado en inputs
+                    document.getElementById('game-id').value = id;
+                    document.getElementById('game-title').value = game.title;
+                    document.getElementById('game-year').value = game.release_year;
+                    updateValueSelects(allGameGamemodes, 'gamemode', game.gamemode);
+                    updateValueSelects(allGameGenres, 'genre', game.genre);
+                    updateValueSelects(allGamePerspectives, 'perspective', game.perspective);
+                    document.getElementById('game-image').value = game.image;
+                    document.getElementById('game-franchise').value = game.id_franchise;
+                    document.getElementById('game-saga').value = game.id_saga;
+                    document.getElementById('game-developer').value = game.id_developer;
 
-                        openGameModal(gameModal, 'edit');
-                    })
-                    grid.appendChild(card);
-                }
-                container.appendChild(grid);
+                    openGameModal(document.getElementById('game-modal'), 'edit');
+                })
+                grid.appendChild(card);
             }
-        } catch (error) {
-            console.error('Error:', error);
-            const errorMessage = document.createElement('p');
-            errorMessage.textContent = 'Error al cargar los juegos';
-            errorMessage.className = 'has-text-centered has-text-danger';
-            container.appendChild(errorMessage);
+            gameContainer.appendChild(grid);
         }
-    };
+    } catch (error) {
+        console.error('Error:', error);
+        const errorMessage = document.createElement('p');
+        errorMessage.textContent = 'Error al cargar los juegos';
+        errorMessage.className = 'has-text-centered has-text-danger';
+        gameContainer.appendChild(errorMessage);
+    }
+};
+
+document.addEventListener("dataLoaded", async () => {
+    // Creo modal para la edición de datos de juegos
+    const gameModal = await createGameModal();
 
     // Carga inicial de juegos
     await loadGames();
