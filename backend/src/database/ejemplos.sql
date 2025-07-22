@@ -42,14 +42,14 @@ INSERT INTO games (title, release_year, gamemode, genre, perspective, image, id_
 INSERT INTO characters (character_name, image, gender, species, description, main_skill) VALUES
 ('Link', 'https://images.wikidexcdn.net/mwuploads/esssbwiki/thumb/3/32/latest/20230118170552/Link_SSB4.png/800px-Link_SSB4.png', 'Masculino', 'Hyliano', 'Héroe elegido por la Espada Maestra', 'Maestría con armas'),
 ('Geralt de Rivia', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQW7aQKDEBn_9AIdxeYOSZ5YnD0n76Zk6MkcQ&s', 'Masculino', 'Mutante', 'Cazador de monstruos con poderes sobrenaturales', 'Combate con espadas'),
-('Zagreus', 'https://static.wikia.nocookie.net/hades_gamepedia_en/images/2/29/Zagreus.png/revision/latest?cb=20181210044005', 'Masculino', 'Semi-dios', 'Príncipe del Inframundo en busca de libertad', 'Esquiva ágil'),
+('Zagreus', 'https://ucarecdn.com/da45fd1a-8efb-4fbe-a175-9fad3ae0ec61/-/crop/1081x1080/698,0/-/preview/-/progressive/yes/-/format/auto/', 'Masculino', 'Semi-dios', 'Príncipe del Inframundo en busca de libertad', 'Esquiva ágil'),
 ('Solaire of Astora', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWn6-f8AXnpM6FA34yroHyAdme__B4tcqXAw&s', 'Masculino', 'Humano', 'Guerrero devoto del Sol', 'Milagros de luz'),
-('Abigail', 'https://static.wikia.nocookie.net/stardew-valley-esp/images/8/88/Abigail.png/revision/latest/thumbnail/width/360/height/360?cb=20190301065522&path-prefix=es', 'Femenino', 'Humana', 'Aventurera amante de lo sobrenatural', 'Combate con cuarzo'),
-('John "Soap" MacTavish', 'https://static.wikia.nocookie.net/cod/images/0/04/Soapg.png/revision/latest?cb=20190414195651&path-prefix=es', 'Masculino', 'Humano', 'Líder del equipo SAS, experto en operaciones encubiertas', 'Francotirador'),
-('Captain Price', 'https://static.wikia.nocookie.net/cod/images/0/01/Price_MW3_model.png/revision/latest?cb=20120801171436&path-prefix=es', 'Masculino', 'Humano', 'Veterano comandante del SAS con décadas de experiencia', 'Estrategia militar'),
-('Alex Mason', 'https://static.wikia.nocookie.net/callofduty/images/c/c0/Alex_Mason_Infobox_1986_BOII.png/revision/latest?cb=20231213181030', 'Masculino', 'Humano', 'Agente de la CIA con memorias fragmentadas', 'Combate cuerpo a cuerpo'),
-('Frank Woods', 'https://static.wikia.nocookie.net/cod/images/7/7b/Skin_Metro.png/revision/latest/scale-to-width-down/250?cb=20210510221202&path-prefix=es', 'Masculino', 'Humano', 'Soldado de élite de las Fuerzas Especiales', 'Armas pesadas'),
-('Raul Menendez', 'https://static.wikia.nocookie.net/cod/images/b/ba/Raul-menendez-spike-video-game-awards-21.7.jpg/revision/latest?cb=20171014112018&path-prefix=es', 'Masculino', 'Humano', 'Líder de Cordis Die y antagonista principal', 'Manipulación');
+('Abigail', 'https://stardewvalleywiki.com/mediawiki/images/4/4a/Abigail_Winter_00.png', 'Femenino', 'Humana', 'Aventurera amante de lo sobrenatural', 'Combate con cuarzo'),
+('John "Soap" MacTavish', 'https://i.pinimg.com/736x/ba/8f/09/ba8f098a10388c3321b80a4aa4c6d8b4.jpg', 'Masculino', 'Humano', 'Líder del equipo SAS, experto en operaciones encubiertas', 'Francotirador'),
+('Captain Price', 'https://platform.polygon.com/wp-content/uploads/sites/2/chorus/uploads/chorus_asset/file/20030053/price.jpg?quality=90&strip=all&crop=14.296875,0,46.953125,100', 'Masculino', 'Humano', 'Veterano comandante del SAS con décadas de experiencia', 'Estrategia militar'),
+('Alex Mason', 'https://i.namu.wiki/i/M135CMQWJhcHJb85-MtHnlEKissVvrYlt90A1jTPGn0ZnfWA8UzVa_Fz7FzKMOVeydZ4FkNeYD6btsFRa5SyZw.webp', 'Masculino', 'Humano', 'Agente de la CIA con memorias fragmentadas', 'Combate cuerpo a cuerpo'),
+('Frank Woods', 'https://i.pinimg.com/736x/3c/e3/02/3ce302198f5bb687aa283a620c9d8cdf.jpg', 'Masculino', 'Humano', 'Soldado de élite de las Fuerzas Especiales', 'Armas pesadas'),
+('Raul Menendez', 'https://img.asmedia.epimg.net/resizer/v2/SCTQCDJUDNGYDILUWZDFO6DFKQ.jpg?auth=30985b7f7803de063bcc2ab5cfa9244915d3297b048cb8da5d4f58c7c2672f61&width=1200&height=1200&smart=true', 'Masculino', 'Humano', 'Líder de Cordis Die y antagonista principal', 'Manipulación');
 
 INSERT INTO game_characters (id_game, id_character) VALUES
 (1, 1),  -- Zelda BOTW -> Link
