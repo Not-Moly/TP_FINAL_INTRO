@@ -118,7 +118,7 @@ async function createCharacterModal() {
     }
 
     updateValueSelects = (allValues, typeOfValue, stringOfValues = '') => {
-        
+
         const selected = stringOfValues ? stringOfValues.split(",").map(item => item.trim()) : getCurrentValueSelections(typeOfValue);
 
         // Limpiar y volver a armar selection
@@ -276,7 +276,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         document.getElementById('char-species').value = character.species;
                         document.getElementById('char-description').value = character.description;
                         document.getElementById('char-skill').value = character.skill;
-                        updateValueSelects(Object.keys(loadedGames),'game',character.games.join(','));
+                        updateValueSelects(Object.keys(loadedGames), 'game', character.games.join(','));
                         openModal(modal, 'edit');
                     })
                     grid.appendChild(card);
@@ -333,7 +333,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         };
 
         // Validación de campos requeridos
-        if (!Object.values(newCharacter).every(value => value !== null && value !== undefined && value !== '')) {
+        if (
+            !Object.values(newCharacter).every(val => val !== null && val !== undefined && val !== '' && !(typeof val === 'number' && Number.isNaN(val))) ||
+            (newCharacter.games_ids.length === 1 && Number.isNaN(newCharacter.games_ids[0]))
+        ) {
             alert('Por favor complete todos los campos requeridos');
             return;
         }
