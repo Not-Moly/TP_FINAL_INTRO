@@ -353,25 +353,20 @@ document.addEventListener("DOMContentLoaded", async () => {
             const oldGrid = document.querySelector('.columns.is-multiline');
             if (oldGrid) oldGrid.remove();
 
+            document.getElementById('no-games').style = Object.keys(games).length === 0 ? 'display: block;' : 'display: none;';
+
             if (Object.keys(games).length === 0) {
-                const emptyMessage = document.createElement('p');
-                emptyMessage.textContent = 'No hay juegos registrados';
-                emptyMessage.className = 'has-text-centered';
-                container.appendChild(emptyMessage);
-                return;
-            }
+                // Crear grid de juegos
+                const grid = document.createElement('div');
+                grid.className = 'columns is-multiline is-centered';
+                grid.style.marginTop = '20px';
+                grid.style.marginInline = '10px';
 
-            // Crear grid de juegos
-            const grid = document.createElement('div');
-            grid.className = 'columns is-multiline is-centered';
-            grid.style.marginTop = '20px';
-            grid.style.marginInline = '10px';
-
-            // Crear tarjetas para cada juego
-            for (const [id, game] of Object.entries(games)) {
-                const card = document.createElement('div');
-                card.className = 'column is-one-quarter';
-                card.innerHTML = `
+                // Crear tarjetas para cada juego
+                for (const [id, game] of Object.entries(games)) {
+                    const card = document.createElement('div');
+                    card.className = 'column is-one-quarter';
+                    card.innerHTML = `
                     <div class="card game-card entity-card">
                         <div class="card-image">
                             <figure class="image is-4by3">
@@ -394,24 +389,28 @@ document.addEventListener("DOMContentLoaded", async () => {
                         </div>
                     </div>
                 `;
-                // Añadir funcionalidad click
-                card.addEventListener('click', () => {
-                    // Colocar valores de personaje seleccionado en inputs
-                    document.getElementById('game-id').value = id;
-                    document.getElementById('game-title').value = game.title;
-                    document.getElementById('game-year').value = game.release_year;
-                    updateValueSelects(allGameGamemodes, 'gamemode', game.gamemode);
-                    updateValueSelects(allGameGenres, 'genre', game.genre);
-                    updateValueSelects(allGamePerspectives, 'perspective', game.perspective);
-                    document.getElementById('game-image').value = game.image;
-                    document.getElementById('game-franchise').value = game.id_franchise;
-                    document.getElementById('game-saga').value = game.id_saga;
-                    document.getElementById('game-developer').value = game.id_developer;
+                    // Añadir funcionalidad click
+                    card.addEventListener('click', () => {
+                        // Colocar valores de personaje seleccionado en inputs
+                        document.getElementById('game-id').value = id;
+                        document.getElementById('game-title').value = game.title;
+                        document.getElementById('game-year').value = game.release_year;
+                        updateValueSelects(allGameGamemodes, 'gamemode', game.gamemode);
+                        updateValueSelects(allGameGenres, 'genre', game.genre);
+                        updateValueSelects(allGamePerspectives, 'perspective', game.perspective);
+                        document.getElementById('game-image').value = game.image;
+                        document.getElementById('game-franchise').value = game.id_franchise;
+                        document.getElementById('game-saga').value = game.id_saga;
+                        document.getElementById('game-developer').value = game.id_developer;
 
-                    openGameModal(gameModal, 'edit');
-                })
-                grid.appendChild(card);
+                        openGameModal(gameModal, 'edit');
+                    })
+                    grid.appendChild(card);
+                }
+                return;
             }
+
+
 
             container.appendChild(grid);
         } catch (error) {

@@ -14,15 +14,20 @@
 
 <body>
     <div id="tabs-container"></div>
+
     <div id="entity-page-title">
         <h1 class="title has-text-centered">Personajes</h1>
     </div>
+
     <div class="main-content">
         <button id="add-button" class="button is-primary is-rounded">
             <span class="icon">
                 <i class="fas fa-plus"></i>
             </span>
         </button>
+
+        <p class="has-text-centered" id="no-chars">No hay personajes registrados</p>
+
 
         <div class="entities-container">
 
@@ -38,6 +43,7 @@
                 <section class="modal-scrollable modal-card-body">
                     <form id="char-form">
                         <input id="char-id" type="hidden" value="">
+
                         <div class="field">
                             <label class="label" for="char-name">Nombre</label>
                             <div class="control">
@@ -45,6 +51,7 @@
                                     placeholder="Nombre del personaje">
                             </div>
                         </div>
+
                         <div class="field">
                             <label class="label" for="char-image">URL de la imagen</label>
                             <div class="control">
@@ -52,6 +59,7 @@
                                     placeholder="URL de la imagen">
                             </div>
                         </div>
+
                         <div class="field">
                             <label class="label" for="char-gender">Género</label>
                             <div class="control">
@@ -66,12 +74,14 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="field">
                             <label class="label" for="char-species">Especie</label>
                             <div class="control">
                                 <input id="char-species" class="input" type="text" placeholder="Especie del personaje">
                             </div>
                         </div>
+
                         <div class="field">
                             <label class="label" for="char-description">Descripción</label>
                             <div class="control">
@@ -79,12 +89,14 @@
                                     placeholder="Descripción del personaje"></textarea>
                             </div>
                         </div>
+
                         <div class="field">
                             <label class="label" for="char-skill">Habilidad principal</label>
                             <div class="control">
                                 <input id="char-skill" class="input" type="text" placeholder="Habilidad principal">
                             </div>
                         </div>
+
                         <div class="field">
                             <label class="label" for="char-game">Juego</label>
                             <div class="control">
@@ -112,7 +124,6 @@
                 </footer>
             </div>
         </div>
-
         <div id="confirm-delete-modal" class="modal">
             <div class="modal-background"></div>
             <div class="modal-card">
@@ -128,7 +139,6 @@
                 </section>
             </div>
         </div>
-
     </div>
 </body>
 

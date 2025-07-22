@@ -82,25 +82,20 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (oldGrid) oldGrid.remove();
 
             // Verificar cantidad de desarrolladores nula
-            if (Object.keys(developers).length === 0) {
-                const emptyMessage = document.createElement('p');
-                emptyMessage.textContent = 'No hay desarrolladores registrados';
-                emptyMessage.className = 'has-text-centered';
-                container.appendChild(emptyMessage);
-                return;
-            }
+            document.getElementById('no-devs').style = Object.keys(developers).length === 0 ? 'display: block;' : 'display: none;';
 
-            // Crear grid de desarrolladores
-            const grid = document.createElement('div');
-            grid.className = 'columns is-multiline is-centered';
-            grid.style.marginTop = '20px';
-            grid.style.marginInline = '10px';
+            if (Object.keys(developers).length !== 0) {
+                // Crear grid de desarrolladores
+                const grid = document.createElement('div');
+                grid.className = 'columns is-multiline is-centered';
+                grid.style.marginTop = '20px';
+                grid.style.marginInline = '10px';
 
-            // Crear tarjetas para cada personaje y agregar al grid
-            for (const [id, developer] of Object.entries(developers)) {
-                const card = document.createElement('div');
-                card.className = 'column is-one-quarter';
-                card.innerHTML = `
+                // Crear tarjetas para cada personaje y agregar al grid
+                for (const [id, developer] of Object.entries(developers)) {
+                    const card = document.createElement('div');
+                    card.className = 'column is-one-quarter';
+                    card.innerHTML = `
                     <div class="card entity-card">
                         <div class="card-content">
                             <div class="media">
@@ -117,21 +112,24 @@ document.addEventListener("DOMContentLoaded", async () => {
                         </div>
                     </div>
                 `;
-                // Añadir funcionalidad click
-                card.addEventListener('click', () => {
-                    // Colocar valores de personaje seleccionado en inputs
-                    document.getElementById('developer-id').value = id;
-                    document.getElementById('dev-name').value = developer.name;
-                    document.getElementById('dev-foundation').value = developer.foundation_year;
-                    document.getElementById('dev-count').value = developer.game_count;
-                    document.getElementById('dev-country').value = developer.country
-                    document.getElementById('dev-type').value = developer.entity_type;
+                    // Añadir funcionalidad click
+                    card.addEventListener('click', () => {
+                        // Colocar valores de personaje seleccionado en inputs
+                        document.getElementById('developer-id').value = id;
+                        document.getElementById('dev-name').value = developer.name;
+                        document.getElementById('dev-foundation').value = developer.foundation_year;
+                        document.getElementById('dev-count').value = developer.game_count;
+                        document.getElementById('dev-country').value = developer.country
+                        document.getElementById('dev-type').value = developer.entity_type;
 
-                    openModal(modal, 'edit');
-                })
-                grid.appendChild(card);
+                        openModal(modal, 'edit');
+                    })
+                    grid.appendChild(card);
+                }
+                container.appendChild(grid);
             }
-            container.appendChild(grid);
+
+
 
 
         } catch (error) {

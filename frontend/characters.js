@@ -124,26 +124,21 @@ document.addEventListener("DOMContentLoaded", async () => {
             const oldGrid = document.querySelector('.columns.is-multiline');
             if (oldGrid) oldGrid.remove();
 
+            document.getElementById('no-chars').style = Object.keys(characters).length === 0 ? 'display: block;' : 'display: none;';
+
             // Verificar cantidad de personajes nula
             if (Object.keys(characters).length === 0) {
-                const emptyMessage = document.createElement('p');
-                emptyMessage.textContent = 'No hay personajes registrados';
-                emptyMessage.className = 'has-text-centered';
-                container.appendChild(emptyMessage);
-                return;
-            }
+                // Crear grid de personajes
+                const grid = document.createElement('div');
+                grid.className = 'columns is-multiline is-centered';
+                grid.style.marginTop = '20px';
+                grid.style.marginInline = '10px';
 
-            // Crear grid de personajes
-            const grid = document.createElement('div');
-            grid.className = 'columns is-multiline is-centered';
-            grid.style.marginTop = '20px';
-            grid.style.marginInline = '10px';
-
-            // Crear tarjetas para cada personaje y agregar al grid
-            for (const [id, character] of Object.entries(characters)) {
-                const card = document.createElement('div');
-                card.className = 'column is-one-quarter';
-                card.innerHTML = `
+                // Crear tarjetas para cada personaje y agregar al grid
+                for (const [id, character] of Object.entries(characters)) {
+                    const card = document.createElement('div');
+                    card.className = 'column is-one-quarter';
+                    card.innerHTML = `
                     <div class="card character-card entity-card">
                         <div class="card-image">
                             <figure class="image is-4by3">
@@ -166,23 +161,26 @@ document.addEventListener("DOMContentLoaded", async () => {
                         </div>
                     </div>
                 `;
-                // Añadir funcionalidad click
-                card.addEventListener('click', () => {
-                    // Colocar valores de personaje seleccionado en inputs
-                    document.getElementById('char-id').value = id;
-                    document.getElementById('char-name').value = character.name;
-                    document.getElementById('char-image').value = character.image;
-                    document.getElementById('char-gender').value = character.gender;
-                    document.getElementById('char-species').value = character.species;
-                    document.getElementById('char-description').value = character.description;
-                    document.getElementById('char-skill').value = character.skill
-                    document.getElementById('char-game').value = character.id_game;
+                    // Añadir funcionalidad click
+                    card.addEventListener('click', () => {
+                        // Colocar valores de personaje seleccionado en inputs
+                        document.getElementById('char-id').value = id;
+                        document.getElementById('char-name').value = character.name;
+                        document.getElementById('char-image').value = character.image;
+                        document.getElementById('char-gender').value = character.gender;
+                        document.getElementById('char-species').value = character.species;
+                        document.getElementById('char-description').value = character.description;
+                        document.getElementById('char-skill').value = character.skill
+                        document.getElementById('char-game').value = character.id_game;
 
-                    openModal(modal, 'edit');
-                })
-                grid.appendChild(card);
+                        openModal(modal, 'edit');
+                    })
+                    grid.appendChild(card);
+                }
+                container.appendChild(grid);
+
             }
-            container.appendChild(grid);
+
 
 
         } catch (error) {
