@@ -11,6 +11,7 @@ const {
     getAllGames,
     getGamesByDeveloper,
     getGamesBySaga,
+    getGamesByCharacter,
     getOneGame,
     createGame,
     deleteGame,
@@ -84,6 +85,10 @@ app.get('/api/gamesbydeveloper/:id', async (req, res) => {
 });
 app.get('/api/gamesbysaga/:id', async (req, res) => {
     let games = await getGamesBySaga(req.params.id);
+    res.json((games));
+});
+app.get('/api/gamesbycharacter/:id', async (req, res) => {
+    let games = await getGamesByCharacter(req.params.id);
     res.json((games));
 });
 

@@ -51,7 +51,7 @@ async function getAllCharacters() {
         + ' ' +
         'FROM characters c'
         + ' ' +
-        'LEFT JOIN character_games cg ON c.id = cg.id_character'
+        'LEFT JOIN game_characters cg ON c.id = cg.id_character'
         + ' ' +
         'GROUP BY c.id'
     );
@@ -131,6 +131,7 @@ async function getCharactersByGame(gameId) {
 
     return characters;
 }
+
 
 // ╔═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╗
 //                PUT (UPDATE)

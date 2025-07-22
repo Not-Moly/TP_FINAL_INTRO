@@ -150,6 +150,37 @@ async function getGamesBySaga(sagaId) {
     return games;
 }
 
+
+async function getGamesByCharacter(charId) {
+    const result = await dbClient.query(
+        'SELECT *' 
+        + ' ' +
+        'FROM games g JOIN game_characters gc ON g.id = gc.id_game' 
+        + ' ' +
+        'WHERE gc.id_character = $1;',
+        [charId]
+    )
+
+    const games = {};
+    result.rows.forEach(row => {
+        if (!games[row.id]) {
+            games[row.id] = {
+                title: row.title,
+                release_year: row.release_year,
+                gamemode: row.gamemode,
+                genre: row.genre,
+                perspective: row.perspective,
+                image: row.image,
+                id_franchise: row.id_franchise,
+                id_saga: row.id_saga,
+                id_developer: row.id_developer
+            }
+        }
+    });
+
+    return games;
+}
+
 // ╔═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╗
 //                PUT (UPDATE)
 // ╚═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╝
@@ -185,6 +216,7 @@ module.exports = {
     getAllGames,
     getGamesByDeveloper,
     getGamesBySaga,
+    getGamesByCharacter,
     getOneGame,
     createGame,
     deleteGame,
