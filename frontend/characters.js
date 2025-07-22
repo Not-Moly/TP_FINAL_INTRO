@@ -1,4 +1,4 @@
-import {charGenders} from './datasets.js';
+import { charGenders } from './datasets.js';
 
 let loadedGames = {};
 let updateAllValueSelects;
@@ -6,7 +6,7 @@ let updateValueSelects;
 
 async function createCharacterModal() {
 
-    const modal = document.querySelector('.modal');
+    const characterModal = document.querySelector('.modal');
     // Agrego opción de videojuego al que pertenece
     const charGameOptions = document.getElementById('games-selects');
 
@@ -36,8 +36,17 @@ async function createCharacterModal() {
     };
     await loadGames();
 
+    // Agrego funcionalidad de preview de imagen
+    const characterImagePreviewElement = characterModal.querySelector('#char-image-preview');
+    const imageInputElement = characterModal.querySelector('#char-image');
+    if (characterImagePreviewElement && imageInputElement) {
+        imageInputElement.addEventListener('change', () => {
+            characterImagePreviewElement.src = imageInputElement.value;
+        })
+    }
+
     // Creo opciones de género
-    const characterGenderSelectInput = modal.querySelector('#char-gender');
+    const characterGenderSelectInput = characterModal.querySelector('#char-gender');
     if (characterGenderSelectInput) {
         charGenders.forEach((gender) => {
             const genderOption = document.createElement('option');
@@ -147,7 +156,7 @@ async function createCharacterModal() {
     //#endregion
 
     updateValueSelects(Object.keys(loadedGames), 'game');
-    return modal;
+    return characterModal;
 }
 
 function openModal($el, mode) {
@@ -169,6 +178,8 @@ function closeModal($el) {
     $el.classList.remove('is-active');
 
     // Resetear formulario
+    $el.querySelector('#char-image-preview').src = 'https://bulma.io/assets/images/placeholders/128x128.png';
+    
     const inputs = document.getElementById('char-form').querySelectorAll('input, textarea, select');
     inputs.forEach(input => {
         if (input.type === 'checkbox' || input.type === 'radio') {
@@ -273,6 +284,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         document.getElementById('char-id').value = id;
                         document.getElementById('char-name').value = character.name;
                         document.getElementById('char-image').value = character.image;
+                        document.getElementById('char-image-preview').src = character.image;
                         document.getElementById('char-gender').value = character.gender;
                         document.getElementById('char-species').value = character.species;
                         document.getElementById('char-description').value = character.description;

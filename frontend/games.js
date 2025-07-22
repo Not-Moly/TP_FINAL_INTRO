@@ -55,6 +55,15 @@ async function createGameModal() {
     // Agrego opción de desarrolladores, franquicias y sagas
     createGameModalFixedOptions();
 
+    // Agrego funcionalidad de preview de imagen
+    const gameImagePreviewElement = gameModal.querySelector('#game-image-preview');
+    const imageInputElement = gameModal.querySelector('#game-image');
+    if (gameImagePreviewElement && imageInputElement) {
+        imageInputElement.addEventListener('change', () => {
+            gameImagePreviewElement.src = imageInputElement.value;
+        })
+    }
+
     //#region Option Values Methods
     function createSelect(allValues = [], selectedValues = [], selectedValue = '', typeOfValue = '') {
         // Crear wrappers para el select
@@ -161,6 +170,7 @@ async function createGameModal() {
     return gameModal;
 }
 
+//#region OPEN/CLOSE MODAL
 function openGameModal($el, mode) {
     $el.classList.add('is-active');
     // Editar texto identificador de modal y visibilidad de botón borrar
@@ -180,6 +190,7 @@ function closeGameModal($el) {
     $el.classList.remove('is-active');
 
     // Resetear formulario
+    $el.querySelector('#game-image-preview').src = 'https://bulma.io/assets/images/placeholders/128x128.png';
     const inputs = document.getElementById('game-form').querySelectorAll('input, textarea, select');
 
     inputs.forEach(input => {
@@ -213,6 +224,8 @@ function openDeleteModal(onConfirm) {
         onConfirm();
     };
 }
+//#endregion
+
 // Función para cargar y mostrar juegos
 export async function loadGames() {
     const gameContainer = document.querySelector('.entities-container');
@@ -272,6 +285,7 @@ export async function loadGames() {
                     updateValueSelects(allGameGenres, 'genre', game.genre);
                     updateValueSelects(allGamePerspectives, 'perspective', game.perspective);
                     document.getElementById('game-image').value = game.image;
+                    document.getElementById('game-image-preview').src = game.image;
                     document.getElementById('game-franchise').value = game.id_franchise;
                     document.getElementById('game-saga').value = game.id_saga;
                     document.getElementById('game-developer').value = game.id_developer;
