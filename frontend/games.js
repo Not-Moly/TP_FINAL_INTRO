@@ -62,7 +62,7 @@ function loadDeveloperOptions() {
     const gameDeveloperOptions = document.getElementById('game-developer');
 
     // Crear opciones de desarrolladores
-    for (const [id, developer] of Object.entries(developers)) {
+    for (const [id, developer] of Object.entries(loadedDevelopers)) {
         const newOption = document.createElement('option');
         newOption.value = id;
         newOption.innerHTML = `${developer.name}`;
@@ -77,7 +77,7 @@ async function loadFranchiseOptions() {
     const gameFranchiseOptions = document.getElementById('game-franchise');
 
     // Crear opciones de franquicias
-    for (const [id, franchise] of Object.entries(franchises)) {
+    for (const [id, franchise] of Object.entries(loadedFranchises)) {
         const newOption = document.createElement('option');
         newOption.value = id;
         newOption.innerHTML = `${franchise.title}`;
@@ -94,7 +94,7 @@ async function loadSagaOptions() {
     const gameSagaOptions = document.getElementById('game-saga');
 
     // Crear opciones de sagas
-    for (const [id, saga] of Object.entries(sagas)) {
+    for (const [id, saga] of Object.entries(loadedSagas)) {
         const newOption = document.createElement('option');
         newOption.value = id;
         newOption.innerHTML = `${saga.title}`;
@@ -110,9 +110,9 @@ async function createGameModal() {
 
     const gameModal = document.getElementById('game-modal');
     // Agrego opción de desarrolladores al que pertenece
-    let loadDeveloperOptions;
-    let loadFranchiseOptions;
-    let loadSagaOptions;
+    await loadDeveloperOptions();
+    await loadFranchiseOptions();
+    await loadSagaOptions();
 
     //#region Option Values Methods
     function createSelect(allValues = [], selectedValues = [], selectedValue = '', typeOfValue = '') {
@@ -133,7 +133,8 @@ async function createGameModal() {
         // Clase para añadir scrollbar
         select.classList.add('modal-scrollable');
         // Opción default si no hay valor seleccionado
-        select.innerHTML = `<option disabled ${!selectedValue ? 'selected' : ''} value="">Select a ${typeOfValue}</option>`;
+        const customString = typeOfValue === "genre" ? "Seleccione un genero" : typeOfValue === "gamemode" ? "Seleccione un modo de juego" : typeOfValue === "perspective" ? "Seleccione una perspectiva" : "" ;
+        select.innerHTML = `<option disabled ${!selectedValue ? 'selected' : ''} value="">${customString}</option>`;
         // Solo agregar las opciones disponibles
         availableOptions.forEach(valueOption => {
             const opt = document.createElement('option');
@@ -214,9 +215,7 @@ async function createGameModal() {
 
     //#endregion
 
-    updateValueSelects(allGameGamemodes, 'gamemode');
-    updateValueSelects(allGameGenres, 'genre');
-    updateValueSelects(allGamePerspectives, 'perspective');
+    updateAllValueSelects();
 
 
     return gameModal;
@@ -275,7 +274,7 @@ function openDeleteModal(onConfirm) {
     };
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("dataLoaded", async () => {
     // Creo modal para la edición de datos de juegos
     // Lo llamo al principio para tener la referencia al elemento y poder agregarlo a la función de abrir modal al clickear en un juego
     const gameModal = await createGameModal();
@@ -308,7 +307,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 // Crear tarjetas para cada juego
                 for (const [id, game] of Object.entries(games)) {
-                    console.log("Hoal")
                     const card = document.createElement('div');
                     card.className = 'column is-one-quarter';
                     card.innerHTML = `

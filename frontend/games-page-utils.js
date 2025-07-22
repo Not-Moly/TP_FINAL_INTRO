@@ -13,6 +13,8 @@ async function loadDevelopers() {
 
         const developers = await response.json();
 
+
+
         // Verificar cantidad de desarrolladores nula
         if (Object.keys(developers).length === 0) {
             const emptyMessage = document.createElement('p');
@@ -20,6 +22,10 @@ async function loadDevelopers() {
             emptyMessage.className = 'has-text-centered';
             gameDeveloperOptions.appendChild(emptyMessage);
             return;
+        }
+
+        for (const [id, developer] of Object.entries(developers)) {
+            loadedDevelopers[id] = developer;
         }
 
     } catch (error) {
@@ -86,7 +92,12 @@ async function loadFranchisesSagas() {
 document.addEventListener("DOMContentLoaded", async () => {
     await loadFranchisesSagas();
     await loadDevelopers();
+    // Crear y despachar evento de cargado cuando terminen de cargar todos los datos
+    const dataLoadedEvent = new CustomEvent('dataLoaded');
+    document.dispatchEvent(dataLoadedEvent);
+
 })
+
 
 //#endregion
 // ------------------------------------------------------------
