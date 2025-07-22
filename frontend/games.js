@@ -364,6 +364,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (!response.ok) throw new Error('Error al cargar juegos');
 
             const games = await response.json();
+            
+            console.log(games);
 
             // Limpiar contenido existente
             const oldGrid = document.querySelector('.columns.is-multiline');
@@ -380,6 +382,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 // Crear tarjetas para cada juego
                 for (const [id, game] of Object.entries(games)) {
+                    console.log("Hoal")
                     const card = document.createElement('div');
                     card.className = 'column is-one-quarter';
                     card.innerHTML = `
@@ -423,12 +426,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                     })
                     grid.appendChild(card);
                 }
-                return;
+                container.appendChild(grid);
             }
 
 
 
-            container.appendChild(grid);
+           
         } catch (error) {
             console.error('Error:', error);
             const errorMessage = document.createElement('p');
