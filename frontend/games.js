@@ -1,64 +1,11 @@
 let loadGames;
-
-
-const allGameGamemodes = [
-    "Cooperativo",
-    "Multijugador",
-    "Pantalla dividida",
-    "Un jugador"
-]
-const allGameGenres = [
-    "Acción",
-    "Aventura",
-    "Battle Royale",
-    "Carreras",
-    "Cartas coleccionables",
-    "Construcción y gestión",
-    "Deportes",
-    "Disparos",
-    "Educativo",
-    "Estrategia en tiempo real (RTS)",
-    "Estrategia por turnos (TBS)",
-    "Fighting / Peleas",
-    "Hack and Slash",
-    "Horror de supervivencia",
-    "Idle / Incremental",
-    "JRPG (Juego de rol japonés)",
-    "Metroidvania",
-    "MOBA (Multiplayer Online Battle Arena)",
-    "Mundo abierto",
-    "Multijugador masivo en línea (MMO)",
-    "Musical / Ritmo",
-    "Narrativo / Visual Novel",
-    "Party / Fiesta",
-    "Plataformas",
-    "Point and Click",
-    "Puzle / Rompecabezas",
-    "Roguelike / Roguelite",
-    "Rol (RPG)",
-    "Sandbox",
-    "Simulación",
-    "Sigilo",
-    "Sobrevivencia / Supervivencia",
-    "Soulslike",
-    "Terror",
-    "Terror psicológico",
-    "Táctico",
-    "Tower Defense",
-    "Vehículos de combate",
-]
-const allGamePerspectives = [
-    "Primera persona",
-    "Realidad virtual",
-    "Tercera persona",
-    "Vista de pájaro / Isométrica",
-    "Vista lateral"
-]
-
 let updateValueSelects;
 let updateAllValueSelects;
 
-function loadDeveloperOptions() {
+import {allGameGamemodes, allGameGenres, allGamePerspectives} from './datasets.js';
+import {loadDevelopers, loadFranchisesSagas, loadedDevelopers, loadedFranchises, loadedSagas} from './games-page-utils.js';
+
+function createDeveloperOptions() {
     const gameDeveloperOptions = document.getElementById('game-developer');
 
     // Crear opciones de desarrolladores
@@ -67,13 +14,10 @@ function loadDeveloperOptions() {
         newOption.value = id;
         newOption.innerHTML = `${developer.name}`;
         gameDeveloperOptions.append(newOption);
-
-        // Agregar a lista de developers global
-        loadedDevelopers[id] = developer;
     }
 }
 
-async function loadFranchiseOptions() {
+async function createFranchiseOptions() {
     const gameFranchiseOptions = document.getElementById('game-franchise');
 
     // Crear opciones de franquicias
@@ -82,15 +26,12 @@ async function loadFranchiseOptions() {
         newOption.value = id;
         newOption.innerHTML = `${franchise.title}`;
         gameFranchiseOptions.append(newOption);
-
-        // Agregar a lista de franchises global
-        loadedFranchises[id] = franchise;
     }
 
 
 };
 
-async function loadSagaOptions() {
+async function createSagaOptions() {
     const gameSagaOptions = document.getElementById('game-saga');
 
     // Crear opciones de sagas
@@ -99,9 +40,6 @@ async function loadSagaOptions() {
         newOption.value = id;
         newOption.innerHTML = `${saga.title}`;
         gameSagaOptions.append(newOption);
-
-        // Agregar a lista de sagas global
-        loadedSagas[id] = saga;
     }
 
 };
@@ -110,9 +48,9 @@ async function createGameModal() {
 
     const gameModal = document.getElementById('game-modal');
     // Agrego opción de desarrolladores al que pertenece
-    await loadDeveloperOptions();
-    await loadFranchiseOptions();
-    await loadSagaOptions();
+    createDeveloperOptions();
+    createFranchiseOptions();
+    createSagaOptions();
 
     //#region Option Values Methods
     function createSelect(allValues = [], selectedValues = [], selectedValue = '', typeOfValue = '') {

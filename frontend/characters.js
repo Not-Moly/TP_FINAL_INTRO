@@ -1,15 +1,16 @@
-// characters.js
+import {charGenders} from './datasets.js';
 
 let loadedGames = {};
+let updateAllValueSelects;
+let updateValueSelects;
 
 async function createCharacterModal() {
 
     const modal = document.querySelector('.modal');
     // Agrego opción de videojuego al que pertenece
     const charGameOptions = document.getElementById('games-selects');
-    let loadGameOptions;
 
-    loadGameOptions = async () => {
+    async function loadGames() {
         try {
             // Conseguir conexión con la base de datos de los juegos
             const response = await fetch('http://localhost:3000/api/games');
@@ -18,22 +19,11 @@ async function createCharacterModal() {
             const games = await response.json();
 
             // Verificar cantidad de juegos nula
-            if (Object.keys(games).length === 0) {
-                const emptyMessage = document.createElement('p');
-                emptyMessage.textContent = 'No hay juegos registrados';
-                emptyMessage.className = 'has-text-centered';
-                charGameOptions.appendChild(emptyMessage);
-                return;
-            }
-
-            // Crear opciones de juegos
-            for (const [id, game] of Object.entries(games)) {
-                const newOption = document.createElement('option');
-                newOption.value = id;
-                newOption.innerHTML = `${game.title}`;
-                charGameOptions.append(newOption);
-                // Agrego juego a lista global de juegos
-                loadedGames[id] = game;
+            if (Object.keys(games).length !== 0) {
+                // Agrego juegos a lista global de juegos
+                for (const [id, game] of Object.entries(games)) {
+                    loadedGames[id] = game;
+                }
             }
 
         } catch (error) {
@@ -44,7 +34,18 @@ async function createCharacterModal() {
             charGameOptions.appendChild(errorMessage);
         }
     };
-    await loadGameOptions();
+    await loadGames();
+
+    // Creo opciones de género
+    const characterGenderSelectInput = modal.querySelector('#char-gender');
+    if (characterGenderSelectInput) {
+        charGenders.forEach((gender) => {
+            const genderOption = document.createElement('option');
+            genderOption.value = gender;
+            genderOption.innerHTML = gender;
+            characterGenderSelectInput.appendChild(genderOption);
+        });
+    }
 
     //#region Option Values Methods For Games
     function createSelect(allValues = [], selectedValues = [], selectedValue = '', typeOfValue = '') {

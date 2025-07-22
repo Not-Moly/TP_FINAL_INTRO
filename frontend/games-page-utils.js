@@ -1,11 +1,9 @@
 // Defino listas de Desarrolladores, Franquicias y Sagas (Se llenan al llamar las funciones anteriormente definidas)
-let loadedFranchises = {};
-let loadedSagas = {};
-let loadedDevelopers = {};
+export let loadedFranchises = {};
+export let loadedSagas = {};
+export let loadedDevelopers = {};
 
-
-//#region Developer/Franchise/Saga Load
-async function loadDevelopers() {
+export async function loadDevelopers() {
     try {
         // Conseguir conexión con la base de datos de los desarrolladores
         const response = await fetch('http://localhost:3000/api/developers');
@@ -37,11 +35,11 @@ async function loadDevelopers() {
     }
 };
 
-async function loadFranchisesSagas() {
+export async function loadFranchisesSagas() {
     // Limpiar diccionarios
     loadedFranchises = {};
     loadedSagas = {};
-    loadFranchise = async () => {
+    async function loadFranchise () {
         try {
             // Conseguir conexión con la base de datos de las franquicias
             const response = await fetch('http://localhost:3000/api/franchises');
@@ -64,7 +62,7 @@ async function loadFranchisesSagas() {
         }
     };
     await loadFranchise();
-    loadSaga = async () => {
+    async function loadSaga () {
         try {
             // Conseguir conexión con la base de datos de las sagas
             const response = await fetch('http://localhost:3000/api/sagas');
@@ -95,12 +93,4 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Crear y despachar evento de cargado cuando terminen de cargar todos los datos
     const dataLoadedEvent = new CustomEvent('dataLoaded');
     document.dispatchEvent(dataLoadedEvent);
-
 })
-
-
-//#endregion
-// ------------------------------------------------------------
-
-
-

@@ -1,10 +1,4 @@
-// developers.js
-
-devTypes = [
-    "Indie",
-    "AA",
-    "AAA"
-]
+import {devTypes} from './datasets.js';
 
 async function createDeveloperModal() {
 
@@ -12,10 +6,10 @@ async function createDeveloperModal() {
     const devTypeSelectInput = modal.querySelector('#dev-type');
     if(devTypeSelectInput){
         devTypes.forEach((type) => {
-            const typeSelect = document.createElement('option');
-            typeSelect.value = type;
-            typeSelect.innerHTML = type;
-            devTypeSelectInput.appendChild(typeSelect);
+            const typeSelectOption = document.createElement('option');
+            typeSelectOption.value = type;
+            typeSelectOption.innerHTML = type;
+            devTypeSelectInput.appendChild(typeSelectOption);
         });
     }
     return modal;

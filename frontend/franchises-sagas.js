@@ -1,6 +1,4 @@
-// Defino variables de funciones
-let loadFranchise;
-let loadSaga;
+import { loadFranchisesSagas, loadedFranchises, loadedSagas } from './games-page-utils.js';
 
 function updateFranchisesSagasModalValues() {
     // Los agrego al modal de Franquicias y Sagas
