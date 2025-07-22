@@ -269,19 +269,21 @@ export async function loadCharacters() {
                     </div>
                 `;
                 // Añadir funcionalidad click
-                card.addEventListener('click', () => {
-                    // Colocar valores de personaje seleccionado en inputs
-                    document.getElementById('char-id').value = id;
-                    document.getElementById('char-name').value = character.name;
-                    document.getElementById('char-image').value = character.image;
-                    document.getElementById('char-image-preview').src = character.image;
-                    document.getElementById('char-gender').value = character.gender;
-                    document.getElementById('char-species').value = character.species;
-                    document.getElementById('char-description').value = character.description;
-                    document.getElementById('char-skill').value = character.skill;
-                    updateValueSelects(Object.keys(loadedGames), 'game', character.games.join(','));
-                    openCharacterModal(document.getElementById('character-modal'), 'edit');
-                })
+                (card.querySelectorAll('.card-image, .card-content') || []).forEach(($open) => {
+                    $open.addEventListener('click', () => {
+                        // Colocar valores de personaje seleccionado en inputs
+                        document.getElementById('char-id').value = id;
+                        document.getElementById('char-name').value = character.name;
+                        document.getElementById('char-image').value = character.image;
+                        document.getElementById('char-image-preview').src = character.image;
+                        document.getElementById('char-gender').value = character.gender;
+                        document.getElementById('char-species').value = character.species;
+                        document.getElementById('char-description').value = character.description;
+                        document.getElementById('char-skill').value = character.skill;
+                        updateValueSelects(Object.keys(loadedGames), 'game', character.games.join(','));
+                        openCharacterModal(document.getElementById('character-modal'), 'edit');
+                    });
+                });
                 grid.appendChild(card);
             }
             container.appendChild(grid);

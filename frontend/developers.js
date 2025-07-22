@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     </div>
                 `;
                     // Añadir funcionalidad click
-                    card.addEventListener('click', () => {
+                    card.querySelector(".card-content").addEventListener('click', () => {
                         // Colocar valores de personaje seleccionado en inputs
                         document.getElementById('developer-id').value = id;
                         document.getElementById('dev-name').value = developer.name;

@@ -276,22 +276,24 @@ export async function loadGames() {
                     </div>
                 `;
                 // Añadir funcionalidad click
-                card.addEventListener('click', () => {
-                    // Colocar valores de personaje seleccionado en inputs
-                    document.getElementById('game-id').value = id;
-                    document.getElementById('game-title').value = game.title;
-                    document.getElementById('game-year').value = game.release_year;
-                    updateValueSelects(allGameGamemodes, 'gamemode', game.gamemode);
-                    updateValueSelects(allGameGenres, 'genre', game.genre);
-                    updateValueSelects(allGamePerspectives, 'perspective', game.perspective);
-                    document.getElementById('game-image').value = game.image;
-                    document.getElementById('game-image-preview').src = game.image;
-                    document.getElementById('game-franchise').value = game.id_franchise;
-                    document.getElementById('game-saga').value = game.id_saga;
-                    document.getElementById('game-developer').value = game.id_developer;
+                (card.querySelectorAll('.card-image, .card-content') || []).forEach(($open) => {
+                    $open.addEventListener('click', () => {
+                        // Colocar valores de personaje seleccionado en inputs
+                        document.getElementById('game-id').value = id;
+                        document.getElementById('game-title').value = game.title;
+                        document.getElementById('game-year').value = game.release_year;
+                        updateValueSelects(allGameGamemodes, 'gamemode', game.gamemode);
+                        updateValueSelects(allGameGenres, 'genre', game.genre);
+                        updateValueSelects(allGamePerspectives, 'perspective', game.perspective);
+                        document.getElementById('game-image').value = game.image;
+                        document.getElementById('game-image-preview').src = game.image;
+                        document.getElementById('game-franchise').value = game.id_franchise;
+                        document.getElementById('game-saga').value = game.id_saga;
+                        document.getElementById('game-developer').value = game.id_developer;
 
-                    openGameModal(document.getElementById('game-modal'), 'edit');
-                })
+                        openGameModal(document.getElementById('game-modal'), 'edit');
+                    });
+                });
                 grid.appendChild(card);
             }
             gameContainer.appendChild(grid);
