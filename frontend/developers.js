@@ -1,10 +1,10 @@
-import {devTypes} from './datasets.js';
+import { devTypes } from './datasets.js';
 
 async function createDeveloperModal() {
 
-    const modal = document.querySelector('.modal');
+    const modal = document.getElementById('developer-modal');
     const devTypeSelectInput = modal.querySelector('#dev-type');
-    if(devTypeSelectInput){
+    if (devTypeSelectInput) {
         devTypes.forEach((type) => {
             const typeSelectOption = document.createElement('option');
             typeSelectOption.value = type;
@@ -29,7 +29,7 @@ function openModal($el, mode) {
     }
 }
 
-function closeModal($el) {
+function closeDevModal($el) {
     $el.classList.remove('is-active');
 
     // Resetear formulario
@@ -66,45 +66,37 @@ function openDeleteModal(onConfirm) {
     };
 }
 
-let loadDevelopers;
 
-document.addEventListener("DOMContentLoaded", async () => {
-
-    // Creo modal para la edición de datos de desarrolladores
-    // Lo llamo al principio para tener la referencia al elemento y poder agregarlo a la función de abrir modal al clickear en un desarrollador
-    const modal = await createDeveloperModal();
-
+// Función para cargar y mostrar desarrolladores
+async function loadDevelopers() {
     // Conseguir contenedor de las entidades
     const container = document.querySelector('.entities-container');
+    try {
+        // Conseguir conexión con la base de datos de los desarrolladores
+        const response = await fetch('http://localhost:3000/api/developers');
+        if (!response.ok) throw new Error('Error al cargar desarrolladores');
 
-    // Función para cargar y mostrar desarrolladores
-    loadDevelopers = async () => {
-        try {
-            // Conseguir conexión con la base de datos de los desarrolladores
-            const response = await fetch('http://localhost:3000/api/developers');
-            if (!response.ok) throw new Error('Error al cargar desarrolladores');
+        const developers = await response.json();
 
-            const developers = await response.json();
+        // Limpiar contenido existente (si lo hay)
+        const oldGrid = document.querySelector('.columns.is-multiline');
+        if (oldGrid) oldGrid.remove();
 
-            // Limpiar contenido existente (si lo hay)
-            const oldGrid = document.querySelector('.columns.is-multiline');
-            if (oldGrid) oldGrid.remove();
+        // Verificar cantidad de desarrolladores nula
+        document.getElementById('no-devs').style = Object.keys(developers).length === 0 ? 'display: block;' : 'display: none;';
 
-            // Verificar cantidad de desarrolladores nula
-            document.getElementById('no-devs').style = Object.keys(developers).length === 0 ? 'display: block;' : 'display: none;';
+        if (Object.keys(developers).length !== 0) {
+            // Crear grid de desarrolladores
+            const grid = document.createElement('div');
+            grid.className = 'columns is-multiline is-centered';
+            grid.style.marginTop = '20px';
+            grid.style.marginInline = '10px';
 
-            if (Object.keys(developers).length !== 0) {
-                // Crear grid de desarrolladores
-                const grid = document.createElement('div');
-                grid.className = 'columns is-multiline is-centered';
-                grid.style.marginTop = '20px';
-                grid.style.marginInline = '10px';
-
-                // Crear tarjetas para cada personaje y agregar al grid
-                for (const [id, developer] of Object.entries(developers)) {
-                    const card = document.createElement('div');
-                    card.className = 'column is-one-quarter';
-                    card.innerHTML = `
+            // Crear tarjetas para cada personaje y agregar al grid
+            for (const [id, developer] of Object.entries(developers)) {
+                const card = document.createElement('div');
+                card.className = 'column is-one-quarter';
+                card.innerHTML = `
                     <div class="card entity-card">
                         <div class="card-content">
                             <div class="media">
@@ -121,36 +113,36 @@ document.addEventListener("DOMContentLoaded", async () => {
                         </div>
                     </div>
                 `;
-                    // Añadir funcionalidad click
-                    card.querySelector(".card-content").addEventListener('click', () => {
-                        // Colocar valores de personaje seleccionado en inputs
-                        document.getElementById('developer-id').value = id;
-                        document.getElementById('dev-name').value = developer.name;
-                        document.getElementById('dev-foundation').value = developer.foundation_year;
-                        document.getElementById('dev-count').value = developer.game_count;
-                        document.getElementById('dev-country').value = developer.country
-                        document.getElementById('dev-type').value = developer.entity_type;
+                // Añadir funcionalidad click
+                card.querySelector(".card-content").addEventListener('click', () => {
+                    // Colocar valores de personaje seleccionado en inputs
+                    document.getElementById('developer-id').value = id;
+                    document.getElementById('dev-name').value = developer.name;
+                    document.getElementById('dev-foundation').value = developer.foundation_year;
+                    document.getElementById('dev-count').value = developer.game_count;
+                    document.getElementById('dev-country').value = developer.country
+                    document.getElementById('dev-type').value = developer.entity_type;
 
-                        openModal(modal, 'edit');
-                    })
-                    grid.appendChild(card);
-                }
-                container.appendChild(grid);
+                    openModal(document.getElementById('developer-modal'), 'edit');
+                })
+                grid.appendChild(card);
             }
-
-
-
-
-        } catch (error) {
-            console.error('Error:', error);
-            const errorMessage = document.createElement('p');
-            errorMessage.textContent = 'Error al cargar los desarrolladores';
-            errorMessage.className = 'has-text-centered has-text-danger';
-            container.appendChild(errorMessage);
+            container.appendChild(grid);
         }
-    };
+        
+    } catch (error) {
+        console.error('Error:', error);
+        const errorMessage = document.createElement('p');
+        errorMessage.textContent = 'Error al cargar los desarrolladores';
+        errorMessage.className = 'has-text-centered has-text-danger';
+        container.appendChild(errorMessage);
+    }
+};
 
+document.addEventListener("DOMContentLoaded", async () => {
 
+    // Creo modal para la edición de datos de desarrolladores
+    const devModal = await createDeveloperModal();
 
     // Carga inicial
     await loadDevelopers();
@@ -159,19 +151,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     const addButton = document.getElementById('add-button');
     if (addButton) {
         addButton.addEventListener('click', () => {
-            openModal(modal, 'add');
+            openModal(devModal, 'add');
         });
     }
 
     // Manejadores de cierre del modal
-    (document.querySelectorAll('.modal-background, .delete, #cancel-dev-btn') || []).forEach(($close) => {
+    (devModal.querySelectorAll('.modal-background, .delete, #cancel-dev-btn') || []).forEach(($close) => {
         $close.addEventListener('click', () => {
-            closeModal(modal);
+            closeDevModal(devModal);
         });
     });
     document.addEventListener('keydown', (event) => {
         if (event.key === "Escape") {
-            closeModal(modal);
+            closeDevModal(devModal);
         }
     });
 
@@ -222,7 +214,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             // Cerrar modal
-            closeModal(modal);
+            closeDevModal(devModal);
             // Actualizar lista
             await loadDevelopers();
         } catch (error) {
@@ -270,13 +262,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                     openDeleteModal(async () => {
                         if (await fetchDeleteDeveloper(developer_id)) {
                             // Cerrar modal
-                            closeModal(modal);
+                            closeDevModal(devModal);
                         }
                     });
                 } else {
                     if (await fetchDeleteDeveloper(developer_id)) {
                         // Cerrar modal
-                        closeModal(modal);
+                        closeDevModal(devModal);
                     }
                 }
             } catch (error) {
