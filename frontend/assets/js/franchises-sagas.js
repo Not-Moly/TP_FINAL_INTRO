@@ -104,6 +104,9 @@ function removeFranchise(id, wrapperFS) {
                 alert(`Error: ${error.message}`);
             }
         });
+    } else {
+        // Eliminar el input que contiene a la franquicia y sus sagas
+        wrapperFS.remove();
     }
 }
 async function fetchDeleteSaga(id) {
@@ -161,6 +164,9 @@ function removeSaga(id, wrapperSaga) {
                 alert(`Error: ${error.message}`);
             }
         });
+    } else {
+        // Eliminar el input que contiene a la saga
+        wrapperSaga.remove();
     }
 }
 
