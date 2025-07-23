@@ -268,6 +268,7 @@ export async function loadCharacters() {
                         </div>
                     </div>
                 `;
+
                 // Añadir funcionalidad click
                 (card.querySelectorAll('.card-image, .card-content') || []).forEach(($open) => {
                     $open.addEventListener('click', () => {
@@ -308,6 +309,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Carga inicial
     await loadCharacters();
+
 
     //Agregar funcionalidad al botón
     const addButton = document.getElementById('add-button');
@@ -351,6 +353,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             species: document.getElementById('char-species').value,
             description: document.getElementById('char-description').value,
             main_skill: document.getElementById('char-skill').value,
+
             games_ids: document.getElementById('char-games-string').value.split(',').map(g_id => parseInt(g_id.trim()))
         };
 
@@ -364,6 +367,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         try {
+
             const character_id = document.getElementById('char-id').value;
             if (!character_id) {
                 const response = await fetch('http://localhost:3000/api/characters', {
@@ -400,6 +404,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             alert(`Error: ${error.message}`);
         }
     });
+
 
     document.getElementById('delete-char-btn').addEventListener('click', async () => {
         openDeleteModal(async () => {

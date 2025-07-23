@@ -26,7 +26,7 @@ CREATE TABLE games (
     id SERIAL PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     release_year INT NOT NULL,
-    gamemode VARCHAR(100) NOT NULL,
+    gamemode VARCHAR(300) NOT NULL,
     genre VARCHAR(300) NOT NULL,
     perspective VARCHAR(300) NOT NULL,
     image VARCHAR(255) NOT NULL,
@@ -52,4 +52,22 @@ CREATE TABLE game_characters(
     id_game INT NOT NULL REFERENCES games(id) ON DELETE CASCADE,
     id_character INT NOT NULL REFERENCES characters(id) ON DELETE CASCADE,
     UNIQUE(id_game, id_character)
+);
+
+--Tabla de Generos de Juego
+CREATE TABLE genre (
+    id SERIAL PRIMARY KEY,
+    genre VARCHAR(50) NOT NULL
+);
+
+--Tabla de Perspectivas
+CREATE TABLE perspectives (
+    id SERIAL PRIMARY KEY,
+    perspective VARCHAR(50) NOT NULL
+);
+
+--Tabla de Franquisias
+CREATE TABLE franchises (
+    id SERIAL PRIMARY KEY,
+    franchise VARCHAR(100) NOT NULL
 );
