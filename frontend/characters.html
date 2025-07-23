@@ -7,17 +7,160 @@
     <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="icon.ico">
-    <script src="src.js"></script>
-    <script src="characters.js"></script>
+
+    <script src="src.js" defer></script>
+    <script type="module" src="characters.js" defer></script>
 </head>
 <body>
     <div id="tabs-container"></div>
-    <div class="has-text-right" style="padding: 20px;">
-        <button id="añadir" class="button is-primary is-rounded">
+
+    <div id="entity-page-title">
+        <h1 class="title has-text-centered">Personajes</h1>
+    </div>
+
+    <div class="main-content">
+        <button id="add-button" class="button is-primary is-rounded">
+
             <span class="icon">
                 <i class="fas fa-plus"></i>
             </span>
         </button>
+
+
+        <p class="has-text-centered" id="no-chars">No hay personajes registrados</p>
+
+
+        <div class="entities-container">
+
+        </div>
+
+        <div id="character-modal" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">PLACEHOLDER-TEXT</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-scrollable modal-card-body">
+                    <form id="char-form">
+                        <input id="char-id" type="hidden" value="">
+
+                        <div class="field">
+                            <label class="label" for="char-name">Nombre</label>
+                            <div class="control">
+                                <input id="char-name" class="input no-spinners" type="text"
+                                    placeholder="Nombre del personaje">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="char-image">URL de la imagen</label>
+                            <div class="control">
+                                <input id="char-image" class="input no-spinners" type="text"
+                                    placeholder="URL de la imagen">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Preview</label>
+                            <div class="control">
+                                <figure class="image box" style="margin: 0 auto; padding: 1rem; width: 20rem;">
+                                    <img id="char-image-preview" src="https://bulma.io/assets/images/placeholders/128x128.png"
+                                        style="border-radius: var(--bulma-radius-large);"
+                                        alt="Vista previa del personaje" />
+                                </figure>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="char-gender">Género</label>
+                            <div class="control">
+                                <div class="select">
+                                    <select id="char-gender">
+                                        <option value="" disabled selected>Seleccione un género</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="char-species">Especie</label>
+                            <div class="control">
+                                <input id="char-species" class="input" type="text" placeholder="Especie del personaje">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="char-description">Descripción</label>
+                            <div class="control">
+                                <textarea id="char-description" class="textarea"
+                                    placeholder="Descripción del personaje"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="char-skill">Habilidad principal</label>
+                            <div class="control">
+                                <input id="char-skill" class="input" type="text" placeholder="Habilidad principal">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Juegos</label>
+                            <div id="games-selects" class="control">
+                            </div>
+                            <input type="hidden" id="char-games-string" name="games" />
+                        </div>
+                    </form>
+                </section>
+                <footer class="modal-card-foot is-flex">
+                    <div class="buttons" style="margin-bottom: 0px;">
+                        <button id="submit-char-btn" class="button is-success">PLACEHOLDER-TEXT</button>
+                        <button id="cancel-char-btn" class="button">Cancelar</button>
+                    </div>
+                    <div class="buttons ml-auto">
+                        <button id="delete-char-btn" class="button is-danger">
+                            <span class="icon is-small">
+                                <i class="fas fa-trash"></i>
+                            </span>
+                        </button>
+                    </div>
+                </footer>
+            </div>
+        </div>
+
+
+
+        <div id="confirm-delete-modal" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head has-background-danger">
+                    <p class="modal-card-title has-text-warning-dark">¿Estás seguro?</p>
+                </header>
+                <section class="modal-card-body">
+                    <p id="confirm-delete-text">Estas seguro que quieres eliminar esta entidad?</p>
+                    <div class="buttons mt-5">
+                        <button class="button is-danger" id="confirm-delete-modal-confirm">Si, borrar</button>
+                        <button class="button" id="confirm-delete-modal-cancel">Cancelar</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div id="error-create-modal" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head has-background-danger">
+                    <p class="modal-card-title has-text-warning-dark">Error</p>
+                </header>
+                <section class="modal-card-body">
+                    <p id="confirm-delete-text">Añade juegos antes de poder agregar un personaje!</p>
+                    <div class="buttons mt-5">
+                        <button class="button is-danger" id="error-create-modal-confirm">Ok</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+
     </div>
 </body>
 </html>

@@ -14,26 +14,45 @@ const dbClient = new Pool({
 async function createCharacter(
     new_character_info
 ) {
-    const result = await dbClient.query(
-        'INSERT INTO characters(character_name, image, gender, species, description, main_skill, id_game) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *',
+    const charResult = await dbClient.query(
+        'INSERT INTO characters(character_name, image, gender, species, description, main_skill) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *',
         [new_character_info.character_name, new_character_info.image, new_character_info.gender,
-        new_character_info.species, new_character_info.description, new_character_info.main_skill, new_character_info.id_game])
-    if (result.rowCount === 0) {
+        new_character_info.species, new_character_info.description, new_character_info.main_skill])
+    if (charResult.rowCount === 0) {
         return undefined
     }
-    return result.rows[0]
-};
+
+    const charId = charResult.rows[0].id;
+
+    if (new_character_info.games_ids && new_character_info.games_ids.length > 0) {
+        for (const gameId of new_character_info.games_ids) {
+            await dbClient.query(
+                'INSERT INTO game_characters(id_character, id_game) VALUES ($1, $2)',
+                [charId, gameId]
+            );
+        }
+        return charId
+    };
+}
 
 // ╔═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╗
 //                 GET (READ)
 // ╚═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╝
 async function getAllCharacters() {
     const result = await dbClient.query(
-        'SELECT characters.id as character_id, characters.character_name as character_name,'
+        'SELECT c.id as character_id, c.character_name as character_name,'
         + ' ' +
-        'characters.image as image, characters.gender as gender, characters.species as species, characters.description as description, characters.main_skill as skill, characters.id_game as id_game'
+        'c.image as image, c.gender as gender, c.species as species,'
         + ' ' +
-        'FROM characters'
+        'c.description as description, c.main_skill as skill,'
+        + ' ' +
+        'array_agg(cg.id_game) as game_ids'
+        + ' ' +
+        'FROM characters c'
+        + ' ' +
+        'LEFT JOIN game_characters cg ON c.id = cg.id_character'
+        + ' ' +
+        'GROUP BY c.id'
     );
 
     const characters = {};
@@ -47,7 +66,7 @@ async function getAllCharacters() {
                 species: row.species,
                 description: row.description,
                 skill: row.skill,
-                id_game: row.id_game
+                games: row.game_ids.filter(id => id !== null)
             }
         }
     });
@@ -55,11 +74,19 @@ async function getAllCharacters() {
 };
 async function getOneCharacter(id) {
     const result = await dbClient.query(
-        'SELECT characters.id as character_id, characters.character_name as character_name,'
+        'SELECT c.id as character_id, c.character_name as character_name,'
         + ' ' +
-        'characters.image as image, characters.gender as gender, characters.species as species, characters.description as description, characters.main_skill as skill, characters.id_game'
+        'c.image as image, c.gender as gender, c.species as species,'
         + ' ' +
-        'FROM characters WHERE characters.id = $1', [id]
+        'c.description as description, c.main_skill as skill,'
+        + ' ' +
+        'array_agg(cg.id_game) as game_ids'
+        + ' ' +
+        'FROM characters c'
+        + ' ' +
+        'LEFT JOIN game_characters cg ON c.id = cg.id_character'
+        + ' ' +
+        'WHERE c.id = $1 GROUP BY c.id ', [id]
     );
 
     const characters = {};
@@ -73,12 +100,37 @@ async function getOneCharacter(id) {
                 species: row.species,
                 description: row.description,
                 skill: row.skill,
-                id_game: row.id_game
+                games: row.game_ids.filter(id => id !== null)
             }
         }
     });
     return characters;
 };
+
+async function getCharactersByGame(gameId) {
+    const result = await dbClient.query(
+        'SELECT c.id as char_id, c.character_name as character_name'
+        + ' ' +
+        'FROM characters c JOIN game_characters cg ON c.id = cg.id_character'
+        + ' ' +
+        'WHERE c.id = $1',
+        [gameId]
+    );
+
+    const characters = {};
+
+    result.rows.forEach(row => {
+        if (!characters[row.char_id]) {
+            characters[row.char_id] = {
+                id: row.char_id,
+                name: row.character_name
+            }
+        }
+    });
+
+    return characters;
+}
+
 
 // ╔═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╗
 //                PUT (UPDATE)
@@ -90,12 +142,29 @@ async function updateCharacter(
     const result = await dbClient.query(
         'UPDATE characters'
         + ' ' +
-        'SET character_name = $1, image = $2, gender = $3, species = $4, description = $5, main_skill = $6, id_game = $7'
+        'SET character_name = $1, image = $2, gender = $3,'
         + ' ' +
-        'WHERE id = $8 RETURNING *',
+        'species = $4, description = $5, main_skill = $6'
+        + ' ' +
+        'WHERE id = $7',
         [updated_character_info.character_name, updated_character_info.image, updated_character_info.gender,
-        updated_character_info.species, updated_character_info.description, updated_character_info.main_skill, updated_character_info.id_game, id]
+        updated_character_info.species, updated_character_info.description, updated_character_info.main_skill, id]
     );
+
+    await dbClient.query(
+        'DELETE FROM game_characters WHERE id_character = $1',
+        [id]
+    );
+
+    if (updated_character_info.games_ids && updated_character_info.games_ids.length > 0) {
+        for (const gameId of updated_character_info.games_ids) {
+            await dbClient.query(
+                'INSERT INTO game_characters (id_character, id_game) VALUES ($1, $2)',
+                [id, gameId]
+            );
+        }
+    };
+
     return result.rows[0];
 };
 
@@ -103,6 +172,12 @@ async function updateCharacter(
 //               DELETE (DELETE)
 // ╚═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╝
 async function deleteCharacter(id) {
+
+    await dbClient.query(
+        'DELETE FROM game_characters WHERE id_character = $1',
+        [id]
+    );
+
     const result = await dbClient.query(
         'DELETE FROM characters WHERE id = $1', [id]
     )
@@ -116,6 +191,7 @@ async function deleteCharacter(id) {
 module.exports = {
     getAllCharacters,
     getOneCharacter,
+    getCharactersByGame,
     createCharacter,
     deleteCharacter,
     updateCharacter

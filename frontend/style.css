@@ -98,6 +98,238 @@ footer {
     font-size: 20px;
 }
 
+
+#boton {
+    width: 125px;
+    height: 75px;
+    font-size: 30px;
+    background-color: rgb(19, 19, 19);
+}
+
+#caja {
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+/* #region Developers Page*/
+.developers-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.developer-card {
+    background-color: #2a2a2a;
+}
+
+.entity-card {
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    height: 100%;
+}
+
+.entity-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.developer-card .card-content {
+    padding: 1.5rem;
+}
+
+.developer-card .title {
+    color: #fff;
+}
+
+.developer-card .subtitle {
+    color: #bbb;
+}
+
+/* #endregion */
+
+#entity-page-title {
+    margin-top: 20px;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+.modal-background {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 100%;
+    height: 100%;
+    animation: opacity 1s ease-in-out;
+}
+
+.modal-card {
+    background-color: #2a2a2a;
+    margin: 2% auto;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.modal-card-head,
+.modal-card-foot {
+    background-color: #333;
+    border: none;
+}
+
+.modal-card-title {
+    color: white;
+    font-family: 'Pixelify Sans', sans-serif;
+}
+
+.modal-card-body {
+    padding: 20px;
+}
+
+.modal-card-body .label {
+    color: #bbb;
+}
+
+.modal-card-body .input,
+.modal-card-body .select select {
+    background-color: #333;
+    border-color: #444;
+    color: white;
+}
+
+.modal-card-body .input:focus,
+.modal-card-body .select select:focus {
+    border-color: #666;
+    box-shadow: 0 0 0 0.125em rgba(100, 100, 100, 0.25);
+}
+
+/* SCROLLBAR */
+.modal-scrollable {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 15px;
+}
+
+.modal-scrollable::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-scrollable::-webkit-scrollbar-track {
+    background: --bulma-scheme-main;
+    border-radius: 10px;
+}
+
+.modal-scrollable::-webkit-scrollbar-thumb {
+    background: #4a4a4a;
+    border-radius: 10px;
+}
+
+.modal-scrollable::-webkit-scrollbar-thumb:hover {
+    background: #6a6a6a;
+}
+
+select.modal-scrollable::-webkit-scrollbar-thumb:hover {
+    background: #4a4a4a;
+}
+
+/* Add Button */
+#add-button {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 80px;
+    height: 80px;
+    font-size: 2rem;
+    background-color: #333;
+    color: white;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+#add-button:hover {
+    background-color: #444;
+    transform: scale(1.1);
+}
+
+#add-button:active {
+    transform: scale(0.9);
+}
+
+/* Manage Button */
+.manage-entities-button {
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+    z-index: 1000;
+    background-color: #189df7;
+    transition: all 0.3s ease;
+}
+
+.manage-entities-button:hover {
+    background-color: #35a9f7;
+    transform: scale(1.05);
+}
+
+.manage-entities-button:active {
+    transform: scale(0.9);
+}
+
+.delete-dev {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.developer-card:hover .delete-dev {
+    opacity: 1;
+}
+
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+/* Modal de confirmación */
+.confirmation-modal {
+    max-width: 600px;
+    white-space: pre-line;
+    text-align: left;
+}
+
+.game-list-item {
+    margin: 5px 0;
+    padding: 8px;
+    background: #333;
+    border-radius: 4px;
+}
+
+.no-spinners::-webkit-inner-spin-button,
+.no-spinners::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.no-spinners {
+  appearance: textfield;
+}
+
+
 .text-color-red {
     color: red;
 }
@@ -224,3 +456,4 @@ footer {
 }
 
 /* #endregion */
+

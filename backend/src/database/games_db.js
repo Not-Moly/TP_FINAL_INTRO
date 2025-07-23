@@ -17,7 +17,7 @@ async function createGame(
     const result = await dbClient.query(
         'INSERT INTO games(title, release_year, gamemode, genre, perspective, image, id_franchise, id_saga, id_developer) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *',
         [new_game_info.title, new_game_info.release_year, new_game_info.gamemode, new_game_info.genre, new_game_info.perspective,
-        new_game_info.image, new_game_info.id_franchise, new_game_info.id_saga , new_game_info.id_developer])
+        new_game_info.image, new_game_info.id_franchise, new_game_info.id_saga, new_game_info.id_developer])
     if (result.rowCount === 0) {
         return undefined
     }
@@ -68,6 +68,37 @@ async function getOneGame(id) {
         'FROM games WHERE games.id = $1', [id]
     );
 
+    const game = {};
+
+    result.rows.forEach(row => {
+        if (!game[row.game_id]) {
+            game[row.game_id] = {
+                title: row.title,
+                release_year: row.release_year,
+                gamemode: row.gamemode,
+                genre: row.genre,
+                perspective: row.perspective,
+                image: row.image,
+                id_franchise: row.id_franchise,
+                id_saga: row.id_saga,
+                id_developer: row.id_developer
+            }
+        }
+    });
+    return game;
+};
+
+async function getGamesByDeveloper(developerId) {
+    const result = await dbClient.query(
+        'SELECT games.id as game_id, games.title as title, games.release_year as release_year, games.gamemode as gamemode,'
+        + ' ' +
+        'games.genre as genre, games.perspective as perspective, games.image as image,'
+        + ' ' +
+        'games.id_franchise as id_franchise, games.id_saga as id_saga, games.id_developer as id_developer'
+        + ' ' +
+        'FROM games WHERE games.id_developer = $1', [developerId]
+    );
+
     const games = {};
 
     result.rows.forEach(row => {
@@ -85,9 +116,70 @@ async function getOneGame(id) {
             }
         }
     });
-    return games;
-};
 
+    return games;
+}
+async function getGamesBySaga(sagaId) {
+    const result = await dbClient.query(
+        'SELECT games.id as game_id, games.title as title, games.release_year as release_year, games.gamemode as gamemode,'
+        + ' ' +
+        'games.genre as genre, games.perspective as perspective, games.image as image,'
+        + ' ' +
+        'games.id_franchise as id_franchise, games.id_saga as id_saga, games.id_developer as id_developer'
+        + ' ' +
+        'FROM games WHERE games.id_saga = $1', [sagaId]
+    );
+
+    const games = {};
+    result.rows.forEach(row => {
+        if (!games[row.game_id]) {
+            games[row.game_id] = {
+                title: row.title,
+                release_year: row.release_year,
+                gamemode: row.gamemode,
+                genre: row.genre,
+                perspective: row.perspective,
+                image: row.image,
+                id_franchise: row.id_franchise,
+                id_saga: row.id_saga,
+                id_developer: row.id_developer
+            }
+        }
+    });
+
+    return games;
+}
+
+
+async function getGamesByCharacter(charId) {
+    const result = await dbClient.query(
+        'SELECT *' 
+        + ' ' +
+        'FROM games g JOIN game_characters gc ON g.id = gc.id_game' 
+        + ' ' +
+        'WHERE gc.id_character = $1;',
+        [charId]
+    )
+
+    const games = {};
+    result.rows.forEach(row => {
+        if (!games[row.id]) {
+            games[row.id] = {
+                title: row.title,
+                release_year: row.release_year,
+                gamemode: row.gamemode,
+                genre: row.genre,
+                perspective: row.perspective,
+                image: row.image,
+                id_franchise: row.id_franchise,
+                id_saga: row.id_saga,
+                id_developer: row.id_developer
+            }
+        }
+    });
+
+    return games;
+}
 
 // ╔═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╗
 //                PUT (UPDATE)
@@ -122,6 +214,9 @@ async function deleteGame(id) {
 
 module.exports = {
     getAllGames,
+    getGamesByDeveloper,
+    getGamesBySaga,
+    getGamesByCharacter,
     getOneGame,
     createGame,
     deleteGame,
