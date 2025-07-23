@@ -91,6 +91,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadFranchisesSagas();
     await loadDevelopers();
     // Crear y despachar evento de cargado cuando terminen de cargar todos los datos
-    const dataLoadedEvent = new CustomEvent('dataLoaded');
+    const dataLoadedEvent = new Event('dataLoaded');
     document.dispatchEvent(dataLoadedEvent);
 })

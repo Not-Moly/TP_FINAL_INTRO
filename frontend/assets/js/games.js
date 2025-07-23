@@ -313,6 +313,8 @@ document.addEventListener("dataLoaded", async () => {
 
     // Carga inicial de juegos
     await loadGames();
+    
+    window.dispatchEvent(new Event('gamesLoaded'));
 
     //Agregar funcionalidad al botón
     const addButton = document.getElementById('add-button');

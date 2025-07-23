@@ -147,6 +147,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Carga inicial
     await loadDevelopers();
 
+    window.dispatchEvent(new Event('developersLoaded'));
+
     //Agregar funcionalidad al botón
     const addButton = document.getElementById('add-button');
     if (addButton) {

@@ -309,7 +309,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Carga inicial
     await loadCharacters();
-
+    
+    window.dispatchEvent(new Event('charactersLoaded'));
 
     //Agregar funcionalidad al botón
     const addButton = document.getElementById('add-button');

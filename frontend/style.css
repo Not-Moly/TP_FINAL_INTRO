@@ -274,7 +274,7 @@ select.modal-scrollable::-webkit-scrollbar-thumb:hover {
     position: fixed;
     bottom: 1rem;
     left: 1rem;
-    z-index: 1000;
+    z-index: 10;
     background-color: #189df7;
     transition: all 0.3s ease;
 }
