@@ -33,6 +33,10 @@ export function showToast(message, type = 'is-primary', icon = 'fas fa-info-circ
     }
 }
 
+export function showToastError(errorMessage){
+    showToast(errorMessage, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+}
+
 function dismissToast(toast) {
     toast.classList.add('dismissing');
     setTimeout(() => {

@@ -1,5 +1,5 @@
 import { devTypes } from './datasets.js';
-import { showToast } from './toast-notification.js'
+import { showToastError } from './toast-notification.js';
 
 async function createDeveloperModal() {
 
@@ -75,7 +75,10 @@ async function loadDevelopers() {
     try {
         // Conseguir conexión con la base de datos de los desarrolladores
         const response = await fetch('http://localhost:3000/api/developers');
-        if (!response.ok) throw new Error('Error al cargar desarrolladores');
+        if (!response.ok) {
+            showToastError('Error al cargar desarrolladores');
+            return;
+        };
 
         const developers = await response.json();
 
@@ -182,7 +185,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Validación de campos requeridos
         if (!Object.values(newDeveloper).every(value => value !== null && value !== undefined && value !== '')) {
-            showToast('Faltan campos obligatorios', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+            showToastError('Faltan campos obligatorios');
             return;
         }
 
@@ -199,7 +202,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    showToast(errorData.error || 'Error al crear desarrollador', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                    showToastError(errorData.error || 'Error al crear desarrollador');
                     return;
                 }
             } else {
@@ -213,7 +216,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    showToast(errorData.error || 'Error al editar desarrollador', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                    showToastError(errorData.error || 'Error al editar desarrollador');
                     return;
                 }
             }
@@ -224,7 +227,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             await loadDevelopers();
         } catch (error) {
             console.error('Error:', error);
-            showToast(`No se pudo agregar/editar el desarrollador`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+            showToastError(`No se pudo agregar/editar el desarrollador`);
         }
     });
 
@@ -238,13 +241,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                showToast(errorData.error || 'Error al eliminar desarrollador', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                showToastError(errorData.error || 'Error al eliminar desarrollador');
                 return;
             }
             return true;
         } catch (error) {
             console.error('Error:', error);
-            showToast(`No se pudo eliminar al desarrollador`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+            showToastError(`No se pudo eliminar al desarrollador`);
         }
     }
 
@@ -256,7 +259,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const response = await fetch(`http://localhost:3000/api/gamesbydeveloper/${developer_id}`);
                 const data = await response.json();
                 if (!response.ok) {
-                    showToast(`Error al conseguir los juegos del desarrollador`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                    showToastError(`Error al conseguir los juegos del desarrollador`);
                     return;
                 }
 
@@ -279,7 +282,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
             } catch (error) {
                 console.error('Error:', error);
-                showToast(`No se pudieron conseguir los juegos del desarrollador`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                showToastError(`No se pudieron conseguir los juegos del desarrollador`);
             }
         });
     });

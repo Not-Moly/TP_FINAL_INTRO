@@ -1,5 +1,5 @@
 import { charGenders } from './datasets.js';
-import { showToast } from './toast-notification.js'
+import { showToastError } from './toast-notification.js';
 let loadedGames = {};
 let updateAllValueSelects;
 let updateValueSelects;
@@ -14,7 +14,10 @@ async function createCharacterModal() {
         try {
             // Conseguir conexión con la base de datos de los juegos
             const response = await fetch('http://localhost:3000/api/games');
-            if (!response.ok) throw new Error('Error al cargar juegos');
+            if (!response.ok) {
+                showToastError('Error al cargar juegos');
+                return;
+            }
 
             const games = await response.json();
 
@@ -214,12 +217,15 @@ function openDeleteModal(onConfirm) {
 }
 
 // Función para cargar y mostrar personajes
-export async function loadCharacters() {
+async function loadCharacters() {
     const container = document.querySelector('.entities-container');
     try {
         // Conseguir conexión con la base de datos de los personajes
         const response = await fetch('http://localhost:3000/api/characters');
-        if (!response.ok) throw new Error('Error al cargar personajes');
+        if (!response.ok) {
+            showToastError('Error al cargar personajes');
+            return;
+        };
 
         const characters = await response.json();
 
@@ -314,18 +320,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     //Agregar funcionalidad al botón
     const addButton = document.getElementById('add-button');
-    const modalCreateError = document.getElementById('error-create-modal');
     if (addButton) {
-        if (modalCreateError) {
-            addButton.addEventListener('click', () => {
-                if (Object.keys(loadedGames).length === 0) {
-                    modalCreateError.classList.add("is-active");
-                }
-                else {
-                    openCharacterModal(characterModal, 'add');
-                }
-            });
-        }
+        addButton.addEventListener('click', () => {
+            if (Object.keys(loadedGames).length === 0) {
+                showToastError('Añade juegos antes de poder agregar un personaje!');
+                return;
+            }
+            else {
+                openCharacterModal(characterModal, 'add');
+            }
+        });
     }
 
     // Manejadores de cierre del modal
@@ -338,11 +342,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (event.key === "Escape") {
             closeModal(characterModal);
         }
-    });
-
-    // Manejadores de cierre de modal de error al crear (Faltan entidades de dependencia) 
-    modalCreateError.querySelector('#error-create-modal-confirm').addEventListener('click', () => {
-        modalCreateError.classList.remove("is-active");
     });
 
     // Envío formulario
@@ -362,7 +361,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             !Object.values(newCharacter).every(val => val !== null && val !== undefined && val !== '' && !(typeof val === 'number' && Number.isNaN(val))) ||
             (newCharacter.games_ids.length === 1 && Number.isNaN(newCharacter.games_ids[0]))
         ) {
-            showToast('Faltan campos obligatorios', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+            showToastError('Faltan campos obligatorios');
             return;
         }
 
@@ -380,7 +379,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    showToast(errorData.error || 'Error al crear personaje', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                    showToastError(errorData.error || 'Error al crear personaje');
                     return;
                 }
             } else {
@@ -394,7 +393,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    showToast(errorData.error || 'Error al editar personaje', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                    showToastError(errorData.error || 'Error al editar personaje');
                     return;
                 }
             }
@@ -403,7 +402,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             closeModal(characterModal);
         } catch (error) {
             console.error('Error:', error);
-            showToast(`No se pudo agregar/editar el personaje`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+            showToastError(`No se pudo agregar/editar el personaje`);
         }
     });
 
@@ -418,7 +417,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 });
                 if (!response.ok) {
                     const errorData = await response.json();
-                    showToast(errorData.error || `Error al eliminar el personaje`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                    showToastError(errorData.error || `Error al eliminar el personaje`);
                     return;
                 }
 
@@ -428,7 +427,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 await loadCharacters();
             } catch (error) {
                 console.error('Error:', error);
-                showToast(`No se pudo eliminar el personaje`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                showToastError(`No se pudo eliminar el personaje`);
             }
         });
     });

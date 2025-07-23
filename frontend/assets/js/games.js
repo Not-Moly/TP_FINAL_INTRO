@@ -3,7 +3,7 @@ let updateAllValueSelects;
 
 import { allGameGamemodes, allGameGenres, allGamePerspectives } from './datasets.js';
 import { loadDevelopers, loadFranchisesSagas, loadedDevelopers, loadedFranchises, loadedSagas } from './games-page-utils.js';
-import { showToast } from './toast-notification.js'
+import { showToastError } from './toast-notification.js';
 
 function createDeveloperOptions() {
     const gameDeveloperOptions = document.getElementById('game-developer');
@@ -319,18 +319,16 @@ document.addEventListener("dataLoaded", async () => {
 
     //Agregar funcionalidad al botón
     const addButton = document.getElementById('add-button');
-    const modalCreateError = document.getElementById('error-create-modal');
     if (addButton) {
-        if (modalCreateError) {
-            addButton.addEventListener('click', () => {
-                if (Object.keys(loadedDevelopers).length === 0 || Object.keys(loadedFranchises).length === 0 || Object.keys(loadedSagas).length === 0) {
-                    modalCreateError.classList.add("is-active");
-                }
-                else {
-                    openGameModal(gameModal, 'add');
-                }
-            });
-        }
+        addButton.addEventListener('click', () => {
+            if (Object.keys(loadedDevelopers).length === 0 || Object.keys(loadedFranchises).length === 0 || Object.keys(loadedSagas).length === 0) {
+                showToastError('Añade Desarrolladores, franquicias y sagas antes de poder agregar un juego!');
+                return;
+            }
+            else {
+                openGameModal(gameModal, 'add');
+            }
+        });
     }
 
     // Manejadores de cierre del modal
@@ -343,11 +341,6 @@ document.addEventListener("dataLoaded", async () => {
         if (event.key === "Escape") {
             closeGameModal(gameModal);
         }
-    });
-
-    // Manejadores de cierre de modal de error al crear (Faltan entidades de dependencia) 
-    modalCreateError.querySelector('#error-create-modal-confirm').addEventListener('click', () => {
-        modalCreateError.classList.remove("is-active");
     });
 
 
@@ -367,7 +360,7 @@ document.addEventListener("dataLoaded", async () => {
 
         // Validación de campos requeridos
         if (!Object.values(newGame).every(value => value !== null && value !== undefined && value !== '')) {
-            showToast('Faltan campos obligatorios', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+            showToastError('Faltan campos obligatorios');
             return;
         }
 
@@ -384,7 +377,7 @@ document.addEventListener("dataLoaded", async () => {
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    showToast(errorData.error || 'Error al crear juego', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                    showToastError(errorData.error || 'Error al crear juego');
                     return;
                 }
             } else {
@@ -398,7 +391,7 @@ document.addEventListener("dataLoaded", async () => {
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    showToast(errorData.error || 'Error al editar juego', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                    showToastError(errorData.error || 'Error al editar juego');
                     return;
                 }
             }
@@ -410,7 +403,7 @@ document.addEventListener("dataLoaded", async () => {
 
         } catch (error) {
             console.error('Error:', error);
-            showToast(`No se pudo agregar/editar el juego`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+            showToastError(`No se pudo agregar/editar el juego`);
         }
     });
 
@@ -426,13 +419,13 @@ document.addEventListener("dataLoaded", async () => {
             });
             if (!response.ok) {
                 const errorData = await response.json();
-                showToast(errorData.error || 'Error al eliminar juego', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                showToastError(errorData.error || 'Error al eliminar juego');
                 return;
             }
             return true;
         } catch (error) {
             console.error('Error:', error);
-            showToast(`No se pudo eliminar el juego`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+            showToastError(`No se pudo eliminar el juego`);
         }
     }
 
@@ -445,12 +438,13 @@ document.addEventListener("dataLoaded", async () => {
                 const response = await fetch(`http://localhost:3000/api/charactersbygame/${game_id}`);
                 const data = await response.json();
                 if (!response.ok) {
-                    showToast(`Error al conseguir los personajes del juego`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                    showToastError(`Error al conseguir los personajes del juego`);
                     return;
                 }
 
                 const characters = data;
-
+                console.log(characters);
+                
                 // Verificar cantidad de juegos nula
                 if (Object.keys(characters).length !== 0) {
                     document.getElementById('confirm-delete-text').innerHTML = 'Éste juego tiene personajes asignados, si lo eliminas los personajes también resultarán eliminados!'
@@ -468,7 +462,7 @@ document.addEventListener("dataLoaded", async () => {
                 }
             } catch (error) {
                 console.error('Error:', error);
-                showToast(`No se pudieron conseguir los personajes del juego`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                showToastError(`No se pudieron conseguir los personajes del juego`);
             }
         });
     });
