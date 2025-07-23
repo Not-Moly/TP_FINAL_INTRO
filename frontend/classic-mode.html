@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html data-theme="dark">
+<head>
+    <title>Playle - Modo Clásico</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="icon.ico">
+    <script type="module" src="/assets/js/clasic-logic.js" defer></script>
+    <script src="src.js"></script>
+    <script src="assets/js/tabs-navbar.js" defer></script>
+</head>
+
+<body>
+    <div id="tabs-container"></div>
+
+    <div id="entity-page-title">
+        <h1 class="title has-text-centered">Modo Clásico</h1>
+        <p class="subtitle has-text-centered">Adivina el juego en 6 intentos</p>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-half">
+                    <div class="field has-addons">
+                        <div class="control is-expanded has-icons-left">
+                            <input id="game-search" class="input" type="text" placeholder="Buscar juego...">
+                            <span class="icon is-left">
+                                <i class="fas fa-search"></i>
+                            </span>
+                            <div id="search-results" class="search-results"></div>
+                        </div>
+                        <div class="control">
+                            <button id="search-button" class="button is-primary">
+                                Buscar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="attempts-counter has-text-centered">
+                        Intentos restantes: <span id="attempts">6</span>
+                    </div>
+
+                    <div id="hints-container" class="hint-box">
+                        <h3 class="title is-5">Pistas:</h3>
+                        <ul id="hints-list">
+                        </ul>
+                    </div>
+
+                    <div id="result-container" style="display: none;">
+                        <div class="notification" id="result-message"></div>
+                    </div>
+
+                    <div id="guessed-game" style="display: none;">
+                        <div class="box has-background-dark">
+                            <article class="media">
+                                <div class="media-left">
+                                    <figure class="image is-128x128">
+                                        <img id="guessed-image" src="" alt="Game image">
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <div class="content">
+                                        <p>
+                                            <strong id="guessed-title"></strong>
+                                            <br>
+                                            <small id="guessed-year"></small>
+                                            <br>
+                                            <span id="guessed-genre"></span>
+                                            <br>
+                                            <span id="guessed-developer"></span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     
+</body>
+</html>
