@@ -113,7 +113,7 @@ async function getCharactersByGame(gameId) {
         + ' ' +
         'FROM characters c JOIN game_characters cg ON c.id = cg.id_character'
         + ' ' +
-        'WHERE c.id = $1',
+        'WHERE cg.id_game = $1',
         [gameId]
     );
 
