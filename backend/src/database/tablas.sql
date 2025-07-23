@@ -53,21 +53,3 @@ CREATE TABLE game_characters(
     id_character INT NOT NULL REFERENCES characters(id) ON DELETE CASCADE,
     UNIQUE(id_game, id_character)
 );
-
---Tabla de Generos de Juego
-CREATE TABLE genre (
-    id SERIAL PRIMARY KEY,
-    genre VARCHAR(50) NOT NULL
-);
-
---Tabla de Perspectivas
-CREATE TABLE perspectives (
-    id SERIAL PRIMARY KEY,
-    perspective VARCHAR(50) NOT NULL
-);
-
---Tabla de Franquisias
-CREATE TABLE franchises (
-    id SERIAL PRIMARY KEY,
-    franchise VARCHAR(100) NOT NULL
-);

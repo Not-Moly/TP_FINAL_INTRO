@@ -23,16 +23,13 @@ body {
     flex: 1;
 }
 
-footer {
+.footer {
     position: relative;
     z-index: 100;
     margin-top: auto;
     text-align: center;
     color: white;
     margin-bottom: -2rem;
-}
-
-.footer {
     --bulma-footer-padding: 2rem 1.5rem 0rem;
 }
 
@@ -302,7 +299,7 @@ select.modal-scrollable::-webkit-scrollbar-thumb:hover {
 .developer-card:hover .delete-dev {
     opacity: 1;
 }
-
+	
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
 
 /* Modal de confirmación */
