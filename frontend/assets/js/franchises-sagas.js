@@ -59,12 +59,13 @@ async function fetchDeleteFranchise(id) {
         });
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.error || 'Error al eliminar franquicia');
+            showToast(errorData.error || 'Error al eliminar franquicia', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+            return;
         }
         return true;
     } catch (error) {
         console.error('Error:', error);
-        alert(`Error: ${error.message}`);
+        showToast(`No se pudo eliminar la franquicia`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
     }
 }
 function removeFranchise(id, wrapperFS) {
@@ -75,7 +76,8 @@ function removeFranchise(id, wrapperFS) {
                 const response = await fetch(`http://localhost:3000/api/sagasbyfranchise/${id}`);
                 const data = await response.json();
                 if (!response.ok) {
-                    throw new Error(errorData.error || 'Error al conseguir personajes por juego');
+                    showToast(errorData.error || 'Error al conseguir sagas de la franquicia', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                    return;
                 }
 
                 const sagas = data;
@@ -101,7 +103,7 @@ function removeFranchise(id, wrapperFS) {
 
             } catch (error) {
                 console.error('Error:', error);
-                alert(`Error: ${error.message}`);
+                showToast(`No se pudieron conseguir las sagas de la franquicia`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
             }
         });
     }
@@ -116,12 +118,13 @@ async function fetchDeleteSaga(id) {
         });
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.error || 'Error al eliminar franquicia');
+            showToast(errorData.error || 'Error al eliminar saga', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+            return;
         }
         return true;
     } catch (error) {
         console.error('Error:', error);
-        alert(`Error: ${error.message}`);
+        showToast(`No se pudo eliminar la saga`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
     }
 }
 function removeSaga(id, wrapperSaga) {
@@ -133,7 +136,8 @@ function removeSaga(id, wrapperSaga) {
                 const data = await response.json();
 
                 if (!response.ok) {
-                    throw new Error(data.error || 'Error al conseguir personajes por juego');
+                    showToast(`Error al conseguir los juegos de la saga`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                    return;
                 }
 
                 const games = data;
@@ -158,7 +162,7 @@ function removeSaga(id, wrapperSaga) {
 
             } catch (error) {
                 console.error('Error:', error);
-                alert(`Error: ${error.message}`);
+                showToast(`No se pudieron conseguir los juegos de la saga`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
             }
         });
     }
@@ -297,7 +301,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     franchisesAndSagasModal.querySelector('#submit-franchises_and_sagas-btn').addEventListener('click', async () => {
         // Verificar si TODOS los inputs tienen un valor no vacío
         if (!Array.from(document.querySelectorAll('.franchise-title, .saga-title')).every(input => input.value.trim() !== '')) {
-            throw new Error('Las franquicias o sagas no pueden tener un valor vacío');
+            showToast('Las franquicias o sagas deben tener un título válido', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+            return;
         }
 
         const inputsFranchisesSagas = document.querySelectorAll('.franchise_and_saga-container');
@@ -322,7 +327,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                     });
                     const data = await response.json();
                     if (!response.ok) {
-                        throw new Error(errorData.error || 'Error al agregar franquicia');
+                        showToast(errorData.error || 'Error al crear franquicia', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                        return;
                     }
                     franchiseId = data.id;
                 }
@@ -340,13 +346,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                     });
                     if (!response.ok) {
                         const errorData = await response.json();
-                        throw new Error(errorData.error || 'Error al editar franquicia');
+                        showToast(errorData.error || 'Error al editar franquicia', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                        return;
                     }
                 }
 
             } catch (error) {
                 console.error('Error:', error);
-                alert(`Error: ${error.message}`);
+                showToast(`No se pudo agregar/editar la franquicia`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
             }
 
             for (const $elSaga of inputsSagas) {
@@ -370,7 +377,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                         });
                         if (!response.ok) {
                             const errorData = await response.json();
-                            throw new Error(errorData.error || 'Error al agregar saga');
+                            showToast(errorData.error || 'Error al crear saga', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                            return;
                         }
                     }
                     // Si el input de id no está vacío y el título cambió entonces hacer PUT
@@ -388,13 +396,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                         });
                         if (!response.ok) {
                             const errorData = await response.json();
-                            throw new Error(errorData.error || 'Error al editar saga');
+                            showToast(errorData.error || 'Error al editar saga', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                            return;
                         }
                     }
 
                 } catch (error) {
                     console.error('Error:', error);
-                    alert(`Error: ${error.message}`);
+                    showToast(`No se pudo agregar/editar la saga`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
                 }
             }
         }

@@ -153,7 +153,7 @@ body {
 .modal {
     display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: 100;
     left: 0;
     top: 0;
     width: 100%;
@@ -257,7 +257,7 @@ select.modal-scrollable::-webkit-scrollbar-thumb:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 100;
+    z-index: 10;
 }
 
 #add-button:hover {
@@ -299,7 +299,7 @@ select.modal-scrollable::-webkit-scrollbar-thumb:hover {
 .developer-card:hover .delete-dev {
     opacity: 1;
 }
-	
+
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
 
 /* Modal de confirmación */
@@ -318,12 +318,12 @@ select.modal-scrollable::-webkit-scrollbar-thumb:hover {
 
 .no-spinners::-webkit-inner-spin-button,
 .no-spinners::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .no-spinners {
-  appearance: textfield;
+    appearance: textfield;
 }
 
 
@@ -424,6 +424,106 @@ select.modal-scrollable::-webkit-scrollbar-thumb:hover {
 
 /* #endregion */
 
+/* Toast Notifications */
+#toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 30rem;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.toast {
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    transform: translateX(400px);
+    opacity: 0;
+    animation: slideIn 0.4s forwards;
+    position: relative;
+}
+
+.toast-content {
+    display: flex;
+    align-items: flex-start;
+}
+
+.toast-icon {
+    margin-right: 12px;
+    font-size: 1.4rem;
+    min-width: 24px;
+}
+
+.toast-body {
+    flex: 1;
+}
+
+.toast-title {
+    font-weight: 600;
+    margin-bottom: 5px;
+    font-size: 1.05rem;
+}
+
+.toast-message {
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.toast-progress {
+    height: 4px;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.1);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.toast-progress-bar {
+    height: 100%;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.5);
+    animation: progress linear forwards;
+}
+
+@keyframes slideIn {
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+@keyframes slideOut {
+    to {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+}
+
+@keyframes fadeOut {
+    to {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+}
+
+@keyframes progress {
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: 0;
+    }
+}
+
+.toast.dismissing {
+    transform: translateX(0px);
+    opacity: 1;
+    animation: slideOut 0.4s forwards;
+}
+
 
 /*      ______ ____  _   _ _______ _____ 
  *     |  ____/ __ \| \ | |__   __/ ____|
@@ -453,4 +553,3 @@ select.modal-scrollable::-webkit-scrollbar-thumb:hover {
 }
 
 /* #endregion */
-

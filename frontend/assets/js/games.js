@@ -3,6 +3,7 @@ let updateAllValueSelects;
 
 import { allGameGamemodes, allGameGenres, allGamePerspectives } from './datasets.js';
 import { loadDevelopers, loadFranchisesSagas, loadedDevelopers, loadedFranchises, loadedSagas } from './games-page-utils.js';
+import { showToast } from './toast-notification.js'
 
 function createDeveloperOptions() {
     const gameDeveloperOptions = document.getElementById('game-developer');
@@ -313,7 +314,7 @@ document.addEventListener("dataLoaded", async () => {
 
     // Carga inicial de juegos
     await loadGames();
-    
+
     window.dispatchEvent(new Event('gamesLoaded'));
 
     //Agregar funcionalidad al botón
@@ -366,7 +367,7 @@ document.addEventListener("dataLoaded", async () => {
 
         // Validación de campos requeridos
         if (!Object.values(newGame).every(value => value !== null && value !== undefined && value !== '')) {
-            alert('Por favor complete todos los campos requeridos');
+            showToast('Faltan campos obligatorios', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
             return;
         }
 
@@ -383,7 +384,8 @@ document.addEventListener("dataLoaded", async () => {
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    throw new Error(errorData.error || 'Error al crear juego');
+                    showToast(errorData.error || 'Error al crear juego', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                    return;
                 }
             } else {
                 const response = await fetch(`http://localhost:3000/api/games/${game_id}`, {
@@ -396,7 +398,8 @@ document.addEventListener("dataLoaded", async () => {
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    throw new Error(errorData.error || 'Error al editar juego');
+                    showToast(errorData.error || 'Error al editar juego', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                    return;
                 }
             }
 
@@ -407,7 +410,7 @@ document.addEventListener("dataLoaded", async () => {
 
         } catch (error) {
             console.error('Error:', error);
-            alert(`Error: ${error.message}`);
+            showToast(`No se pudo agregar/editar el juego`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
         }
     });
 
@@ -423,12 +426,13 @@ document.addEventListener("dataLoaded", async () => {
             });
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error || 'Error al eliminar juego');
+                showToast(errorData.error || 'Error al eliminar juego', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                return;
             }
             return true;
         } catch (error) {
             console.error('Error:', error);
-            alert(`Error: ${error.message}`);
+            showToast(`No se pudo eliminar el juego`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
         }
     }
 
@@ -441,7 +445,8 @@ document.addEventListener("dataLoaded", async () => {
                 const response = await fetch(`http://localhost:3000/api/charactersbygame/${game_id}`);
                 const data = await response.json();
                 if (!response.ok) {
-                    throw new Error(errorData.error || 'Error al conseguir personajes por juego');
+                    showToast(`Error al conseguir los personajes del juego`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                    return;
                 }
 
                 const characters = data;
@@ -463,7 +468,7 @@ document.addEventListener("dataLoaded", async () => {
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert(`Error: ${error.message}`);
+                showToast(`No se pudieron conseguir los personajes del juego`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
             }
         });
     });

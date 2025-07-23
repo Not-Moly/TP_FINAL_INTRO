@@ -1,4 +1,5 @@
 import { devTypes } from './datasets.js';
+import { showToast } from './toast-notification.js'
 
 async function createDeveloperModal() {
 
@@ -129,7 +130,7 @@ async function loadDevelopers() {
             }
             container.appendChild(grid);
         }
-        
+
     } catch (error) {
         console.error('Error:', error);
         const errorMessage = document.createElement('p');
@@ -181,7 +182,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Validación de campos requeridos
         if (!Object.values(newDeveloper).every(value => value !== null && value !== undefined && value !== '')) {
-            alert('Por favor complete todos los campos requeridos');
+            showToast('Faltan campos obligatorios', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
             return;
         }
 
@@ -198,7 +199,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    throw new Error(errorData.error || 'Error al crear desarrollador');
+                    showToast(errorData.error || 'Error al crear desarrollador', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                    return;
                 }
             } else {
                 const response = await fetch(`http://localhost:3000/api/developers/${developer_id}`, {
@@ -211,7 +213,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    throw new Error(errorData.error || 'Error al editar el desarrollador');
+                    showToast(errorData.error || 'Error al editar desarrollador', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                    return;
                 }
             }
 
@@ -221,7 +224,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             await loadDevelopers();
         } catch (error) {
             console.error('Error:', error);
-            alert(`Error: ${error.message}`);
+            showToast(`No se pudo agregar/editar el desarrollador`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
         }
     });
 
@@ -235,12 +238,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error || 'Error al eliminar desarrollador');
+                showToast(errorData.error || 'Error al eliminar desarrollador', 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                return;
             }
             return true;
         } catch (error) {
             console.error('Error:', error);
-            alert(`Error: ${error.message}`);
+            showToast(`No se pudo eliminar al desarrollador`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
         }
     }
 
@@ -249,11 +253,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         openDeleteModal(async () => {
             const developer_id = document.getElementById('developer-id').value;
             try {
-
                 const response = await fetch(`http://localhost:3000/api/gamesbydeveloper/${developer_id}`);
                 const data = await response.json();
                 if (!response.ok) {
-                    throw new Error(errorData.error || 'Error al conseguir juegos por desarrollador');
+                    showToast(`Error al conseguir los juegos del desarrollador`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
+                    return;
                 }
 
                 const games = data;
@@ -275,7 +279,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert(`Error: ${error.message}`);
+                showToast(`No se pudieron conseguir los juegos del desarrollador`, 'is-danger', 'fas fa-exclamation-triangle', 'ERROR!');
             }
         });
     });
