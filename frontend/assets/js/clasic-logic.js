@@ -236,30 +236,27 @@ function showGuessedGame(game) {
     card.innerHTML = `
         <article class="media" style="align-items: center;">
             <div class="media-left">
-                <figure class="image is-128x128">
-                    <img class="guessed-image" alt="Game image">
+                <figure class="image is-128x128" style="overflow: hidden;">
+                    <img class="guessed-image" src="${game.image || 'https://via.placeholder.com/300'}" 
+                         style="object-fit: cover; width: 100%; height: 100%;" 
+                         alt="Game image">
                 </figure>
             </div>
             <div class="media-content">
                 <div class="content">
                     <p>
-                        <strong class="guessed-title"></strong>
+                        <strong>${game.title}</strong>
                         <br>
-                        <small class="guessed-year"></small>
+                        <small>Año: ${game.release_year}</small>
                         <br>
-                        <span class="guessed-genre"></span>
+                        <span>Género: ${game.genre}</span>
                         <br>
-                        <span class="guessed-developer"></span>
+                        <span>Desarrollador: ${targetDev.name}</span>
                     </p>
                 </div>
             </div>
         </article>
-    `
-    card.querySelector('.guessed-title').textContent = game.title;
-    card.querySelector('.guessed-year').textContent = `Año: ${game.release_year}`;
-    card.querySelector('.guessed-genre').textContent = `Género: ${game.genre}`;
-    card.querySelector('.guessed-image').src = game.image || 'https://via.placeholder.com/300';
-    card.querySelector('.guessed-developer').textContent = `Desarrollador: ${targetDev.name}`;
+    `;
     container.appendChild(card);
 }
 
