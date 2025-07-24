@@ -659,6 +659,6 @@ app.delete('/api/sagas/:id', async (req, res) => {
 
 //#endregion
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log("Server Listening on PORT:", PORT);
 });
