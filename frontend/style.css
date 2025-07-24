@@ -639,3 +639,57 @@ select.modal-scrollable::-webkit-scrollbar-thumb:hover {
     margin-bottom: 1rem;
 }
 
+
+.modal-card {
+    width: 80%;
+    max-width: 800px;
+}
+
+.modal-card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.modal-card-body {
+    padding: 2rem;
+}
+
+.modal-card-foot {
+    padding: 1.5rem;
+}
+
+#modal-game-image {
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+#modal-title {
+    text-align: center;
+    width: 100%;
+}
+
+/* Estilos para los botones del modal */
+.modal-card-foot {
+    padding: 1.5rem;
+    gap: 2rem; /* Esto añade espacio entre los elementos flex */
+    justify-content: center;
+}
+
+.modal-button {
+    margin: 0 1rem; /* Añade margen horizontal */
+    min-width: 150px; /* Ancho mínimo para consistencia */
+    padding: 0.75rem 1.5rem; /* Padding más grande para mejor click */
+}
+
+/* Asegura que los botones mantengan buen aspecto en móviles */
+@media (max-width: 768px) {
+    .modal-card-foot {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .modal-button {
+        width: 100%;
+        margin: 0.25rem 0;
+    }
+}
