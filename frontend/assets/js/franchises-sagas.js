@@ -2,6 +2,7 @@ import { loadFranchisesSagas, loadedFranchises, loadedSagas } from './games-page
 import { loadGames, createGameModalFixedOptions } from './games.js';
 import { showToastError } from './toast-notification.js';
 import { xboxAchievementToast } from './xbox-achievement-notification.js';
+import { BACKEND_URL } from './env_variables.js';
 
 function updateFranchisesSagasModalValues() {
     // Los agrego al modal de Franquicias y Sagas
@@ -53,7 +54,7 @@ function openDeleteModal(onConfirm) {
 
 async function fetchDeleteFranchise(id) {
     try {
-        const response = await fetch(`http://localhost:3000/api/franchises/${id}`, {
+        const response = await fetch(`${BACKEND_URL}/api/franchises/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -75,7 +76,7 @@ function removeFranchise(id, wrapperFS) {
         document.getElementById('confirm-delete-text').innerHTML = '¿Estás seguro que quieres eliminar ésta entidad?'
         openDeleteModal(async () => {
             try {
-                const response = await fetch(`http://localhost:3000/api/sagasbyfranchise/${id}`);
+                const response = await fetch(`${BACKEND_URL}/api/sagasbyfranchise/${id}`);
                 const data = await response.json();
                 if (!response.ok) {
                     showToastError(errorData.error || 'Error al conseguir sagas de la franquicia');
@@ -117,7 +118,7 @@ function removeFranchise(id, wrapperFS) {
 }
 async function fetchDeleteSaga(id) {
     try {
-        const response = await fetch(`http://localhost:3000/api/sagas/${id}`, {
+        const response = await fetch(`${BACKEND_URL}/api/sagas/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -139,7 +140,7 @@ function removeSaga(id, wrapperSaga) {
         document.getElementById('confirm-delete-text').innerHTML = '¿Estás seguro que quieres eliminar ésta entidad?'
         openDeleteModal(async () => {
             try {
-                const response = await fetch(`http://localhost:3000/api/gamesbysaga/${id}`);
+                const response = await fetch(`${BACKEND_URL}/api/gamesbysaga/${id}`);
                 const data = await response.json();
 
                 if (!response.ok) {
@@ -330,7 +331,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     const newFranchise = {
                         title: franchiseTitle
                     };
-                    const response = await fetch('http://localhost:3000/api/franchises', {
+                    const response = await fetch(`${BACKEND_URL}/api/franchises`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -349,7 +350,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     const updatedFranchise = {
                         title: franchiseTitle
                     };
-                    const response = await fetch(`http://localhost:3000/api/franchises/${franchiseId}`, {
+                    const response = await fetch(`${BACKEND_URL}/api/franchises/${franchiseId}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -380,7 +381,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                             title: sagaTitle,
                             id_franchise: franchiseId
                         };
-                        const response = await fetch('http://localhost:3000/api/sagas', {
+                        const response = await fetch(`${BACKEND_URL}/api/sagas`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -399,7 +400,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                             title: sagaTitle,
                             id_franchise: franchiseId
                         };
-                        const response = await fetch(`http://localhost:3000/api/sagas/${sagaId}`, {
+                        const response = await fetch(`${BACKEND_URL}/api/sagas/${sagaId}`, {
                             method: 'PUT',
                             headers: {
                                 'Content-Type': 'application/json',

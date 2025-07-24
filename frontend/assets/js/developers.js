@@ -2,6 +2,8 @@ import { devTypes } from './datasets.js';
 import { showToastError } from './toast-notification.js';
 import { xboxAchievementToast } from './xbox-achievement-notification.js';
 
+import { BACKEND_URL } from './env_variables.js';
+
 async function createDeveloperModal() {
 
     const modal = document.getElementById('developer-modal');
@@ -75,7 +77,7 @@ async function loadDevelopers() {
     const container = document.querySelector('.entities-container');
     try {
         // Conseguir conexión con la base de datos de los desarrolladores
-        const response = await fetch('http://localhost:3000/api/developers');
+        const response = await fetch(`${BACKEND_URL}/api/developers`);
         if (!response.ok) {
             showToastError('Error al cargar desarrolladores');
             return;
@@ -193,7 +195,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         try {
             const developer_id = document.getElementById('developer-id').value;
             if (!developer_id) {
-                const response = await fetch('http://localhost:3000/api/developers', {
+                const response = await fetch(`${BACKEND_URL}/api/developers`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -207,7 +209,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     return;
                 }
             } else {
-                const response = await fetch(`http://localhost:3000/api/developers/${developer_id}`, {
+                const response = await fetch(`${BACKEND_URL}/api/developers/${developer_id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -238,7 +240,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function fetchDeleteDeveloper(id) {
         try {
             // Eliminar desarrollador (lo que debería activar la eliminación en cascada)
-            const response = await fetch(`http://localhost:3000/api/developers/${id}`, {
+            const response = await fetch(`${BACKEND_URL}/api/developers/${id}`, {
                 method: 'DELETE',
             });
 
@@ -259,7 +261,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         openDeleteModal(async () => {
             const developer_id = document.getElementById('developer-id').value;
             try {
-                const response = await fetch(`http://localhost:3000/api/gamesbydeveloper/${developer_id}`);
+                const response = await fetch(`${BACKEND_URL}/api/gamesbydeveloper/${developer_id}`);
                 const data = await response.json();
                 if (!response.ok) {
                     showToastError(`Error al conseguir los juegos del desarrollador`);

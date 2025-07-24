@@ -1,6 +1,8 @@
 import { charGenders } from './datasets.js';
 import { showToastError } from './toast-notification.js';
 import { xboxAchievementToast } from './xbox-achievement-notification.js';
+import { BACKEND_URL } from './env_variables.js';
+
 let loadedGames = {};
 let updateAllValueSelects;
 let updateValueSelects;
@@ -14,7 +16,7 @@ async function createCharacterModal() {
     async function loadGames() {
         try {
             // Conseguir conexión con la base de datos de los juegos
-            const response = await fetch('http://localhost:3000/api/games');
+            const response = await fetch(`${BACKEND_URL}/api/games`);
             if (!response.ok) {
                 showToastError('Error al cargar juegos');
                 return;
@@ -222,7 +224,7 @@ async function loadCharacters() {
     const container = document.querySelector('.entities-container');
     try {
         // Conseguir conexión con la base de datos de los personajes
-        const response = await fetch('http://localhost:3000/api/characters');
+        const response = await fetch(`${BACKEND_URL}/api/characters`);
         if (!response.ok) {
             showToastError('Error al cargar personajes');
             return;
@@ -370,7 +372,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             const character_id = document.getElementById('char-id').value;
             if (!character_id) {
-                const response = await fetch('http://localhost:3000/api/characters', {
+                const response = await fetch(`${BACKEND_URL}/api/characters`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -384,7 +386,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     return;
                 }
             } else {
-                const response = await fetch(`http://localhost:3000/api/characters/${character_id}`, {
+                const response = await fetch(`${BACKEND_URL}/api/characters/${character_id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -414,7 +416,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             try {
                 const character_id = document.getElementById('char-id').value;
 
-                const response = await fetch(`http://localhost:3000/api/characters/${character_id}`, {
+                const response = await fetch(`${BACKEND_URL}/api/characters/${character_id}`, {
                     method: 'DELETE'
                 });
                 if (!response.ok) {

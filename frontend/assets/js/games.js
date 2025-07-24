@@ -238,7 +238,7 @@ function openDeleteModal(onConfirm) {
 export async function loadGames() {
     const gameContainer = document.querySelector('.entities-container');
     try {
-        const response = await fetch('http://localhost:3000/api/games');
+        const response = await fetch(`${BACKEND_URL}/api/games`);
         if (!response.ok) throw new Error('Error al cargar juegos');
 
         const games = await response.json();
@@ -375,7 +375,7 @@ document.addEventListener("dataLoaded", async () => {
         try {
             const game_id = document.getElementById('game-id').value;
             if (!game_id) {
-                const response = await fetch('http://localhost:3000/api/games', {
+                const response = await fetch(`${BACKEND_URL}/api/games`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -389,7 +389,7 @@ document.addEventListener("dataLoaded", async () => {
                     return;
                 }
             } else {
-                const response = await fetch(`http://localhost:3000/api/games/${game_id}`, {
+                const response = await fetch(`${BACKEND_URL}/api/games/${game_id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -420,7 +420,7 @@ document.addEventListener("dataLoaded", async () => {
 
     async function fetchDeleteGame(id) {
         try {
-            const response = await fetch(`http://localhost:3000/api/games/${id}`, {
+            const response = await fetch(`${BACKEND_URL}/api/games/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -444,7 +444,7 @@ document.addEventListener("dataLoaded", async () => {
             const game_id = document.getElementById('game-id').value;
             try {
 
-                const response = await fetch(`http://localhost:3000/api/charactersbygame/${game_id}`);
+                const response = await fetch(`${BACKEND_URL}/api/charactersbygame/${game_id}`);
                 const data = await response.json();
                 if (!response.ok) {
                     showToastError(`Error al conseguir los personajes del juego`);
