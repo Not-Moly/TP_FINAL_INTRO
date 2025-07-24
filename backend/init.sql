@@ -188,7 +188,7 @@ INSERT INTO characters (character_name, image, gender, species, description, mai
 ('Nyx', 'https://i.pinimg.com/736x/3e/cf/12/3ecf123a46a02e8a2a6f5e4161bd1016.jpg', 'Femenino', 'Diosa primordial', 'Diosa de la noche y figura materna para Zagreus', 'Manipulación de sombras'),
 ('Siegward de Catarina', 'https://i.pinimg.com/1200x/c9/7a/68/c97a6837ea71ebc24535c0f5761f1a9d.jpg', 'Masculino', 'Humano/No muerto', 'Caballero de Catarina con armadura de cebolla', 'Espada de gran tamaño'),
 ('Patches', 'https://i.pinimg.com/1200x/53/bd/28/53bd286fcc7a1a02ca340a58f8c30336.jpg', 'Masculino', 'Humano/No muerto', 'Tramposo y traicionero mercader', 'Emboscadas'),
-('Sebastian', 'https://i.pinimg.com/736x/16/7a/e0/167ae0fb03d0f35ab07a5c1053a5c16f.jpg', 'Masculino', 'Humano', 'Programador introvertido que ama la motocicleta', 'Programación'),
+('Sebastian', 'https://stardewvalleywiki.com/mediawiki/images/a/a8/Sebastian.png', 'Masculino', 'Humano', 'Programador introvertido que ama la motocicleta', 'Programación'),
 ('Leah', 'https://i.pinimg.com/736x/bd/ec/02/bdec021b2b41040f3ffe11f225131d03.jpg', 'Femenino', 'Humano', 'Artista que vive cerca del bosque', 'Escultura'),
 ('Maru', 'https://i.pinimg.com/736x/5e/f3/4e/5ef34efdbc3609c343ed8e8c2d24af8d.jpg', 'Femenino', 'Humano', 'Científica e inventora talentosa', 'Inventos tecnológicos'),
 ('Mike Harper', 'https://i.pinimg.com/736x/82/c6/0c/82c60c60130868a55956f29c69e0aa1d.jpg', 'Masculino', 'Humano', 'Agente de la CIA y aliado de Mason', 'Operaciones encubiertas'),
