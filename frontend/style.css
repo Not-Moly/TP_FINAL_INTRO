@@ -83,7 +83,6 @@ body {
     100% {
         transform: translateY(5px);
     }
-
 }
 
 .floating {
@@ -582,23 +581,19 @@ select.modal-scrollable::-webkit-scrollbar-thumb:hover {
 
 .game-mode-header {
     padding: 1rem;
-    border-top-left-radius: inherit;
-    border-top-right-radius: inherit;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
     border-bottom: 2px solid var(--bulma-border);
     background: linear-gradient(to bottom, #3d3457, #332c49);
+    margin: -1rem -0.8rem 1rem -0.8rem;
+    position: relative;
+    z-index: 1;
 }
 
 /* Ajuste para mantener consistencia con el hover */
 .entity-card:hover .game-mode-header {
     background: linear-gradient(to bottom, #3c325314, #313153cc);
     border-bottom-color: #66666600;
-}
-
-.game-mode-header {
-    background: #1a1a1a;
-    margin: -1rem -1rem 1rem -1rem;
-    position: relative;
-    z-index: 1;
 }
 
 .search-results {
@@ -639,3 +634,58 @@ select.modal-scrollable::-webkit-scrollbar-thumb:hover {
     margin-bottom: 1rem;
 }
 
+
+.modal-card {
+    width: 80%;
+    max-width: 800px;
+    z-index: 110;
+}
+
+.modal-card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.modal-card-body {
+    padding: 2rem;
+}
+
+.modal-card-foot {
+    padding: 1.5rem;
+}
+
+#modal-game-image {
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+#modal-title {
+    text-align: center;
+    width: 100%;
+}
+
+/* Estilos para los botones del modal */
+.modal-card-foot {
+    padding: 1.5rem;
+    gap: 2rem; /* Esto añade espacio entre los elementos flex */
+    justify-content: center;
+}
+
+.modal-button {
+    margin: 0 1rem; /* Añade margen horizontal */
+    min-width: 150px; /* Ancho mínimo para consistencia */
+    padding: 0.75rem 1.5rem; /* Padding más grande para mejor click */
+}
+
+/* Asegura que los botones mantengan buen aspecto en móviles */
+@media (max-width: 768px) {
+    .modal-card-foot {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .modal-button {
+        width: 100%;
+        margin: 0.25rem 0;
+    }
+}
