@@ -3,10 +3,12 @@ export let loadedFranchises = {};
 export let loadedSagas = {};
 export let loadedDevelopers = {};
 
+import { BACKEND_URL } from './env_variables.js';
+
 export async function loadDevelopers() {
     try {
         // Conseguir conexión con la base de datos de los desarrolladores
-        const response = await fetch('http://localhost:3000/api/developers');
+        const response = await fetch(`${ BACKEND_URL }/api/developers`);
         if (!response.ok) throw new Error('Error al cargar desarrolladores');
 
         const developers = await response.json();
@@ -42,7 +44,7 @@ export async function loadFranchisesSagas() {
     async function loadFranchise () {
         try {
             // Conseguir conexión con la base de datos de las franquicias
-            const response = await fetch('http://localhost:3000/api/franchises');
+            const response = await fetch(`${ BACKEND_URL }/api/franchises`);
             if (!response.ok) throw new Error('Error al cargar franquicias');
 
             const franchises = await response.json();
@@ -65,7 +67,7 @@ export async function loadFranchisesSagas() {
     async function loadSaga () {
         try {
             // Conseguir conexión con la base de datos de las sagas
-            const response = await fetch('http://localhost:3000/api/sagas');
+            const response = await fetch(`${ BACKEND_URL }/api/sagas`);
             if (!response.ok) throw new Error('Error al cargar sagas');
 
             const sagas = await response.json();

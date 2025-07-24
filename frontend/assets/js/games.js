@@ -6,6 +6,8 @@ import { loadDevelopers, loadFranchisesSagas, loadedDevelopers, loadedFranchises
 import { showToastError } from './toast-notification.js';
 import { xboxAchievementToast } from './xbox-achievement-notification.js';
 
+import { BACKEND_URL } from './env_variables.js';
+
 function createDeveloperOptions() {
     const gameDeveloperOptions = document.getElementById('game-developer');
     gameDeveloperOptions.innerHTML = '<option value="" disabled selected>Seleccione un desarrollador</option>';
