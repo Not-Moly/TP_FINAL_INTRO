@@ -342,7 +342,7 @@ select.modal-scrollable::-webkit-scrollbar-thumb:hover {
     font-size: 40px;
     text-transform: uppercase;
     letter-spacing: 2px;
-    top: 9rem;
+    top: 9vh;
     border: none;
     cursor: pointer;
     overflow: hidden;
