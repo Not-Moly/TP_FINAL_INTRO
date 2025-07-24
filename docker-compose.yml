@@ -1,9 +1,13 @@
-
 services:
+
+  # Contenedor de la base de datos (POSTGRESQL)
   postgres:
     image: postgres:17
+    container_name: postgres-db
+
     ports:
       - "5000:5432"
+    
     volumes:
       - ./volumes/postgres/data:/var/lib/postgresql/data
     environment:
@@ -11,26 +15,34 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: playle
 
+  # Contenedor del backend
   backend:
-    build:
-      context: ./backend
+    build: ./backend
+    container_name: backend-app
+
     ports:
       - "3000:3000"
+
+    depends_on:
+      - postgres
+    
     environment:
       - DB_HOST=postgres
       - DB_PORT=5432
       - DB_USER=postgres
       - DB_PASSWORD=postgres
       - DB_NAME=playle
-    depends_on:
-      - postgres
 
+  # Contenedor del frontend
   frontend:
-    build:
-      context: ./frontend
+    build: ./frontend
+    container_name: frontend-app
+
     ports:
       - "8080:8080"
+
     depends_on:
       - backend
+    
 
       
