@@ -1,5 +1,5 @@
 import { loadAllDevelopers, loadAllGames, loadAllCharGame, gamesList, devsList, game_charList } from "./database_loads.js";
-
+import { startConfetti, stopConfetti } from "./confetti.js";
 // Variables del juego
 let randomId = null;
 let targetGame = null;
@@ -22,6 +22,7 @@ function openModal($el, mode) {
     if (mode === 'win') {
         modalTitle.textContent = '¡Has ganado!';
         modalTitle.style.color = '#48c774';
+        startConfetti();
     } else if (mode === 'lose') {
         modalTitle.textContent = '¡Has perdido!';
         modalTitle.style.color = '#f14668';
@@ -56,17 +57,19 @@ function setupModalListeners() {
     });
 
     goHomeBtn.addEventListener('click', () => {
-        window.location.href = 'index.html';
+        window.location.href = '/gamemodes';
     });
 }
 
 function resetGame() {
     attemptsLeft = 6;
+    usedGames = [];
     document.getElementById('attempts').textContent = attemptsLeft;
     document.getElementById('game-search').value = '';
     document.getElementById('result-container').style.display = 'none';
     document.getElementById('hints-list').innerHTML = '';
-    document.getElementById('guessed-game').style.display = 'none';
+    document.getElementById('guessed-games').innerHTML = '';
+    stopConfetti();
 
     selectRandomData();
     loadAllCharGame(randomId).then(selectRandomChar);
@@ -231,7 +234,7 @@ function showGuessedGame(game) {
     const card = document.createElement('div');
     card.className = 'box has-background-dark';
     card.innerHTML = `
-        <article class="media">
+        <article class="media" style="align-items: center;">
             <div class="media-left">
                 <figure class="image is-128x128">
                     <img class="guessed-image" alt="Game image">

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="icon.ico">
     <script type="module" src="/assets/js/clasic-logic.js" defer></script>
+    <script type="module" src="assets/js/confetti.js"></script>
     <script src="src.js"></script>
     <script src="assets/js/tabs-navbar.js" defer></script>
 </head>
@@ -20,6 +21,8 @@
         <h1 class="title has-text-centered">Modo Clásico</h1>
         <p class="subtitle has-text-centered">Adivina el juego en 6 intentos</p>
     </div>
+
+    <div id="confetti-wrapper" style="z-index: 105; pointer-events: none;"></div>
 
     <div class="main-content">
         <div class="container">
@@ -54,7 +57,7 @@
                         <div class="notification" id="result-message"></div>
                     </div>
 
-                    <div id="guessed-games">
+                    <div id="guessed-games" style="align-items: center;">
                     </div>
                 </div>
             </div>

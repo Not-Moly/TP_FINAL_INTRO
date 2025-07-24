@@ -638,6 +638,7 @@ select.modal-scrollable::-webkit-scrollbar-thumb:hover {
 .modal-card {
     width: 80%;
     max-width: 800px;
+    z-index: 110;
 }
 
 .modal-card-title {
