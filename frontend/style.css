@@ -83,7 +83,6 @@ body {
     100% {
         transform: translateY(5px);
     }
-
 }
 
 .floating {
@@ -582,23 +581,19 @@ select.modal-scrollable::-webkit-scrollbar-thumb:hover {
 
 .game-mode-header {
     padding: 1rem;
-    border-top-left-radius: inherit;
-    border-top-right-radius: inherit;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
     border-bottom: 2px solid var(--bulma-border);
     background: linear-gradient(to bottom, #3d3457, #332c49);
+    margin: -1rem -0.8rem 1rem -0.8rem;
+    position: relative;
+    z-index: 1;
 }
 
 /* Ajuste para mantener consistencia con el hover */
 .entity-card:hover .game-mode-header {
     background: linear-gradient(to bottom, #3c325314, #313153cc);
     border-bottom-color: #66666600;
-}
-
-.game-mode-header {
-    background: #1a1a1a;
-    margin: -1rem -1rem 1rem -1rem;
-    position: relative;
-    z-index: 1;
 }
 
 .search-results {
