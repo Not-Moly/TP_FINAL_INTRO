@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./PlayleTitleBanner.gif" alt="Banner animado del juego" width="75%" />
+</p>
+
 #  <p align="center"><strong>🎮 Playle 🎮</strong></p>
 #### <p align="center">por</p>
 ### <p align="center"><italic>Manuel Martinez Almada y Federico Germán Molina </italica></p>
