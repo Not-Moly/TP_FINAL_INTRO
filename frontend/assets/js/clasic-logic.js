@@ -9,6 +9,7 @@ let attemptsLeft = 6;
 let usedHints = [];
 let availableHints = [];
 let usedGames = [];
+let victorySound = null;
 
 function openModal($el, mode) {
     $el.classList.add('is-active');
@@ -23,6 +24,10 @@ function openModal($el, mode) {
         modalTitle.textContent = '¡Has ganado!';
         modalTitle.style.color = '#48c774';
         startConfetti();
+        if (victorySound) {
+            victorySound.currentTime = 0;
+            victorySound.play().catch(e => console.log("No se pudo reproducir sonido:", e));
+        }
     } else if (mode === 'lose') {
         modalTitle.textContent = '¡Has perdido!';
         modalTitle.style.color = '#f14668';
@@ -262,6 +267,10 @@ function showGuessedGame(game) {
 
 // Event listeners
 document.addEventListener('DOMContentLoaded', async () => {
+    victorySound = document.getElementById('victory-sound');
+    if (victorySound) {
+        victorySound.volume = 0.5;
+    }
     await loadAllGames();
     await loadAllDevelopers();
     selectRandomData();
