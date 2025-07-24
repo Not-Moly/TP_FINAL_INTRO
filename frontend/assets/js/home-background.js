@@ -110,13 +110,6 @@ document.addEventListener('DOMContentLoaded', function () {
         backgroundGrid.style.transform = `rotateX(${10 + y}deg) rotateY(${5 + x}deg) rotateZ(${3 - x / 5}deg)`;
     });
 
-    // Add parallax effect to header on scroll
-    // window.addEventListener('scroll', () => {
-    //     const scrollY = window.scrollY;
-    //     document.querySelector('.header').style.transform = `translateY(${scrollY * 0.4}px)`;
-    //     document.querySelector('.header').style.opacity = `${1 - scrollY / 400}`;
-    // });
-
     // Set timeout to handle images that take too long to load
     const timeoutPromise = new Promise((_, reject) => {
         setTimeout(() => {
