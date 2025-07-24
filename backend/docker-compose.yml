@@ -1,0 +1,16 @@
+services:
+
+  # Contenedor de la base de datos (POSTGRESQL)
+  postgres:
+    image: postgres:17
+    container_name: postgres-db
+
+    ports:
+      - "5000:5432"
+    
+    volumes:
+      - ./backend/volumes/postgres/data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: playle
