@@ -1,5 +1,6 @@
 import { charGenders } from './datasets.js';
 import { showToastError } from './toast-notification.js';
+import { xboxAchievementToast } from './xbox-achievement-notification.js';
 let loadedGames = {};
 let updateAllValueSelects;
 let updateValueSelects;
@@ -396,10 +397,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                     showToastError(errorData.error || 'Error al editar personaje');
                     return;
                 }
+                
             }
-
             // Cerrar modal
             closeModal(characterModal);
+            xboxAchievementToast(character_id ? "Personaje editado correctamente" : "Personaje creado correctamente" ,"100");
         } catch (error) {
             console.error('Error:', error);
             showToastError(`No se pudo agregar/editar el personaje`);
@@ -423,6 +425,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 // Cerrar modal
                 closeModal(characterModal);
+                xboxAchievementToast("Personaje eliminado correctamente","100");
                 // Actualizar lista
                 await loadCharacters();
             } catch (error) {

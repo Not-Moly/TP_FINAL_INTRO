@@ -1,5 +1,6 @@
 import { devTypes } from './datasets.js';
 import { showToastError } from './toast-notification.js';
+import { xboxAchievementToast } from './xbox-achievement-notification.js';
 
 async function createDeveloperModal() {
 
@@ -223,8 +224,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             // Cerrar modal
             closeDevModal(devModal);
+            xboxAchievementToast(developer_id ? "Desarrollador editado correctamente" : "Desarrollador creado correctamente" ,"100");
             // Actualizar lista
             await loadDevelopers();
+            
         } catch (error) {
             console.error('Error:', error);
             showToastError(`No se pudo agregar/editar el desarrollador`);
@@ -272,12 +275,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                         if (await fetchDeleteDeveloper(developer_id)) {
                             // Cerrar modal
                             closeDevModal(devModal);
+                            xboxAchievementToast("Desarrollador eliminado correctamente" ,"100");
                         }
                     });
                 } else {
                     if (await fetchDeleteDeveloper(developer_id)) {
                         // Cerrar modal
                         closeDevModal(devModal);
+                        xboxAchievementToast("Desarrollador eliminado correctamente" ,"100");
                     }
                 }
             } catch (error) {

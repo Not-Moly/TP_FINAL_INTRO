@@ -1,6 +1,7 @@
 import { loadFranchisesSagas, loadedFranchises, loadedSagas } from './games-page-utils.js';
 import { loadGames, createGameModalFixedOptions } from './games.js';
 import { showToastError } from './toast-notification.js';
+import { xboxAchievementToast } from './xbox-achievement-notification.js';
 
 function updateFranchisesSagasModalValues() {
     // Los agrego al modal de Franquicias y Sagas
@@ -91,6 +92,7 @@ function removeFranchise(id, wrapperFS) {
                             // Eliminar el input que contiene a la franquicia y sus sagas
                             wrapperFS.remove();
                             await loadGames();
+                            xboxAchievementToast("Franquicia y sagas eliminadas correctamente", "100");
                         }
                     });
                 } else {
@@ -98,6 +100,7 @@ function removeFranchise(id, wrapperFS) {
                         // Eliminar el input que contiene a la franquicia y sus sagas
                         wrapperFS.remove();
                         await loadGames();
+                        xboxAchievementToast("Franquicia eliminada correctamente", "100");
                     }
 
                 }
@@ -107,6 +110,9 @@ function removeFranchise(id, wrapperFS) {
                 showToastError(`No se pudieron conseguir las sagas de la franquicia`);
             }
         });
+    } else {
+        // Eliminar el input que contiene a la franquicia y sus sagas
+        wrapperFS.remove();
     }
 }
 async function fetchDeleteSaga(id) {
@@ -150,6 +156,7 @@ function removeSaga(id, wrapperSaga) {
                             // Eliminar el input que contiene a la saga
                             wrapperSaga.remove();
                             await loadGames();
+                            xboxAchievementToast("Saga eliminada correctamente", "100");
                         }
                     });
                 } else {
@@ -157,6 +164,7 @@ function removeSaga(id, wrapperSaga) {
                         // Eliminar el input que contiene a la saga
                         wrapperSaga.remove();
                         await loadGames();
+                        xboxAchievementToast("Saga eliminada correctamente", "100");
                     }
                 }
 
@@ -166,6 +174,9 @@ function removeSaga(id, wrapperSaga) {
                 showToastError(`No se pudieron conseguir los juegos de la saga`);
             }
         });
+    } else {
+        // Eliminar el input que contiene a la saga
+        wrapperSaga.remove();
     }
 }
 
@@ -410,5 +421,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         // Cerrar modal
         closeFSModal(franchisesAndSagasModal);
+        xboxAchievementToast("Cambios realizados correctamente", "100");
     });
 });

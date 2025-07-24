@@ -4,6 +4,7 @@ let updateAllValueSelects;
 import { allGameGamemodes, allGameGenres, allGamePerspectives } from './datasets.js';
 import { loadDevelopers, loadFranchisesSagas, loadedDevelopers, loadedFranchises, loadedSagas } from './games-page-utils.js';
 import { showToastError } from './toast-notification.js';
+import { xboxAchievementToast } from './xbox-achievement-notification.js';
 
 function createDeveloperOptions() {
     const gameDeveloperOptions = document.getElementById('game-developer');
@@ -398,6 +399,7 @@ document.addEventListener("dataLoaded", async () => {
 
             // Cerrar modal
             closeGameModal(gameModal);
+            xboxAchievementToast(game_id ? "Juego editado correctamente" : "Juego creado correctamente" ,"100");
             // Actualizar lista
             await loadGames();
 
@@ -452,12 +454,14 @@ document.addEventListener("dataLoaded", async () => {
                         if (await fetchDeleteGame(game_id)) {
                             // Cerrar modal
                             closeGameModal(gameModal);
+                            xboxAchievementToast("Juego eliminado correctamente" ,"100");
                         }
                     });
                 } else {
                     if (await fetchDeleteGame(game_id)) {
                         // Cerrar modal
                         closeGameModal(gameModal);
+                        xboxAchievementToast("Juego eliminado correctamente" ,"100");
                     }
                 }
             } catch (error) {
