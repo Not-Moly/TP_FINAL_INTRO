@@ -31,12 +31,7 @@ function openModal($el, mode) {
     modalGameTitle.textContent = targetGame.title;
     modalGameYear.textContent = `Año: ${targetGame.release_year}`;
     modalGameGenre.textContent = `Género: ${targetGame.genre}`;
-
-    fetch(`http://localhost:3000/api/developers/${targetGame.id_developer}`)
-        .then(response => response.json())
-        .then(dev => {
-            modalGameDeveloper.textContent = `Desarrollador: ${Object.values(dev)[0].name}`;
-        });
+    modalGameDeveloper.textContent = `Desarrollador: ${targetDev.name}`;
 }
 
 function closeModal($el) {
@@ -108,7 +103,7 @@ function updateHints() {
     addHintItem(`Año de lanzamiento: ${targetGame.release_year}`);
     usedHints.push('year');
 
-    // Otras pistas posibles
+    // Otras pistas posibles (dependiendo si tiene o no personajes)
     if (Object.keys(game_charList).length === 0) {
         availableHints = [
             { key: 'genre', text: `Género: ${targetGame.genre}` },
@@ -129,7 +124,7 @@ function updateHints() {
         ];
     }
 
-    // Mostrar una pista adicional cada 2 intentos fallidos
+    // Mostrar una pista adicional cada 1 intento fallido
     const hintsToShow = 1 + Math.floor((6 - attemptsLeft));
 
     availableHints.slice(0, hintsToShow).forEach(hint => {
@@ -154,12 +149,12 @@ function searchGames(query) {
         resultsContainer.style.display = 'none';
         return;
     }
-
+    //Mostrar no mas de 5 resultados
     const matchingGames = Object.entries(gamesList)
         .filter(([id, game]) =>
             game.title.toLowerCase().includes(query.toLowerCase())
         )
-        .slice(0, 5); // Limitar a 5 resultados
+        .slice(0, 5);
 
     if (matchingGames.length > 0) {
         matchingGames.forEach(([id, game]) => {
@@ -228,6 +223,7 @@ function showResult(message, type) {
     resultMessage.textContent = message;
     resultMessage.className = `notification ${type}`;
     resultContainer.style.display = 'block';
+    resultContainer.classList.add('mb-4');
 }
 
 function showGuessedGame(game) {
@@ -261,8 +257,6 @@ function showGuessedGame(game) {
     card.querySelector('.guessed-genre').textContent = `Género: ${game.genre}`;
     card.querySelector('.guessed-image').src = game.image || 'https://via.placeholder.com/300';
     card.querySelector('.guessed-developer').textContent = `Desarrollador: ${targetDev.name}`;
-    //card.querySelector('.guessed-game').style.display = 'block';
-
     container.appendChild(card);
 }
 
