@@ -1,5 +1,6 @@
 import { charGenders } from './datasets.js';
-
+import { showToastError } from './toast-notification.js';
+import { xboxAchievementToast } from './xbox-achievement-notification.js';
 let loadedGames = {};
 let updateAllValueSelects;
 let updateValueSelects;
@@ -14,7 +15,10 @@ async function createCharacterModal() {
         try {
             // Conseguir conexión con la base de datos de los juegos
             const response = await fetch('http://localhost:3000/api/games');
-            if (!response.ok) throw new Error('Error al cargar juegos');
+            if (!response.ok) {
+                showToastError('Error al cargar juegos');
+                return;
+            }
 
             const games = await response.json();
 
@@ -214,12 +218,15 @@ function openDeleteModal(onConfirm) {
 }
 
 // Función para cargar y mostrar personajes
-export async function loadCharacters() {
+async function loadCharacters() {
     const container = document.querySelector('.entities-container');
     try {
         // Conseguir conexión con la base de datos de los personajes
         const response = await fetch('http://localhost:3000/api/characters');
-        if (!response.ok) throw new Error('Error al cargar personajes');
+        if (!response.ok) {
+            showToastError('Error al cargar personajes');
+            return;
+        };
 
         const characters = await response.json();
 
@@ -309,23 +316,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Carga inicial
     await loadCharacters();
-    
+
     window.dispatchEvent(new Event('charactersLoaded'));
 
     //Agregar funcionalidad al botón
     const addButton = document.getElementById('add-button');
-    const modalCreateError = document.getElementById('error-create-modal');
     if (addButton) {
-        if (modalCreateError) {
-            addButton.addEventListener('click', () => {
-                if (Object.keys(loadedGames).length === 0) {
-                    modalCreateError.classList.add("is-active");
-                }
-                else {
-                    openCharacterModal(characterModal, 'add');
-                }
-            });
-        }
+        addButton.addEventListener('click', () => {
+            if (Object.keys(loadedGames).length === 0) {
+                showToastError('Añade juegos antes de poder agregar un personaje!');
+                return;
+            }
+            else {
+                openCharacterModal(characterModal, 'add');
+            }
+        });
     }
 
     // Manejadores de cierre del modal
@@ -340,11 +345,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-    // Manejadores de cierre de modal de error al crear (Faltan entidades de dependencia) 
-    modalCreateError.querySelector('#error-create-modal-confirm').addEventListener('click', () => {
-        modalCreateError.classList.remove("is-active");
-    });
-
     // Envío formulario
     document.getElementById('submit-char-btn').addEventListener('click', async () => {
         const newCharacter = {
@@ -354,7 +354,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             species: document.getElementById('char-species').value,
             description: document.getElementById('char-description').value,
             main_skill: document.getElementById('char-skill').value,
-
             games_ids: document.getElementById('char-games-string').value.split(',').map(g_id => parseInt(g_id.trim()))
         };
 
@@ -363,7 +362,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             !Object.values(newCharacter).every(val => val !== null && val !== undefined && val !== '' && !(typeof val === 'number' && Number.isNaN(val))) ||
             (newCharacter.games_ids.length === 1 && Number.isNaN(newCharacter.games_ids[0]))
         ) {
-            alert('Por favor complete todos los campos requeridos');
+            showToastError('Faltan campos obligatorios');
             return;
         }
 
@@ -381,7 +380,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    throw new Error(errorData.error || 'Error al crear personaje');
+                    showToastError(errorData.error || 'Error al crear personaje');
+                    return;
                 }
             } else {
                 const response = await fetch(`http://localhost:3000/api/characters/${character_id}`, {
@@ -394,15 +394,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    throw new Error(errorData.error || 'Error al editar personaje');
+                    showToastError(errorData.error || 'Error al editar personaje');
+                    return;
                 }
+                
             }
-
             // Cerrar modal
             closeModal(characterModal);
+            xboxAchievementToast(character_id ? "Personaje editado correctamente" : "Personaje creado correctamente" ,"100");
         } catch (error) {
             console.error('Error:', error);
-            alert(`Error: ${error.message}`);
+            showToastError(`No se pudo agregar/editar el personaje`);
         }
     });
 
@@ -417,16 +419,18 @@ document.addEventListener("DOMContentLoaded", async () => {
                 });
                 if (!response.ok) {
                     const errorData = await response.json();
-                    throw new Error(errorData.error || 'Error al eliminar personaje');
+                    showToastError(errorData.error || `Error al eliminar el personaje`);
+                    return;
                 }
 
                 // Cerrar modal
                 closeModal(characterModal);
+                xboxAchievementToast("Personaje eliminado correctamente","100");
                 // Actualizar lista
                 await loadCharacters();
             } catch (error) {
                 console.error('Error:', error);
-                alert(`Error: ${error.message}`);
+                showToastError(`No se pudo eliminar el personaje`);
             }
         });
     });

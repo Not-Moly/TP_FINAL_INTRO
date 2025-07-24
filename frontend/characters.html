@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html data-theme="dark">
+
 <head>
     <title>Playle - Personajes</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -12,9 +13,13 @@
     <script src="assets/js/tabs-navbar.js" defer></script>
     <script type="module" src="assets/js/characters.js" defer></script>
 </head>
+
 <body>
     <script src="assets/js/loading-screen.js"></script>
+    <script type="module" src="assets/js/xbox-achievement-notification.js"></script>
+
     <div id="tabs-container"></div>
+    <div id="toast-container"></div>
 
     <div id="entity-page-title">
         <h1 class="title has-text-centered">Personajes</h1>
@@ -66,7 +71,8 @@
                             <label class="label">Preview</label>
                             <div class="control">
                                 <figure class="image box" style="margin: 0 auto; padding: 1rem; width: 20rem;">
-                                    <img id="char-image-preview" src="https://bulma.io/assets/images/placeholders/128x128.png"
+                                    <img id="char-image-preview"
+                                        src="https://bulma.io/assets/images/placeholders/128x128.png"
                                         style="border-radius: var(--bulma-radius-large);"
                                         alt="Vista previa del personaje" />
                                 </figure>
@@ -131,7 +137,6 @@
         </div>
 
 
-
         <div id="confirm-delete-modal" class="modal">
             <div class="modal-background"></div>
             <div class="modal-card">
@@ -147,22 +152,7 @@
                 </section>
             </div>
         </div>
-
-        <div id="error-create-modal" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-card">
-                <header class="modal-card-head has-background-danger">
-                    <p class="modal-card-title has-text-warning-dark">Error</p>
-                </header>
-                <section class="modal-card-body">
-                    <p id="confirm-delete-text">Añade juegos antes de poder agregar un personaje!</p>
-                    <div class="buttons mt-5">
-                        <button class="button is-danger" id="error-create-modal-confirm">Ok</button>
-                    </div>
-                </section>
-            </div>
-        </div>
-
     </div>
 </body>
+
 </html>

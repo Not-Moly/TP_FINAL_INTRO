@@ -1,5 +1,7 @@
 import { loadFranchisesSagas, loadedFranchises, loadedSagas } from './games-page-utils.js';
 import { loadGames, createGameModalFixedOptions } from './games.js';
+import { showToastError } from './toast-notification.js';
+import { xboxAchievementToast } from './xbox-achievement-notification.js';
 
 function updateFranchisesSagasModalValues() {
     // Los agrego al modal de Franquicias y Sagas
@@ -59,12 +61,13 @@ async function fetchDeleteFranchise(id) {
         });
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.error || 'Error al eliminar franquicia');
+            showToastError(errorData.error || 'Error al eliminar franquicia');
+            return;
         }
         return true;
     } catch (error) {
         console.error('Error:', error);
-        alert(`Error: ${error.message}`);
+        showToastError(`No se pudo eliminar la franquicia`);
     }
 }
 function removeFranchise(id, wrapperFS) {
@@ -75,7 +78,8 @@ function removeFranchise(id, wrapperFS) {
                 const response = await fetch(`http://localhost:3000/api/sagasbyfranchise/${id}`);
                 const data = await response.json();
                 if (!response.ok) {
-                    throw new Error(errorData.error || 'Error al conseguir personajes por juego');
+                    showToastError(errorData.error || 'Error al conseguir sagas de la franquicia');
+                    return;
                 }
 
                 const sagas = data;
@@ -88,6 +92,7 @@ function removeFranchise(id, wrapperFS) {
                             // Eliminar el input que contiene a la franquicia y sus sagas
                             wrapperFS.remove();
                             await loadGames();
+                            xboxAchievementToast("Franquicia y sagas eliminadas correctamente", "100");
                         }
                     });
                 } else {
@@ -95,13 +100,14 @@ function removeFranchise(id, wrapperFS) {
                         // Eliminar el input que contiene a la franquicia y sus sagas
                         wrapperFS.remove();
                         await loadGames();
+                        xboxAchievementToast("Franquicia eliminada correctamente", "100");
                     }
 
                 }
 
             } catch (error) {
                 console.error('Error:', error);
-                alert(`Error: ${error.message}`);
+                showToastError(`No se pudieron conseguir las sagas de la franquicia`);
             }
         });
     } else {
@@ -119,12 +125,13 @@ async function fetchDeleteSaga(id) {
         });
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.error || 'Error al eliminar franquicia');
+            showToastError(errorData.error || 'Error al eliminar saga');
+            return;
         }
         return true;
     } catch (error) {
         console.error('Error:', error);
-        alert(`Error: ${error.message}`);
+        showToastError(`No se pudo eliminar la saga`);
     }
 }
 function removeSaga(id, wrapperSaga) {
@@ -136,7 +143,8 @@ function removeSaga(id, wrapperSaga) {
                 const data = await response.json();
 
                 if (!response.ok) {
-                    throw new Error(data.error || 'Error al conseguir personajes por juego');
+                    showToastError(`Error al conseguir los juegos de la saga`);
+                    return;
                 }
 
                 const games = data;
@@ -148,6 +156,7 @@ function removeSaga(id, wrapperSaga) {
                             // Eliminar el input que contiene a la saga
                             wrapperSaga.remove();
                             await loadGames();
+                            xboxAchievementToast("Saga eliminada correctamente", "100");
                         }
                     });
                 } else {
@@ -155,13 +164,14 @@ function removeSaga(id, wrapperSaga) {
                         // Eliminar el input que contiene a la saga
                         wrapperSaga.remove();
                         await loadGames();
+                        xboxAchievementToast("Saga eliminada correctamente", "100");
                     }
                 }
 
 
             } catch (error) {
                 console.error('Error:', error);
-                alert(`Error: ${error.message}`);
+                showToastError(`No se pudieron conseguir los juegos de la saga`);
             }
         });
     } else {
@@ -303,7 +313,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     franchisesAndSagasModal.querySelector('#submit-franchises_and_sagas-btn').addEventListener('click', async () => {
         // Verificar si TODOS los inputs tienen un valor no vacío
         if (!Array.from(document.querySelectorAll('.franchise-title, .saga-title')).every(input => input.value.trim() !== '')) {
-            throw new Error('Las franquicias o sagas no pueden tener un valor vacío');
+            showToastError('Las franquicias o sagas deben tener un título válido');
+            return;
         }
 
         const inputsFranchisesSagas = document.querySelectorAll('.franchise_and_saga-container');
@@ -328,7 +339,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                     });
                     const data = await response.json();
                     if (!response.ok) {
-                        throw new Error(errorData.error || 'Error al agregar franquicia');
+                        showToastError(errorData.error || 'Error al crear franquicia');
+                        return;
                     }
                     franchiseId = data.id;
                 }
@@ -346,13 +358,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                     });
                     if (!response.ok) {
                         const errorData = await response.json();
-                        throw new Error(errorData.error || 'Error al editar franquicia');
+                        showToastError(errorData.error || 'Error al editar franquicia');
+                        return;
                     }
                 }
 
             } catch (error) {
                 console.error('Error:', error);
-                alert(`Error: ${error.message}`);
+                showToastError(`No se pudo agregar/editar la franquicia`);
             }
 
             for (const $elSaga of inputsSagas) {
@@ -376,7 +389,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                         });
                         if (!response.ok) {
                             const errorData = await response.json();
-                            throw new Error(errorData.error || 'Error al agregar saga');
+                            showToastError(errorData.error || 'Error al crear saga');
+                            return;
                         }
                     }
                     // Si el input de id no está vacío y el título cambió entonces hacer PUT
@@ -394,17 +408,19 @@ document.addEventListener("DOMContentLoaded", async () => {
                         });
                         if (!response.ok) {
                             const errorData = await response.json();
-                            throw new Error(errorData.error || 'Error al editar saga');
+                            showToastError(errorData.error || 'Error al editar saga');
+                            return;
                         }
                     }
 
                 } catch (error) {
                     console.error('Error:', error);
-                    alert(`Error: ${error.message}`);
+                    showToastError(`No se pudo agregar/editar la saga`);
                 }
             }
         }
         // Cerrar modal
         closeFSModal(franchisesAndSagasModal);
+        xboxAchievementToast("Cambios realizados correctamente", "100");
     });
 });

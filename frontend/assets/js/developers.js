@@ -1,4 +1,6 @@
 import { devTypes } from './datasets.js';
+import { showToastError } from './toast-notification.js';
+import { xboxAchievementToast } from './xbox-achievement-notification.js';
 
 async function createDeveloperModal() {
 
@@ -74,7 +76,10 @@ async function loadDevelopers() {
     try {
         // Conseguir conexión con la base de datos de los desarrolladores
         const response = await fetch('http://localhost:3000/api/developers');
-        if (!response.ok) throw new Error('Error al cargar desarrolladores');
+        if (!response.ok) {
+            showToastError('Error al cargar desarrolladores');
+            return;
+        };
 
         const developers = await response.json();
 
@@ -129,7 +134,7 @@ async function loadDevelopers() {
             }
             container.appendChild(grid);
         }
-        
+
     } catch (error) {
         console.error('Error:', error);
         const errorMessage = document.createElement('p');
@@ -181,7 +186,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Validación de campos requeridos
         if (!Object.values(newDeveloper).every(value => value !== null && value !== undefined && value !== '')) {
-            alert('Por favor complete todos los campos requeridos');
+            showToastError('Faltan campos obligatorios');
             return;
         }
 
@@ -198,7 +203,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    throw new Error(errorData.error || 'Error al crear desarrollador');
+                    showToastError(errorData.error || 'Error al crear desarrollador');
+                    return;
                 }
             } else {
                 const response = await fetch(`http://localhost:3000/api/developers/${developer_id}`, {
@@ -211,17 +217,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    throw new Error(errorData.error || 'Error al editar el desarrollador');
+                    showToastError(errorData.error || 'Error al editar desarrollador');
+                    return;
                 }
             }
 
             // Cerrar modal
             closeDevModal(devModal);
+            xboxAchievementToast(developer_id ? "Desarrollador editado correctamente" : "Desarrollador creado correctamente" ,"100");
             // Actualizar lista
             await loadDevelopers();
+            
         } catch (error) {
             console.error('Error:', error);
-            alert(`Error: ${error.message}`);
+            showToastError(`No se pudo agregar/editar el desarrollador`);
         }
     });
 
@@ -235,12 +244,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error || 'Error al eliminar desarrollador');
+                showToastError(errorData.error || 'Error al eliminar desarrollador');
+                return;
             }
             return true;
         } catch (error) {
             console.error('Error:', error);
-            alert(`Error: ${error.message}`);
+            showToastError(`No se pudo eliminar al desarrollador`);
         }
     }
 
@@ -249,11 +259,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         openDeleteModal(async () => {
             const developer_id = document.getElementById('developer-id').value;
             try {
-
                 const response = await fetch(`http://localhost:3000/api/gamesbydeveloper/${developer_id}`);
                 const data = await response.json();
                 if (!response.ok) {
-                    throw new Error(errorData.error || 'Error al conseguir juegos por desarrollador');
+                    showToastError(`Error al conseguir los juegos del desarrollador`);
+                    return;
                 }
 
                 const games = data;
@@ -265,17 +275,19 @@ document.addEventListener("DOMContentLoaded", async () => {
                         if (await fetchDeleteDeveloper(developer_id)) {
                             // Cerrar modal
                             closeDevModal(devModal);
+                            xboxAchievementToast("Desarrollador eliminado correctamente" ,"100");
                         }
                     });
                 } else {
                     if (await fetchDeleteDeveloper(developer_id)) {
                         // Cerrar modal
                         closeDevModal(devModal);
+                        xboxAchievementToast("Desarrollador eliminado correctamente" ,"100");
                     }
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert(`Error: ${error.message}`);
+                showToastError(`No se pudieron conseguir los juegos del desarrollador`);
             }
         });
     });
