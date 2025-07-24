@@ -299,7 +299,7 @@ select.modal-scrollable::-webkit-scrollbar-thumb:hover {
 .developer-card:hover .delete-dev {
     opacity: 1;
 }
-	
+
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
 
 /* Modal de confirmación */
@@ -318,12 +318,12 @@ select.modal-scrollable::-webkit-scrollbar-thumb:hover {
 
 .no-spinners::-webkit-inner-spin-button,
 .no-spinners::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .no-spinners {
-  appearance: textfield;
+    appearance: textfield;
 }
 
 
@@ -454,3 +454,86 @@ select.modal-scrollable::-webkit-scrollbar-thumb:hover {
 
 /* #endregion */
 
+/* Aprovechamos estilos existentes */
+.entity-card .card-content {
+    padding: 1.5rem;
+    height: 100%;
+}
+
+.entity-card .title {
+    color: #fff;
+}
+
+.entity-card .content {
+    color: #bbb;
+}
+
+/* Pequeños ajustes específicos para esta página */
+#game-modes-container .entity-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#game-modes-container .entity-card .card-content {
+    flex-grow: 1;
+}
+
+.game-mode-header {
+    padding: 1rem;
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+    border-bottom: 2px solid var(--bulma-border);
+    background: linear-gradient(to bottom, #3d3457, #332c49);
+}
+
+/* Ajuste para mantener consistencia con el hover */
+.entity-card:hover .game-mode-header {
+    background: linear-gradient(to bottom, #3c325314, #313153cc);
+    border-bottom-color: #66666600;
+}
+
+.game-mode-header {
+    background: #1a1a1a;
+    margin: -1rem -1rem 1rem -1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.search-results {
+    position: absolute;
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 100;
+    background-color: #2a2a2a;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    display: none;
+}
+
+.search-result-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #444;
+}
+
+.search-result-item:hover {
+    background-color: #363636;
+}
+
+.game-container {
+    margin-top: 2rem;
+}
+
+.attempts-counter {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.hint-box {
+    background-color: #363636;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
