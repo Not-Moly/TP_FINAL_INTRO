@@ -30,18 +30,24 @@ function createFranchiseOptions() {
         newOption.innerHTML = `${franchise.title}`;
         gameFranchiseOptions.append(newOption);
     }
+
+    gameFranchiseOptions.addEventListener('change', () => {
+        createSagaOptions(gameFranchiseOptions.value);
+    });
 };
 
-function createSagaOptions() {
+function createSagaOptions(id_franchise = '') {
     const gameSagaOptions = document.getElementById('game-saga');
     gameSagaOptions.innerHTML = '<option value="" disabled selected>Seleccione una saga</option>';
 
-    // Crear opciones de sagas
+    // Crear opciones de sagas (Comentado para constancia de código)(Cambiado ya que dejaba como opciones todas las sagas en vez de las sagas de la franquicia seleccionada)
     for (const [id, saga] of Object.entries(loadedSagas)) {
-        const newOption = document.createElement('option');
-        newOption.value = id;
-        newOption.innerHTML = `${saga.title}`;
-        gameSagaOptions.append(newOption);
+        if(id_franchise && id_franchise == saga.id_franchise){
+            const newOption = document.createElement('option');
+            newOption.value = id;
+            newOption.innerHTML = `${saga.title}`;
+            gameSagaOptions.append(newOption);
+        }
     }
 };
 
@@ -269,7 +275,7 @@ export async function loadGames() {
                                 </div>
                             </div>
                             <div class="content">
-                                <p><strong>Año:</strong> ${game.release || game.release_year}</p>
+                                <p><strong>Año:</strong> ${game.release_year}</p>
                                 <p><strong>Género:</strong> ${game.genre}</p>
                                 <p><strong>Modo:</strong> ${game.gamemode}</p>
                                 <p><strong>Perspectiva:</strong> ${game.perspective}</p>
@@ -290,6 +296,7 @@ export async function loadGames() {
                         document.getElementById('game-image').value = game.image;
                         document.getElementById('game-image-preview').src = game.image;
                         document.getElementById('game-franchise').value = game.id_franchise;
+                        createSagaOptions(game.id_franchise);
                         document.getElementById('game-saga').value = game.id_saga;
                         document.getElementById('game-developer').value = game.id_developer;
 
@@ -399,7 +406,7 @@ document.addEventListener("dataLoaded", async () => {
 
             // Cerrar modal
             closeGameModal(gameModal);
-            xboxAchievementToast(game_id ? "Juego editado correctamente" : "Juego creado correctamente" ,"100");
+            xboxAchievementToast(game_id ? "Juego editado correctamente" : "Juego creado correctamente", "100");
             // Actualizar lista
             await loadGames();
 
@@ -446,7 +453,7 @@ document.addEventListener("dataLoaded", async () => {
 
                 const characters = data;
                 console.log(characters);
-                
+
                 // Verificar cantidad de juegos nula
                 if (Object.keys(characters).length !== 0) {
                     document.getElementById('confirm-delete-text').innerHTML = 'Éste juego tiene personajes asignados, si lo eliminas los personajes también resultarán eliminados!'
@@ -454,14 +461,14 @@ document.addEventListener("dataLoaded", async () => {
                         if (await fetchDeleteGame(game_id)) {
                             // Cerrar modal
                             closeGameModal(gameModal);
-                            xboxAchievementToast("Juego eliminado correctamente" ,"100");
+                            xboxAchievementToast("Juego eliminado correctamente", "100");
                         }
                     });
                 } else {
                     if (await fetchDeleteGame(game_id)) {
                         // Cerrar modal
                         closeGameModal(gameModal);
-                        xboxAchievementToast("Juego eliminado correctamente" ,"100");
+                        xboxAchievementToast("Juego eliminado correctamente", "100");
                     }
                 }
             } catch (error) {
