@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html data-theme="dark">
+
 <head>
     <title>Playle - Modo Clásico</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -53,34 +54,40 @@
                         <div class="notification" id="result-message"></div>
                     </div>
 
-                    <div id="guessed-game" style="display: none;">
-                        <div class="box has-background-dark">
-                            <article class="media">
-                                <div class="media-left">
-                                    <figure class="image is-128x128">
-                                        <img id="guessed-image" src="" alt="Game image">
-                                    </figure>
-                                </div>
-                                <div class="media-content">
-                                    <div class="content">
-                                        <p>
-                                            <strong id="guessed-title"></strong>
-                                            <br>
-                                            <small id="guessed-year"></small>
-                                            <br>
-                                            <span id="guessed-genre"></span>
-                                            <br>
-                                            <span id="guessed-developer"></span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
+                    <div id="guessed-games">
                     </div>
                 </div>
             </div>
         </div>
     </div>
-     
+    <div class="modal" id="end-game">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title" id="modal-title">¡Has ganado!</p>
+            <button class="delete" aria-label="close" id="close-modal"></button>
+        </header>
+        <section class="modal-card-body">
+            <div class="columns is-centered">
+                <div class="column is-one-third">
+                    <figure class="image is-square">
+                        <img id="modal-game-image" src="" alt="Game image">
+                    </figure>
+                </div>
+                <div class="column">
+                    <h2 class="title is-4" id="modal-game-title"></h2>
+                    <p id="modal-game-year"></p>
+                    <p id="modal-game-genre"></p>
+                    <p id="modal-game-developer"></p>
+                </div>
+            </div>
+        </section>
+        <footer class="modal-card-foot">
+            <button class="button is-primary modal-button" id="play-again">Jugar de nuevo</button>
+            <button class="button is-light modal-button" id="go-home">Volver al inicio</button>
+        </footer>
+    </div>
+</div>
+</div>
 </body>
 </html>
