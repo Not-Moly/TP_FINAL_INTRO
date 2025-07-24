@@ -104,7 +104,7 @@ INSERT INTO characters (character_name, image, gender, species, description, mai
 ('Daruk', 'https://i.pinimg.com/736x/8b/59/7b/8b597bd637cbf945b30c97534c062343.jpg', 'Masculino', 'Goron', 'Campeón Goron de la habilidad Daruk', 'Protección de roca'),
 ('Mipha', 'https://i.pinimg.com/736x/2e/d7/04/2ed7048d2263bc647312ba5845968cd5.jpg', 'Femenino', 'Zora', 'Princesa Zora y campeona de la habilidad Mipha', 'Curación con agua'),
 ('Revali', 'https://i.pinimg.com/736x/4c/56/68/4c5668f101e98837fbec7d66bfb9b3d8.jpg', 'Masculino', 'Rito', 'Campeón Rito arrogante pero habilidoso', 'Vuelo y arquería'),
-('Yennefer de Vengerberg', 'hhttps://i.pinimg.com/1200x/5f/a9/02/5fa902fe254f2f1432d76f3741f9f885.jpg', 'Femenino', 'Humana/Hechicera', 'Poderosa hechicera y amor de Geralt', 'Magia del caos'),
+('Yennefer de Vengerberg', 'https://i.pinimg.com/1200x/5f/a9/02/5fa902fe254f2f1432d76f3741f9f885.jpg', 'Femenino', 'Humana/Hechicera', 'Poderosa hechicera y amor de Geralt', 'Magia del caos'),
 ('Ciri', 'https://i.pinimg.com/736x/39/39/fb/3939fbddd30e4bb9149cdd3ba44f4739.jpg', 'Femenino', 'Humana/De sangre antigua', 'Hija adoptiva de Geralt con poderes especiales', 'Teletransportación'),
 ('Triss Merigold', 'https://i.pinimg.com/736x/d7/0f/b4/d70fb451c1946e8aa260600ebe3c32b9.jpg', 'Femenino', 'Humana/Hechicera', 'Hechicera y antigua amante de Geralt', 'Magia elemental'),
 ('Megaera', 'https://i.pinimg.com/736x/7a/e8/23/7ae8232aba67b365bde80c448cfb42a8.jpg', 'Femenino', 'Furia', 'Primera de las Furias y ex-amante de Zagreus', 'Látigo de dolor'),
