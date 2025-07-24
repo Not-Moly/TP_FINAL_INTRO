@@ -1,11 +1,11 @@
 const { Pool } = require('pg');
 
 const dbClient = new Pool({
-    user: 'postgres',
-    port: 5000,
-    host: 'localhost',
-    database: 'playle',
-    password: 'postgres'
+  host: process.env.DB_HOST || 'postgres',
+  port: process.env.DB_PORT || 5432,
+  user: process.env.DB_USER || 'postgres',
+  password: process.env.DB_PASSWORD || 'postgres',
+  database: process.env.DB_NAME || 'playle',
 });
 
 // ╔═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╗
@@ -38,13 +38,13 @@ async function getAllDevelopers() {
     const developers = {};
 
     result.rows.forEach(row => {
-        if ([!developers[row.developer_id]]) {
+        if (!developers[row.developer_id]) {
             developers[row.developer_id] = {
                 name: row.devs_name,
                 foundation_year: row.foundation_year,
                 game_count: row.game_count,
                 country: row.country,
-                entity_types: row.entity_type
+                entity_type: row.entity_type
             }
         }
     });
@@ -62,7 +62,7 @@ async function getOneDeveloper(id) {
     const developers = {};
 
     result.rows.forEach(row => {
-        if ([!developers[row.developer_id]]) {
+        if (!developers[row.developer_id]) {
             developers[row.developer_id] = {
                 name: row.devs_name,
                 foundation_year: row.foundation_year,
@@ -98,13 +98,10 @@ async function updateDeveloper(
 // ╚═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╝
 async function deleteDeveloper(id) {
     const result = await dbClient.query(
-        'DELETE FROM developers WHERE id = $1', [id]
-    )
-    if (result.rows.rowCount === 0) {
-        return undefined
-    }
-    return id
-};
+        'DELETE FROM developers WHERE id = $1 RETURNING id', [id]
+    );
+    return result.rows[0]?.id; // Devuelve el ID eliminado o undefined
+}
 
 
 module.exports = {

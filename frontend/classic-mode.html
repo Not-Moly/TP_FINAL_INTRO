@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html data-theme="dark">
+
+<head>
+    <title>Playle - Modo Clásico</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="icon.ico">
+    <audio id="victory-sound" preload="auto">
+        <source src="/assets/audio/victory.mp3" type="audio/mpeg">
+    </audio>
+    <script type="module" src="/assets/js/clasic-logic.js" defer></script>
+    <script type="module" src="assets/js/confetti.js"></script>
+    <script src="src.js"></script>
+    <script src="assets/js/tabs-navbar.js" defer></script>
+</head>
+
+<body>
+    <div id="tabs-container"></div>
+
+    <div id="entity-page-title">
+        <h1 class="title has-text-centered">Modo Clásico</h1>
+        <p class="subtitle has-text-centered">Adivina el juego en 6 intentos</p>
+    </div>
+
+    <div id="confetti-wrapper" style="z-index: 105; pointer-events: none;"></div>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-half">
+                    <div class="field has-addons">
+                        <div class="control is-expanded has-icons-left">
+                            <input id="game-search" class="input" type="text" placeholder="Buscar juego...">
+                            <span class="icon is-left">
+                                <i class="fas fa-search"></i>
+                            </span>
+                            <div id="search-results" class="search-results"></div>
+                        </div>
+                        <div class="control">
+                            <button id="search-button" class="button is-primary">
+                                Buscar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="attempts-counter has-text-centered">
+                        Intentos restantes: <span id="attempts">6</span>
+                    </div>
+
+                    <div id="hints-container" class="hint-box">
+                        <h3 class="title is-5">Pistas:</h3>
+                        <ul id="hints-list">
+                        </ul>
+                    </div>
+
+                    <div id="result-container" style="display: none;">
+                        <div class="notification" id="result-message"></div>
+                    </div>
+
+                    <div id="guessed-games" style="align-items: center;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="end-game">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title" id="modal-title">¡Has ganado!</p>
+            <button class="delete" aria-label="close" id="close-modal"></button>
+        </header>
+        <section class="modal-card-body">
+            <div class="columns is-centered">
+                <div class="column is-one-third">
+                    <figure class="image is-square">
+                        <img id="modal-game-image" src="" alt="Game image">
+                    </figure>
+                </div>
+                <div class="column">
+                    <h2 class="title is-4" id="modal-game-title"></h2>
+                    <p id="modal-game-year"></p>
+                    <p id="modal-game-genre"></p>
+                    <p id="modal-game-developer"></p>
+                </div>
+            </div>
+        </section>
+        <footer class="modal-card-foot">
+            <button class="button is-primary modal-button" id="play-again">Jugar de nuevo</button>
+            <button class="button is-light modal-button" id="go-home">Volver al inicio</button>
+        </footer>
+    </div>
+</div>
+</div>
+</body>
+</html>

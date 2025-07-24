@@ -4,23 +4,74 @@
 
 <head>
     <title>Playle</title>
+
+    <!-- Bulma CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Google API Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+20&display=swap" rel="stylesheet">
+
+
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="icon.ico">
-    <script src="src.js"></script>
+
+    <script src="src.js" defer></script>
+    <script src="assets/js/home-background.js" defer></script>
+    <script src="assets/js/home-play-button.js" defer></script>
+    <script src="assets/js/home-card.js" defer></script>
+    <script src="assets/js/tabs-navbar.js" defer></script>
+
 </head>
 
 <body>
+    <script src="assets/js/loading-screen.js"></script>
     <div id="tabs-container"></div>
-    <h1 id="titulo">Playle!</h1>
-        <h2 id="subtitulo">Bienvenido a Playle, un juego de adivinanzas donde puedes desafiar tu conocimiento sobre videojuegos</h2>
-        <h2 id="subtitulo">¡Agrega contenido y empieza a jugar!</h2>
-        <hr></hr>
-        <div class="has-text-centered">
-            <button class="button" id="boton">Jugar</button>
+    <h1 id="titulo" class="supermario256 floating">
+        <span class="has-text-danger">P</span>
+        <span class="has-text-warning">l</span>
+        <span class="has-text-success">a</span>
+        <span class="has-text-link">y</span>
+        <span class="has-text-primary">l</span>
+        <span class="has-text-info">e</span>
+        <span class="text-color-red">!</span>
+    </h1>
+    <div class="home-card card column is-centered is-half is-offset-one-quarter neon-border">
+        <div class="card-content">
+            <div class="content has-text-centered">
+                <p class="has-text-white-bis write-in">
+                    Bienvenido a Playle, un juego de adivinanzas donde puedes desafiar tu conocimiento sobre videojuegos
+                </p>
+                <p class="has-text-warning">
+                    ¡Agrega contenido y empieza a jugar!
+                </p>
+            </div>
         </div>
-        <!-- <div class="box" style=" box-shadow: none;border: 1px solid rgba(255, 255, 255, 0.311); width: 200px; height: 300px; margin-left: 20px; margin-bottom: 20px;">Juegos añadidos recientemente:</div> -->
+    </div>
+    <div class="main-content">
+        <div class="has-text-centered">
+            <a class="button" id="home-play-button">Jugar</a>
+            <audio id="home-play-sound" src="assets/audio/smb_powerup.wav"></audio>
+        </div>
+
+        <div id="background-grid">
+            <ul id="ul-background-grid">
+            </ul>
+        </div>
+
+    </div>
+    <footer class="footer">
+        <div class="content has-text-centered">
+            <p>
+                <strong>Playle</strong> realizado por
+            <p class="jersey-20-regular">Manuel Martinez Almada y Federico German Molina </p>
+            <a href="https://github.com/Not-Moly/TP_FINAL_INTRO" target="_blank" class="has-text-white">
+                <i class="fab fa-github fa-lg"></i>
+                </p>
+        </div>
+    </footer>
+
 </body>
 
 </html>

@@ -9,10 +9,13 @@ const PORT = process.env.PORT || 3000;
 
 const {
     getAllGames,
+    getGamesByDeveloper,
+    getGamesBySaga,
+    getGamesByCharacter,
     getOneGame,
     createGame,
     deleteGame,
-    updateGame
+    updateGame,
 } = require('./database/games_db');
 
 //   ██████╗  █████╗ ███╗   ███╗███████╗███████╗
@@ -31,7 +34,7 @@ const {
 curl http://localhost:3000/api/games \
     --request POST \
     --header "Content-Type: application/json" \
-    --data '{"title":"Test1", "release_year":"2500", "gamemode":"Test1", "genre":"Test1", "perspective":"Test1", "image":"Test1", "franchise":"Test1", "id_developer":"2"}'
+    --data '{"title":"Test1", "release_year":"2500", "gamemode":"Test1", "genre":"Test1", "perspective":"Test1", "image":"Test1", "id_franchise":"2", "id_saga":"3", "id_developer":"2"}'
 */
 app.post('/api/games', async (req, res) => {
     const new_game_info = {
@@ -41,7 +44,8 @@ app.post('/api/games', async (req, res) => {
         genre: req.body.genre,
         perspective: req.body.perspective,
         image: req.body.image,
-        franchise: req.body.franchise,
+        id_franchise: req.body.id_franchise,
+        id_saga: req.body.id_saga,
         id_developer: req.body.id_developer
     };
     for (let data in new_game_info) {
@@ -75,6 +79,18 @@ app.get('/api/games/:id', async (req, res) => {
     }
     res.json((game));
 });
+app.get('/api/gamesbydeveloper/:id', async (req, res) => {
+    let games = await getGamesByDeveloper(req.params.id);
+    res.json((games));
+});
+app.get('/api/gamesbysaga/:id', async (req, res) => {
+    let games = await getGamesBySaga(req.params.id);
+    res.json((games));
+});
+app.get('/api/gamesbycharacter/:id', async (req, res) => {
+    let games = await getGamesByCharacter(req.params.id);
+    res.json((games));
+});
 
 
 // ╔═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╗
@@ -84,7 +100,7 @@ app.get('/api/games/:id', async (req, res) => {
 curl http://localhost:3000/api/games/5 \
     --request PUT \
     --header "Content-Type: application/json" \
-    --data '{"title":"Test1", "release_year":"2500", "gamemode":"Test1", "genre":"Test1", "perspective":"Test1", "image":"Test1", "franchise":"Test1", "id_developer":"2"}'
+    --data '{"title":"Test1", "release_year":"2500", "gamemode":"Test1", "genre":"Test1", "perspective":"Test1", "image":"Test1", "id_franchise":"2", "id_saga":"3", "id_developer":"2"}'
 */
 app.put('/api/games/:id', async (req, res) => {
     let old_game_info = await getOneGame(req.params.id);
@@ -99,7 +115,8 @@ app.put('/api/games/:id', async (req, res) => {
         genre: req.body.genre,
         perspective: req.body.perspective,
         image: req.body.image,
-        franchise: req.body.franchise,
+        id_franchise: req.body.id_franchise,
+        id_saga: req.body.id_saga,
         id_developer: req.body.id_developer
     };
     for (let data in updated_game_info) {
@@ -262,6 +279,7 @@ app.delete('/api/developers/:id', async (req, res) => {
 const {
     getAllCharacters,
     getOneCharacter,
+    getCharactersByGame,
     createCharacter,
     deleteCharacter,
     updateCharacter
@@ -284,18 +302,17 @@ const {
 curl http://localhost:3000/api/characters \
     --request POST \
     --header "Content-Type: application/json" \
-    --data '{"character_name":"Test1", "franchise":"2500", "image":"Test1", "gender":"Test1", "species":"Test1", "description":"Test1", "main_skill":"Test1", "id_game":"3"}'
+    --data '{"character_name":"Test1", "image":"Test1", "gender":"Test1", "species":"Test1", "description":"Test1", "main_skill":"Test1", "games_ids":[1,2]}'
 */
 app.post('/api/characters', async (req, res) => {
     const new_character_info = {
         character_name: req.body.character_name,
-        franchise: req.body.franchise,
         image: req.body.image,
         gender: req.body.gender,
         species: req.body.species,
         description: req.body.description,
         main_skill: req.body.main_skill,
-        id_game: req.body.id_game
+        games_ids: req.body.games_ids
     };
     for (let data in new_character_info) {
         if (!new_character_info[data])
@@ -328,6 +345,13 @@ app.get('/api/characters/:id', async (req, res) => {
     }
     res.json((character));
 });
+app.get('/api/charactersbygame/:id', async (req, res) => {
+    let characters = await getCharactersByGame(req.params.id);
+    if (!characters) {
+        return res.sendStatus(404).json({ error: 'Characters not found' });
+    }
+    res.json((characters));
+});
 
 
 // ╔═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╗
@@ -337,7 +361,7 @@ app.get('/api/characters/:id', async (req, res) => {
 curl http://localhost:3000/api/characters/5 \
     --request PUT \
     --header "Content-Type: application/json" \
-    --data '{"character_name":"Test1", "franchise":"2500", "image":"Test1", "gender":"Test1", "species":"Test1", "description":"Test1", "main_skill":"Test1", "id_game":"3"}'
+    --data '{"character_name":"Test1", "image":"Test1", "gender":"Test1", "species":"Test1", "description":"Test1", "main_skill":"Test1", "games_ids":"[1,4]"}'
 */
 app.put('/api/characters/:id', async (req, res) => {
     let old_character_info = await getOneCharacter(req.params.id);
@@ -347,13 +371,12 @@ app.put('/api/characters/:id', async (req, res) => {
 
     const updated_character_info = {
         character_name: req.body.character_name,
-        franchise: req.body.franchise,
         image: req.body.image,
         gender: req.body.gender,
         species: req.body.species,
         description: req.body.description,
         main_skill: req.body.main_skill,
-        id_game: req.body.id_game
+        games_ids: req.body.games_ids
     };
     for (let data in updated_character_info) {
         if (!updated_character_info[data])
@@ -388,6 +411,254 @@ app.delete('/api/characters/:id', async (req, res) => {
 
 //#endregion
 
-app.listen(PORT, () => {
+
+const {
+    getAllFranchises,
+    getAllFranchisesWithSagas,
+    getOneFranchise,
+    createFranchise,
+    deleteFranchise,
+    updateFranchise
+} = require('./database/franchises_db.js');
+
+//  ███████╗██████╗  █████╗ ███╗   ██╗ ██████╗██╗  ██╗██╗███████╗███████╗███████╗
+//  ██╔════╝██╔══██╗██╔══██╗████╗  ██║██╔════╝██║  ██║██║██╔════╝██╔════╝██╔════╝
+//  █████╗  ██████╔╝███████║██╔██╗ ██║██║     ███████║██║███████╗█████╗  ███████╗
+//  ██╔══╝  ██╔══██╗██╔══██║██║╚██╗██║██║     ██╔══██║██║╚════██║██╔══╝  ╚════██║
+//  ██║     ██║  ██║██║  ██║██║ ╚████║╚██████╗██║  ██║██║███████║███████╗███████║
+//  ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝╚══════╝
+
+
+//#region FRANCHISES ENDPOINTS
+
+// ╔═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╗
+//                POST (CREATE)
+// ╚═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╝
+/*
+curl http://localhost:3000/api/franchises \
+    --request POST \
+    --header "Content-Type: application/json" \
+    --data '{"title":"Test1"}'
+*/
+app.post('/api/franchises', async (req, res) => {
+    const new_franchise_info = {
+        title: req.body.title
+    };
+    for (let data in new_franchise_info) {
+        if (!new_franchise_info[data])
+            return res.status(400).json({ error: "Missing required field" });
+    }
+
+    const franchise = await createFranchise(new_franchise_info);
+
+    if (!franchise) {
+        return res.status(500).json({ error: "Error while creating Franchise" });
+    }
+
+    res.json(franchise);
+});
+
+// ╔═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╗
+//                 GET (READ)
+// ╚═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╝
+app.get('/api/franchises', async (req, res) => {
+    let franchises = await getAllFranchises();
+    if (!franchises) {
+        return res.sendStatus(404).json({ error: 'Franchises not found' });
+    }
+    res.json(franchises);
+});
+app.get('/api/franchisesWithSagas', async (req, res) => {
+    let franchisesWithSagas = await getAllFranchisesWithSagas();
+    if (!franchisesWithSagas) {
+        return res.sendStatus(404).json({ error: 'Franchises not found' });
+    }
+    res.json(franchisesWithSagas);
+});
+app.get('/api/franchises/:id', async (req, res) => {
+    let franchise = await getOneFranchise(req.params.id);
+    if (!franchise) {
+        return res.sendStatus(404).json({ error: 'Franchise not found' });
+    }
+    res.json((franchise));
+});
+
+
+// ╔═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╗
+//                PUT (UPDATE)
+// ╚═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╝
+/*
+curl http://localhost:3000/api/franchises/5 \
+    --request PUT \
+    --header "Content-Type: application/json" \
+    --data '{"title":"Test1"}'
+*/
+app.put('/api/franchises/:id', async (req, res) => {
+    let old_franchise_info = await getOneFranchise(req.params.id);
+    if (!old_franchise_info) {
+        return res.sendStatus(404).json({ error: 'Franchise not found' });
+    }
+    const updated_franchise_info = {
+        title: req.body.title
+    };
+    for (let data in updated_franchise_info) {
+        if (!updated_franchise_info[data])
+            return res.status(400).json({ error: "Missing required field" });
+    }
+
+    await updateFranchise(req.params.id, updated_franchise_info);
+
+    res.status(200).json({ message: "Updated Succesfully" });
+});
+
+// ╔═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╗
+//               DELETE (DELETE)
+// ╚═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╝
+/*
+curl http://localhost:3000/api/franchises/6 \
+    --request DELETE
+*/
+app.delete('/api/franchises/:id', async (req, res) => {
+    if (!req.params.id) {
+        return res.status(400).json({ error: "Missing required parameter" });
+    }
+
+    let franchise = await deleteFranchise(req.params.id)
+
+    if (!franchise) {
+        return res.status(404).json({ error: "Franchise id: " + req.params.id + " non-existent" });
+    }
+
+    res.status(200).json({ message: "Deleted Succesfully" });
+});
+
+//#endregion
+
+
+const {
+    getAllSagas,
+    getAllSagasByFranchise,
+    getOneSaga,
+    createSaga,
+    deleteSaga,
+    updateSaga
+} = require('./database/sagas_db.js');
+
+//  ███████╗ █████╗  ██████╗  █████╗ ███████╗
+//  ██╔════╝██╔══██╗██╔════╝ ██╔══██╗██╔════╝
+//  ███████╗███████║██║  ███╗███████║███████╗
+//  ╚════██║██╔══██║██║   ██║██╔══██║╚════██║
+//  ███████║██║  ██║╚██████╔╝██║  ██║███████║
+//  ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝
+
+
+//#region SAGAS ENDPOINTS
+
+// ╔═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╗
+//                POST (CREATE)
+// ╚═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╝
+/*
+curl http://localhost:3000/api/sagas \
+    --request POST \
+    --header "Content-Type: application/json" \
+    --data '{"title":"Test1","id_franchise":"2"}'
+*/
+app.post('/api/sagas', async (req, res) => {
+    const new_saga_info = {
+        title: req.body.title,
+        id_franchise: req.body.id_franchise
+    };
+    for (let data in new_saga_info) {
+        if (!new_saga_info[data])
+            return res.status(400).json({ error: "Missing required field" });
+    }
+
+    const saga = await createSaga(new_saga_info);
+
+    if (!saga) {
+        return res.status(500).json({ error: "Error while creating Saga" });
+    }
+
+    res.json(saga);
+});
+
+// ╔═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╗
+//                 GET (READ)
+// ╚═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╝
+app.get('/api/sagas', async (req, res) => {
+    let sagas = await getAllSagas();
+    if (!sagas) {
+        return res.sendStatus(404).json({ error: 'Sagas not found' });
+    }
+    res.json(sagas);
+});
+app.get('/api/sagas/:id', async (req, res) => {
+    let saga = await getOneSaga(req.params.id);
+    if (!saga) {
+        return res.sendStatus(404).json({ error: 'Saga not found' });
+    }
+    res.json((saga));
+});
+app.get('/api/sagasbyfranchise/:id', async (req, res) => {
+    let sagas = await getAllSagasByFranchise(req.params.id);
+    if (!sagas) {
+        return res.sendStatus(404).json({ error: 'Sagas not found' });
+    }
+    res.json((sagas));
+});
+
+
+// ╔═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╗
+//                PUT (UPDATE)
+// ╚═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╝
+/*
+curl http://localhost:3000/api/sagas/5 \
+    --request PUT \
+    --header "Content-Type: application/json" \
+    --data '{"title":"Test1","id_franchise":"2"}'
+*/
+app.put('/api/sagas/:id', async (req, res) => {
+    let old_saga_info = await getOneSaga(req.params.id);
+    if (!old_saga_info) {
+        return res.sendStatus(404).json({ error: 'Saga not found' });
+    }
+    const updated_saga_info = {
+        title: req.body.title,
+        id_franchise: req.body.id_franchise
+    };
+    for (let data in updated_saga_info) {
+        if (!updated_saga_info[data])
+            return res.status(400).json({ error: "Missing required field" });
+    }
+
+    await updateSaga(req.params.id, updated_saga_info);
+
+    res.status(200).json({ message: "Updated Succesfully" });
+});
+
+// ╔═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╗
+//               DELETE (DELETE)
+// ╚═══━━━━━━━━━━━━─── • ───━━━━━━━━━━━━═══╝
+/*
+curl http://localhost:3000/api/sagas/6 \
+    --request DELETE
+*/
+app.delete('/api/sagas/:id', async (req, res) => {
+    if (!req.params.id) {
+        return res.status(400).json({ error: "Missing required parameter" });
+    }
+
+    let saga = await deleteSaga(req.params.id)
+
+    if (!saga) {
+        return res.status(404).json({ error: "Saga id: " + req.params.id + " non-existent" });
+    }
+
+    res.status(200).json({ message: "Deleted Succesfully" });
+});
+
+//#endregion
+
+app.listen(PORT, '0.0.0.0', () => {
     console.log("Server Listening on PORT:", PORT);
 });

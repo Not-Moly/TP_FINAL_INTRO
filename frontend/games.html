@@ -1,18 +1,196 @@
 <!DOCTYPE html>
-<!-- <html lang="es-AR"> -->
 <html data-theme="dark">
 
 <head>
-    <title>Playle</title>
+    <title>Playle - Juegos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="icon.ico">
-    <script src="src.js"></script>
+    <script src="src.js" defer></script>
+    <script src="assets/js/tabs-navbar.js" defer></script>
+    <script type="module" src="assets/js/franchises-sagas.js" defer></script>
+    <script type="module" src="assets/js/games.js" defer></script>
 </head>
 
 <body>
+    <script src="assets/js/loading-screen.js"></script>
+
     <div id="tabs-container"></div>
+    <div id="toast-container"></div>
+
+    <div id="entity-page-title">
+        <h1 class="title has-text-centered">Juegos</h1>
+    </div>
+
+    <div class="main-content">
+        <button id="add-button" class="button is-primary is-rounded">
+            <span class="icon">
+                <i class="fas fa-plus"></i>
+            </span>
+        </button>
+        <button id="manage-franchises_and_sagas-button" class="button is-primary is-rounded manage-entities-button">
+            Administrar Franquicias y Sagas
+        </button>
+
+        <p class="has-text-centered" id="no-games">No hay juegos registrados</p>
+
+        <div class="entities-container">
+        </div>
+
+        <div id="franchises_and_sagas-modal" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Administrar Franquicias y Sagas</p>
+                    <button class="delete" aria-label="close" id="closeModal"></button>
+                </header>
+                <section class="modal-card-body modal-scrollable">
+                    <div id="franchises_and_sagas-container"></div>
+                    <button id="add-franchise" class="button is-warning is-dark mt-3">Agregar franquicia</button>
+                </section>
+                <footer class="modal-card-foot is-flex">
+                    <div class="buttons" style="margin-bottom: 0px;">
+                        <button id="submit-franchises_and_sagas-btn" class="button is-success">Guardar cambios</button>
+                        <button id="cancel-franchises_and_sagas-btn" class="button">Cancelar</button>
+                    </div>
+                </footer>
+            </div>
+        </div>
+
+        <div id="game-modal" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">PLACEHOLDER-TEXT</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body modal-scrollable">
+                    <form id="game-form">
+
+                        <input id="game-id" type="hidden" value="">
+
+                        <div class="field">
+                            <label class="label" for="game-title">Título</label>
+                            <div class="control">
+                                <input id="game-title" class="input" type="text" placeholder="Título del juego">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="game-year">Año de lanzamiento</label>
+                            <div class="control">
+                                <input id="game-year" class="input" type="number" placeholder="Año de lanzamiento">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Modo de juego</label>
+                            <div id="gamemode-selects" class="control">
+                            </div>
+                            <input type="hidden" id="game-gamemode-string" name="gamemode" />
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Género</label>
+                            <div id="genre-selects" class="control">
+                            </div>
+                            <input type="hidden" id="game-genre-string" name="genre" />
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="game-perspective">Perspectiva</label>
+                            <div id="perspective-selects" class="control">
+                            </div>
+                            <input type="hidden" id="game-perspective-string" name="perspective" />
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="game-image">URL de la imagen</label>
+                            <div class="control">
+                                <input id="game-image" class="input" type="text" placeholder="URL de la imagen">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Preview</label>
+                            <div class="control">
+                                <figure class="image box" style="margin: 0 auto; padding: 1rem; width: 20rem;">
+                                    <img id="game-image-preview"
+                                        src="https://bulma.io/assets/images/placeholders/128x128.png"
+                                        style="border-radius: var(--bulma-radius-large);"
+                                        alt="Vista previa del juego" />
+                                </figure>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="game-franchise">Franquicia</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select id="game-franchise">
+                                        <option value="" disabled selected>Seleccione una franquicia</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="game-saga">Saga</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select id="game-saga">
+                                        <option value="" disabled selected>Seleccione una saga</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="game-developer">Desarrollador</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select id="game-developer">
+                                        <option value="" disabled selected>Seleccione un desarrollador</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </section>
+                <footer class="modal-card-foot is-flex">
+                    <div class="buttons" style="margin-bottom: 0px;">
+                        <button id="submit-game-btn" class="button is-success">PLACEHOLDER-TEXT</button>
+                        <button id="cancel-game-btn" class="button">Cancelar</button>
+                    </div>
+                    <div class="buttons ml-auto">
+                        <button id="delete-game-btn" class="button is-danger">
+                            <span class="icon is-small">
+                                <i class="fas fa-trash"></i>
+                            </span>
+                        </button>
+                    </div>
+                </footer>
+            </div>
+        </div>
+
+        <div id="confirm-delete-modal" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head has-background-danger">
+                    <p class="modal-card-title has-text-warning-dark">¿Estás seguro?</p>
+                </header>
+                <section class="modal-card-body">
+                    <p id="confirm-delete-text">¿Estás seguro que quieres eliminar ésta entidad?</p>
+                    <div class="buttons mt-5">
+                        <button class="button is-danger" id="confirm-delete-modal-confirm">Si, eliminar</button>
+                        <button class="button" id="confirm-delete-modal-cancel">Cancelar</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

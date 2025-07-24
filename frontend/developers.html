@@ -4,15 +4,121 @@
 
 <head>
     <title>Playle</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="icon.ico">
+
     <script src="src.js"></script>
+    <script src="assets/js/tabs-navbar.js" defer></script>
+    <script type="module" src="assets/js/developers.js"></script>
 </head>
 
 <body>
+    <script src="assets/js/loading-screen.js"></script>
+
     <div id="tabs-container"></div>
+    <div id="toast-container"></div>
+    
+    <div id="entity-page-title">
+        <h1 class="title has-text-centered">Desarrolladores</h1>
+    </div>
+
+    <div class="main-content">
+
+        <button id="add-button" class="button is-primary is-rounded">
+            <span class="icon">
+                <i class="fas fa-plus"></i>
+            </span>
+        </button>
+
+        <p class="has-text-centered" id="no-devs">No hay desarrolladores registrados</p>
+
+        <div class="entities-container"></div>
+
+        <div id="developer-modal" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">PLACEHOLDER-TEXT</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-scrollable modal-card-body">
+                    <form id="dev-form">
+                        <input id="developer-id" type="hidden" value="">
+                        <div class="field">
+                            <label class="label" for="dev-name">Nombre</label>
+                            <div class="control">
+                                <input id="dev-name" class="input" type="text" placeholder="Nombre del desarrollador">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="dev-foundation">Año de Fundacion</label>
+                            <div class="control">
+                                <input id="dev-foundation" class="input no-spinners" type="number"
+                                    placeholder="Año de Fundacion">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="dev-count">Cantidad de Juegos</label>
+                            <div class="control">
+                                <input id="dev-count" class="input no-spinners" type="number"
+                                    placeholder="Cantidad de Juegos">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="dev-country">Pais de Origen</label>
+                            <div class="control">
+                                <input id="dev-country" class="input no-spinners" type="text"
+                                    placeholder="Pais de Origen">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="dev-type">Tipo de Entidad</label>
+                            <div class="control">
+                                <div class="select">
+                                    <select id="dev-type">
+                                        <option value="" disabled selected>Seleccione un tipo de Entidad</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+                <footer class="modal-card-foot is-flex">
+                    <div class="buttons" style="margin-bottom: 0px;">
+                        <button id="submit-dev-btn" class="button is-success">PLACEHOLDER-TEXT</button>
+                        <button id="cancel-dev-btn" class="button">Cancelar</button>
+                    </div>
+                    <div class="buttons ml-auto">
+                        <button id="delete-dev-btn" class="button is-danger">
+                            <span class="icon is-small">
+                                <i class="fas fa-trash"></i>
+                            </span>
+                        </button>
+                    </div>
+                </footer>
+            </div>
+        </div>
+
+        <div id="confirm-delete-modal" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head has-background-danger">
+                    <p class="modal-card-title has-text-warning-dark">¿Estás seguro?</p>
+                </header>
+                <section class="modal-card-body">
+                    <p id="confirm-delete-text">¿Estás seguro que quieres eliminar ésta entidad?</p>
+                    <div class="buttons mt-5">
+                        <button class="button is-danger" id="confirm-delete-modal-confirm">Si, eliminar</button>
+                        <button class="button" id="confirm-delete-modal-cancel">Cancelar</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
 </body>
+
 
 </html>
